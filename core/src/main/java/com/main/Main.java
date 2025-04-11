@@ -22,7 +22,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         batch.begin();
-        batch.draw(playerTexture, 100, 100, 64, 64);
+        batch.draw(playerTexture, 200, 200, 32, 32);
         batch.end();
     }
 
