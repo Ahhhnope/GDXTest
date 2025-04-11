@@ -21,16 +21,18 @@ public class Main extends ApplicationAdapter {
 
     GameManager gm;
 
+    private float middleScreen;
+
     private Player player;
     private Boss BossOne;
     @Override
     public void create() {
-
+        middleScreen = (Gdx.graphics.getHeight() / 2) - 30;
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
         gm = new GameManager("menu");
         player = new Player();
-        BossOne = new Boss(1000,500);
+        BossOne = new Boss(1000,middleScreen);
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -45,13 +47,17 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //player
+
         batch.begin();
-        player.render();
+        player.render(batch);
         player.update();
+
         //boss
+
         BossOne.render(batch);
         BossOne.update(deltatime, player);
         batch.end();
+
         //gm.render();
         //gm.update();
     }

@@ -20,8 +20,8 @@ public class GamePanel  {
         player.update();
     }
 
-    public void render() {
-        player.render();
+    public void render(SpriteBatch batch) {
+        player.render(batch);
     }
 
     public void dispose() {

@@ -9,7 +9,7 @@ public class Bullet {
     private Texture bulletTexture;
     private Vector2 position;
     private Vector2 velocity;
-    private float speed = 400f;
+    private float speed = 650f;
 
     public Bullet(float startX, float startY, float targetX, float targetY){
         bulletTexture = new Texture("Bosses/Ship6/Exhaust/Turbo_flight/Exhaust3/exhaust4.png");
