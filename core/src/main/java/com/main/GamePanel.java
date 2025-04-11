@@ -16,7 +16,7 @@ public class GamePanel  {
 
     }
 
-    public void update(float delta) {
+    public void update() {
         player.update();
     }
 
