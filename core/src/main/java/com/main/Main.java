@@ -27,7 +27,7 @@ public class Main extends ApplicationAdapter {
         background = new Texture("Stuffs/background.png");
         player = new Player();
         batch = new SpriteBatch();
-        gm = new GameManager();
+        gm = new GameManager("menu");
 
 
         screenWidth = Gdx.graphics.getWidth();
@@ -55,7 +55,7 @@ public class Main extends ApplicationAdapter {
 
         float delta = Gdx.graphics.getDeltaTime();
 
-        gm.render(0);
+        gm.draw();
 
 
         inputs();
