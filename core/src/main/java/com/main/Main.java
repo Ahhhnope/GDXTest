@@ -22,9 +22,9 @@ public class Main extends ApplicationAdapter {
     public void render() {
 
     }
-//
-//    @Override
-//    public void dispose() {
+
+    @Override
+    public void dispose() {
 
     }
 }

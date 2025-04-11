@@ -1,6 +1,6 @@
 package com.main;
 
-public class GamePanel {
+public class GamePanel implements Runnable {
     public int fps = 120;
     public int ups = 200;
 
@@ -11,7 +11,7 @@ public class GamePanel {
     }
 
     @Override
-    public run() {
+    public void run() {
 
     }
 }
