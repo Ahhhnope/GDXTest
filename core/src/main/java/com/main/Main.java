@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
-
+    private int lmao = 256;
 
     @Override
     public void create() {
@@ -22,9 +22,9 @@ public class Main extends ApplicationAdapter {
     public void render() {
 
     }
-//
-//    @Override
-//    public void dispose() {
+
+    @Override
+    public void dispose() {
 
     }
 }
