@@ -15,7 +15,6 @@ public class GameManager implements Screen {
     private Texture title;
 
     private Texture btnPlay;
-    private Texture btnMenu;
     private Texture btnSetting;
     private Texture btnScore;
     private Texture btnQuit;
@@ -31,10 +30,9 @@ public class GameManager implements Screen {
         title = new Texture("Stuffs/Title.png");
 
         //Load ảnh các nút
-        btnPlay = new Texture("Stuffs/Buttons/PlayButton1.png");
-        btnMenu = new Texture("Stuffs/Buttons/Menu1.png");
-        btnSetting = new Texture("Stuffs/Buttons/setting1.png");
-        btnScore = new Texture("Stuffs/Buttons/SB2.png");
+        btnPlay = new Texture("Stuffs/Buttons/Play.png");
+        btnSetting = new Texture("Stuffs/Buttons/Setting.png");
+        btnScore = new Texture("Stuffs/Buttons/Score.png");
         btnQuit = new Texture("Stuffs/Buttons/Exit.png");
 
         // cấu hình
@@ -105,7 +103,6 @@ public class GameManager implements Screen {
         background.dispose();
         title.dispose();
         btnPlay.dispose();
-        btnMenu.dispose();
         btnSetting.dispose();
         btnScore.dispose();
         btnQuit.dispose();
