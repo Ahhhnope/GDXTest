@@ -4,18 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GameManager {
+    private SpriteBatch batch;
     Menu menu;
     GamePanel gamePanel;
     public static String currScreen;
     float delta;
 
+
     public GameManager(String screen){
+
         menu = new Menu();
         gamePanel = new GamePanel();
 
@@ -39,7 +43,7 @@ public class GameManager {
 
             case "game":
 //                vẽ game
-                gamePanel.render();
+                gamePanel.render(batch);
                 gamePanel.update(delta);
                 break;
         }

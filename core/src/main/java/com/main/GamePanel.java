@@ -1,6 +1,7 @@
 package com.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.main.Inputs.KeyHandler;
 
 import javax.swing.*;
@@ -19,8 +20,8 @@ public class GamePanel  {
         player.update();
     }
 
-    public void render() {
-        player.render();
+    public void render(SpriteBatch batch) {
+        player.render(batch);
     }
 
     public void dispose() {
