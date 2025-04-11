@@ -14,7 +14,7 @@ public class Player {
     private float speed = 200;
 
     public Player() {
-        texture = new Texture("player.png");  // Load ảnh từ thư mục assets
+        texture = new Texture("Stuffs/Player/lvl2.png");  // Load ảnh từ thư mục assets
         x = 100;   // vị trí ban đầu
         y = 100;
     }
