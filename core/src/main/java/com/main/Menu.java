@@ -38,16 +38,16 @@ public class Menu {
 
         //Load ảnh các nút và hitbox của nút
         btnPlay = new Texture("Stuffs/Buttons/Play.png");
-        btnPlayHitbox = new Rectangle(10, 422, btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
+        btnPlayHitbox = new Rectangle(btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
 
         btnSetting = new Texture("Stuffs/Buttons/Setting.png");
-        btnSettingHitbox = new Rectangle(10, 322, btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
+        btnSettingHitbox = new Rectangle(btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
 
         btnScore = new Texture("Stuffs/Buttons/Score.png");
-        btnScoreHitbox = new Rectangle(10, 222, btnScore.getWidth() / 2, btnScore.getHeight() / 2);
+        btnScoreHitbox = new Rectangle(btnScore.getWidth() / 2, btnScore.getHeight() / 2);
 
         btnQuit = new Texture("Stuffs/Buttons/Exit.png");
-        btnQuitHitbox = new Rectangle(10, 122, btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
+        btnQuitHitbox = new Rectangle(btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
 
 
         // cấu hình
@@ -61,7 +61,8 @@ public class Menu {
             GameManager.currScreen = "game";
         }
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            System.out.println("yeh");
             int x = Gdx.input.getX();
             int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 //            Đảo ngược y (Vì một lí do nào đó "Gdx.input.getY()" trả về tọa độ y tính từ trên xuống =w=)
@@ -96,19 +97,19 @@ public class Menu {
         // vị trí ban đầu để vẽ các nút
         int btnX = 10; // Vị trí x của nút, dịch chuyển sang bên trái hơn
         int currentY = Gdx.graphics.getHeight() - 250; // Bắt đầu từ trên cao, dưới tiêu đề
-        int spacing = 100; // Khoảng cách giữa các nút
+        int spacing = 20; // Khoảng cách giữa các nút
 
         // Vẽ nút PLAY
         batch.draw(btnPlay, btnX, currentY, (float) (btnPlayHitbox.getWidth()), (float) (btnPlayHitbox.getHeight()));
-        currentY -= spacing;
+        currentY -= 80 + spacing;
 
         // Vẽ nút SETTING
         batch.draw(btnSetting, btnX, currentY, (float) (btnSettingHitbox.getWidth()), (float) (btnSettingHitbox.getHeight()));
-        currentY -= spacing;
+        currentY -= 80 + spacing;
 
         // Vẽ nút SCORE
         batch.draw(btnScore, btnX, currentY, (float) (btnScoreHitbox.getWidth()), (float) (btnScoreHitbox.getHeight()));
-        currentY -= spacing;
+        currentY -= 80 + spacing;
 
         // Vẽ nút EXIT
         batch.draw(btnQuit, btnX, currentY, (float) (btnQuitHitbox.getWidth()), (float) (btnQuitHitbox.getHeight()));
