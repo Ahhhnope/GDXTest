@@ -48,7 +48,7 @@ public class Boss {
      }
 
      public void render(SpriteBatch batch){
-         batch.draw(BossOne, position.x, position.y,128, 128);
+         batch.draw(BossOne, position.x, position.y, 128, 128);
          for (Bullet bullet : bullets){
              bullet.render(batch);
 
