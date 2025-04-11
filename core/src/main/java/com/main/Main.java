@@ -1,6 +1,7 @@
 package com.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,6 +16,7 @@ import javax.swing.*;
 public class Main extends ApplicationAdapter {
     Texture background;
     SpriteBatch batch;
+    GameManager gm;
     int screenWidth;
     int screenHeight;
 
@@ -25,9 +27,12 @@ public class Main extends ApplicationAdapter {
         background = new Texture("Stuffs/background.png");
         player = new Player();
         batch = new SpriteBatch();
+        gm = new GameManager();
+
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
+
 
     }
 
@@ -45,6 +50,9 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
+
+        gm.render(0);
+
         float delta = Gdx.graphics.getDeltaTime();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
@@ -59,6 +67,7 @@ public class Main extends ApplicationAdapter {
 //        batch.draw(background, 0, 0, screenWidth, screenHeight);
         player.render(batch);
         batch.end();
+
     }
 
     @Override
@@ -66,5 +75,6 @@ public class Main extends ApplicationAdapter {
         background.dispose();
         player.dispose();
     }
+
 
 }
