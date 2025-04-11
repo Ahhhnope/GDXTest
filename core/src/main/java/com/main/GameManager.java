@@ -20,6 +20,8 @@ public class GameManager implements Screen {
     private Texture btnScore;
     private Texture btnQuit;
 
+
+
     public GameManager(){
 
         //load ảnh từ file
