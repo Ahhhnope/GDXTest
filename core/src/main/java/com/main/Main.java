@@ -2,32 +2,69 @@ package com.main;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import org.w3c.dom.Text;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import javax.swing.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-    Texture playerTexture;
+    Texture background;
     SpriteBatch batch;
+    int screenWidth;
+    int screenHeight;
+
+    Player player;
 
     @Override
     public void create() {
-        playerTexture = new Texture("Spaceships/spaceships.png");
+        background = new Texture("Stuffs/background.png");
+        player = new Player();
         batch = new SpriteBatch();
+
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
+
     }
+
+    public void inputs() {
+
+    }
+
+    public void update() {
+    }
+
+    public void draw() {
+//        batch.setColor(Color.BLACK);
+    }
+
 
     @Override
     public void render() {
+        float delta = Gdx.graphics.getDeltaTime();
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        inputs();
+        update();
+        draw();
+        player.update(delta);
+        //        Draw stuff inside begin and end
         batch.begin();
-        batch.draw(playerTexture, 200, 200, 32, 32);
+//        batch.draw(background, 0, 0, screenWidth, screenHeight);
+        player.render(batch);
         batch.end();
     }
 
     @Override
     public void dispose() {
-        playerTexture.dispose();
+        background.dispose();
+        player.dispose();
     }
+
 }

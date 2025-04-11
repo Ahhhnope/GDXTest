@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         gameThread = new Thread(this);
+        gameThread.start();
         this.addKeyListener(kh);
     }
 
@@ -41,6 +42,9 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 //        Draw shits
         g.fillRect(x, y, 100, 100);
+    }
+
+    public void render() {
     }
 
     @Override
