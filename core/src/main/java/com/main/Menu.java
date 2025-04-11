@@ -16,10 +16,16 @@ public class Menu {
     private Texture title;
 
     private Texture btnPlay;
-    private Texture btnSetting;
-    private Texture btnScore;
-    private Texture btnQuit;
+    private Rectangle btnPlayHitbox;
 
+    private Texture btnSetting;
+    private Rectangle btnSettingHitbox;
+
+    private Texture btnScore;
+    private Rectangle btnScoreHitbox;
+
+    private Texture btnQuit;
+    private Rectangle btnQuitHitbox;
 
 
     public Menu(){
@@ -30,11 +36,19 @@ public class Menu {
         //load ảnh chữ ( tên game )
         title = new Texture("Stuffs/Title.png");
 
-        //Load ảnh các nút
+        //Load ảnh các nút và hitbox của nút
         btnPlay = new Texture("Stuffs/Buttons/Play.png");
+        btnPlayHitbox = new Rectangle(btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
+
         btnSetting = new Texture("Stuffs/Buttons/Setting.png");
+        btnSettingHitbox = new Rectangle(btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
+
         btnScore = new Texture("Stuffs/Buttons/Score.png");
+        btnScoreHitbox = new Rectangle(btnScore.getWidth() / 2, btnScore.getHeight() / 2);
+
         btnQuit = new Texture("Stuffs/Buttons/Exit.png");
+        btnQuitHitbox = new Rectangle(btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
+
 
         // cấu hình
         batch = new SpriteBatch();
@@ -45,6 +59,29 @@ public class Menu {
 //      Test lệnh vào chế dộ chơi game bằng nút Enter
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             GameManager.currScreen = "game";
+        }
+
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            System.out.println("yeh");
+            int x = Gdx.input.getX();
+            int y = Gdx.graphics.getHeight() - Gdx.input.getY();
+//            Đảo ngược y (Vì một lí do nào đó "Gdx.input.getY()" trả về tọa độ y tính từ trên xuống =w=)
+
+            if (btnPlayHitbox.contains(x, y)) {
+                System.out.println("Play");
+            }
+
+            if (btnSettingHitbox.contains(x, y)) {
+                System.out.println("Setting");
+            }
+
+            if (btnScoreHitbox.contains(x, y)) {
+                System.out.println("Score board");
+            }
+
+            if (btnQuitHitbox.contains(x, y)) {
+                System.out.println("Quit");
+            }
         }
     }
 
@@ -63,19 +100,19 @@ public class Menu {
         int spacing = 20; // Khoảng cách giữa các nút
 
         // Vẽ nút PLAY
-        batch.draw(btnPlay, btnX, currentY, btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
+        batch.draw(btnPlay, btnX, currentY, (float) (btnPlayHitbox.getWidth()), (float) (btnPlayHitbox.getHeight()));
         currentY -= 80 + spacing;
 
         // Vẽ nút SETTING
-        batch.draw(btnSetting, btnX, currentY, btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
+        batch.draw(btnSetting, btnX, currentY, (float) (btnSettingHitbox.getWidth()), (float) (btnSettingHitbox.getHeight()));
         currentY -= 80 + spacing;
 
         // Vẽ nút SCORE
-        batch.draw(btnScore, btnX, currentY, btnScore.getWidth() / 2, btnScore.getHeight() / 2);
+        batch.draw(btnScore, btnX, currentY, (float) (btnScoreHitbox.getWidth()), (float) (btnScoreHitbox.getHeight()));
         currentY -= 80 + spacing;
 
         // Vẽ nút EXIT
-        batch.draw(btnQuit, btnX, currentY, btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
+        batch.draw(btnQuit, btnX, currentY, (float) (btnQuitHitbox.getWidth()), (float) (btnQuitHitbox.getHeight()));
         batch.end();
     }
 
