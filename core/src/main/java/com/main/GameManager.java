@@ -13,14 +13,12 @@ public class GameManager {
     Menu menu;
     GamePanel gamePanel;
     public static String currScreen;
-    float delta;
 
     public GameManager(String screen){
         menu = new Menu();
         gamePanel = new GamePanel();
 
 
-        delta = Gdx.graphics.getDeltaTime();
         currScreen = screen;
     }
 
@@ -28,7 +26,7 @@ public class GameManager {
 
     }
 
-    public void render() {
+    public void render(SpriteBatch batch) {
 
         switch (currScreen) {
             case "menu":
@@ -40,7 +38,7 @@ public class GameManager {
             case "game":
 //                vẽ game
                 gamePanel.render();
-                gamePanel.update(delta);
+                gamePanel.update();
                 break;
         }
     }

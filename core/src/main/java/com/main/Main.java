@@ -18,6 +18,7 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
     int screenWidth;
     int screenHeight;
+
     GameManager gm;
 
     private Player player;
@@ -33,6 +34,7 @@ public class Main extends ApplicationAdapter {
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
+
 
     }
 

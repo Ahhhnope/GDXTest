@@ -1,6 +1,7 @@
 package com.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.main.Inputs.KeyHandler;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class GamePanel  {
 
     }
 
-    public void update(float delta) {
+    public void update() {
         player.update();
     }
 
