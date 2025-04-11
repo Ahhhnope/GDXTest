@@ -9,51 +9,38 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.awt.*;
 
 public class Player {
-    String playerAction = "Idle";
-    int x = 20;
-    int y = 20;
-    int width = 100, height = 100;
-    int speed = 4;
-    float delta;
+    private Texture texture;
+    private float x, y;
+    private float speed = 200;
 
-    SpriteBatch batch;
-    Texture playerSprite;
-
-
-    public Player(int playerX, int playerY, int playerWidth, int playerHeight, float delta) {
-        this.x = playerX;
-        this.y = playerY;
-        this.width = playerWidth;
-        this.height = playerHeight;
-        this.delta = delta;
-
-        playerSprite = new Texture("Stuffs/Player/lvl2.png");
-        batch = new SpriteBatch();
+    public Player() {
+        texture = new Texture("player.png");  // Load ảnh từ thư mục assets
+        x = 100;   // vị trí ban đầu
+        y = 100;
     }
 
-    public void update() {
-        updatePosition();
-    }
+    public void update(float delta) {
+        // delta là thời gian giữa mỗi frame → giúp chuyển động mượt
 
-    public void draw() {
-        batch.begin();
-        batch.draw(playerSprite, x, y, width, height);
-        batch.end();
-    }
-
-    public void updatePosition() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isButtonPressed(Input.Buttons.FORWARD)) {
-            y += (speed * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            y += speed * delta;  // Di chuyển lên
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isButtonPressed(Input.Buttons.BACK)) {
-            y -= (speed * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            y -= speed * delta;  // Di chuyển xuống
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            x -= (speed * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            x -= speed * delta;  // Di chuyển trái
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            x += (speed * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            x += speed * delta;  // Di chuyển phải
         }
     }
 
+    public void render(SpriteBatch batch) {
+        batch.draw(texture, x, y, 64, 64);  // Vẽ ảnh tại vị trí x, y với size 64x64
+    }
+
+    public void dispose() {
+        texture.dispose();  // Giải phóng bộ nhớ khi thoát game
+    }
 }
