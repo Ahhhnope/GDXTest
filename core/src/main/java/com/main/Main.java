@@ -27,7 +27,7 @@ public class Main extends ApplicationAdapter {
         background = new Texture("Stuffs/background.png");
         player = new Player();
         batch = new SpriteBatch();
-        gm = new GameManager();
+        gm = new GameManager("menu");
 
 
         screenWidth = Gdx.graphics.getWidth();
@@ -55,6 +55,8 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         float delta = Gdx.graphics.getDeltaTime();
+
+        gm.draw();
 
 
         //gm.render(0); render map
