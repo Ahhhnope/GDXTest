@@ -43,7 +43,7 @@ public class GameManager {
 //                vẽ game
 
                 gamePanel.render(batch);
-                gamePanel.update(delta);
+                gamePanel.update();
 
                 break;
         }

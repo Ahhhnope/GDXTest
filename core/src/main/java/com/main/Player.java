@@ -15,7 +15,6 @@ public class Player {
     private float x, y, width, height;
     private float speed = 200;
     private float rotation = 0f;
-    private SpriteBatch batch;
 
     public Player() {
         texture = new Texture("Stuffs/Player/lvl2.png");  // Load ảnh từ thư mục assets
@@ -24,7 +23,6 @@ public class Player {
         width = 64;
         height = 64;
 
-        batch = new SpriteBatch();
     }
 
     public float getX(){
@@ -71,8 +69,7 @@ public class Player {
 
     }
 
-    public void render() {
-        batch.begin();
+    public void render(SpriteBatch batch) {
 
         batch.draw(
                 texture,
@@ -92,7 +89,6 @@ public class Player {
                 false,               // Flip X
                 false                // Flip Y
         );
-        batch.end();
     }
 
     public void dispose() {

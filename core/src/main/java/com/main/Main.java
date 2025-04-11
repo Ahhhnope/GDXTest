@@ -49,8 +49,9 @@ public class Main extends ApplicationAdapter {
         //player
 
         batch.begin();
-        player.render(batch);
         player.update();
+
+        player.render(batch);
 
         //boss
 
