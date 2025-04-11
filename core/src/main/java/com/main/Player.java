@@ -3,6 +3,7 @@ package com.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -20,6 +21,13 @@ public class Player {
         y = 100;
 
         batch = new SpriteBatch();
+    }
+
+    public float getX(){
+        return x;
+    }
+    public float getY(){
+        return y;
     }
 
     public void update() {
@@ -44,15 +52,13 @@ public class Player {
         }
 
 
-
 //        Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
 
     }
 
-    public void render() {
-        batch.begin();
+    public void render(SpriteBatch batch) {
         batch.draw(texture, x, y, 64, 64);  // Vẽ ảnh tại vị trí x, y với size 64x64
-        batch.end();
+
     }
 
     public void dispose() {
