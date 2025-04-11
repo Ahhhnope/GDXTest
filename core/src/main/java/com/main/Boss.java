@@ -19,8 +19,11 @@ public class Boss {
      private ArrayList<Bullet> bullets;
      private float shootTimer = 0f;
      private float shootInterval = 0.2f;
-
+     private Player player;
      //sin wave movement
+
+    private float trackingShootTimer = 0f;
+    private float trackingShootInterval = 3f;
 
     private float time = 0f;
     private float baseY;
@@ -35,11 +38,19 @@ public class Boss {
      }
 
      public void update(float delta, Player player){
-        shootTimer += delta;
-        if (shootTimer >= shootInterval){
-            shoot(player.getX(), player.getY());
-            shootTimer = 0f;
-        }
+        this.player = player;
+         shootTimer += delta;
+         trackingShootTimer += delta;
+
+         if (shootTimer >= shootInterval) {
+             shoot(player.getX(), player.getY()); // đạn thường
+             shootTimer = 0;
+         }
+
+         if (trackingShootTimer >= trackingShootInterval) {
+             shootTracking(player);
+             trackingShootTimer = 0;
+         }
         for (int i = 0; i < bullets.size();i++){
             Bullet b = bullets.get(i);
             b.update(delta);
@@ -57,7 +68,14 @@ public class Boss {
          float centerX = position.x;
          float centerY = position.y + 64 - 15;
          bullets.add(new Bullet(centerX, centerY, targetX, targetY));
+
      }
+    public void shootTracking(Player player) {
+        float centerX = position.x + 64 - 16;
+        float centerY = position.y + 64 - 16;
+
+        bullets.add(new Bullet(centerX, centerY, player)); // đạn tracking
+    }
 
      public void render(SpriteBatch batch){
          batch.draw(BossOne, position.x, position.y, 128, 128);

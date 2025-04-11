@@ -27,6 +27,7 @@ public class Main extends ApplicationAdapter {
     private Boss BossOne;
     @Override
     public void create() {
+        float deltatime = Gdx.graphics.getDeltaTime();
         middleScreen = (Gdx.graphics.getHeight() / 2) - 30;
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
@@ -43,6 +44,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         float deltatime = Gdx.graphics.getDeltaTime();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
