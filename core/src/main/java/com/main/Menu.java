@@ -1,6 +1,7 @@
 package com.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,8 +40,16 @@ public class Menu {
         batch = new SpriteBatch();
     }
 
+    public void update() {
 
-    public void draw() {
+//      Test lệnh vào chế dộ chơi game bằng nút Enter
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            GameManager.currScreen = "game";
+        }
+    }
+
+
+    public void render() {
         batch.begin();
         // vẽ nền background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

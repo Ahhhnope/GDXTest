@@ -16,16 +16,14 @@ import javax.swing.*;
 public class Main extends ApplicationAdapter {
     Texture background;
     SpriteBatch batch;
-    GameManager gm;
     int screenWidth;
     int screenHeight;
 
-    Player player;
+    GameManager gm;
 
     @Override
     public void create() {
         background = new Texture("Stuffs/background.png");
-        player = new Player();
         batch = new SpriteBatch();
         gm = new GameManager("menu");
 
@@ -36,46 +34,20 @@ public class Main extends ApplicationAdapter {
 
     }
 
-    public void inputs() {
-
-    }
-
-    public void update() {
-    }
-
-    public void draw() {
-//        batch.setColor(Color.BLACK);
-    }
-
-
     @Override
     public void render() {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        float delta = Gdx.graphics.getDeltaTime();
-
-        gm.draw();
-
-
-        //gm.render(0); render map
-        inputs();
-        update();
-        draw();
-        player.update(delta);
-        //        Draw stuff inside begin and end
-        batch.begin();
-//        batch.draw(background, 0, 0, screenWidth, screenHeight);
-        player.render(batch);
-        batch.end();
-
+        gm.render();
+        gm.update();
     }
 
     @Override
     public void dispose() {
         background.dispose();
-        player.dispose();
+        gm.dispose();
     }
 
 
