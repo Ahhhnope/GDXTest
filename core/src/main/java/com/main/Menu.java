@@ -19,8 +19,6 @@ public class Menu {
     private Texture btnScore;
     private Texture btnQuit;
 
-
-
     public Menu(){
 
         //load ảnh từ file
