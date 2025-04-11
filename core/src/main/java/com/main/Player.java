@@ -42,6 +42,11 @@ public class Player {
             x += speed * delta;  // Di chuyển phải
             System.out.println(delta);
         }
+
+
+
+//        Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
+
     }
 
     public void render() {
