@@ -12,6 +12,21 @@ public class GamePanel implements Runnable {
 
     @Override
     public void run() {
+        double drawInterval = 1000000000 / fps;
+        double updateInterval = 1000000000 / ups;
+
+        long currTime = System.nanoTime();
+
+        int fpsCount = 0;
+        int updateCount = 0;
+        long lastUpdate = System.currentTimeMillis();
+
+        double drawTime = 0;
+        doutble updateTime = 0;
+
+        while (true) {
+            long currTime =
+        }
 
     }
 }
