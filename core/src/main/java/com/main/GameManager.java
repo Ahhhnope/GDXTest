@@ -57,25 +57,26 @@ public class GameManager implements Screen {
         batch.draw(title, 150, Gdx.graphics.getHeight() - title.getHeight() - 20);
 
         // vị trí ban đầu để vẽ các nút
-        int btnX = 0;
-        int btnYStart = Gdx.graphics.getHeight() - title.getHeight() - 100;
-        int spacing = 20;
+        int btnX = 10; // Vị trí x của nút, dịch chuyển sang bên trái hơn
+        int currentY = Gdx.graphics.getHeight() - 250; // Bắt đầu từ trên cao, dưới tiêu đề
+        int spacing = 20; // Khoảng cách giữa các nút
+        int buttonWidth = 250; // Chiều rộng nút
+        int buttonHeight = 80; // Chiều cao nút
 
+        // Vẽ nút PLAY
+        batch.draw(btnPlay, btnX, currentY, buttonWidth, buttonHeight);
+        currentY -= buttonHeight + spacing;
 
-        int currentY = btnYStart;
-        batch.draw(btnPlay, btnX, currentY - btnPlay.getHeight());
-        currentY -= btnPlay.getHeight() + spacing;
+        // Vẽ nút SETTING
+        batch.draw(btnSetting, btnX, currentY, buttonWidth, buttonHeight);
+        currentY -= buttonHeight + spacing;
 
-        batch.draw(btnMenu, btnX, currentY - btnMenu.getHeight());
-        currentY -= btnMenu.getHeight() + spacing;
+        // Vẽ nút SCORE
+        batch.draw(btnScore, btnX, currentY, buttonWidth, buttonHeight);
+        currentY -= buttonHeight + spacing;
 
-        batch.draw(btnSetting, btnX, currentY - btnSetting.getHeight());
-        currentY -= btnSetting.getHeight() + spacing;
-
-        batch.draw(btnScore, btnX, currentY - btnScore.getHeight());
-        currentY -= btnScore.getHeight() + spacing;
-
-        batch.draw(btnQuit, btnX, currentY - btnQuit.getHeight());
+        // Vẽ nút EXIT
+        batch.draw(btnQuit, btnX, currentY, buttonWidth, buttonHeight);
         batch.end();
     }
 

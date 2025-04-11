@@ -50,13 +50,13 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-
-        gm.render(0);
+        Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         float delta = Gdx.graphics.getDeltaTime();
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        gm.render(0);
+
 
         inputs();
         update();
