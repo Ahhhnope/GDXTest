@@ -30,6 +30,8 @@ public class Bullet {
     private float width = 32f;
     private float height = 32f;
 
+    private float bulletWidth;
+    private float bulletHeight;
     //Đạn meteor
 
 
@@ -55,14 +57,16 @@ public class Bullet {
 
     }
     //Đạn player
-    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture) {
+    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture, float width, float height, float radius) {
         this.PlayerBulletTexture = PlayerBulletTexture;
         this.position = new Vector2(startX, startY);
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
+        this.bulletWidth = width;
+        this.bulletHeight = height;
 
-        bulletHitbox = new Circle(startX, startY, 5);
+        bulletHitbox = new Circle(startX, startY, radius);
 
     }
 
@@ -142,7 +146,7 @@ public class Bullet {
 
         if (PlayerBulletTexture != null){
             batch.begin();
-            batch.draw(PlayerBulletTexture, position.x - 4, position.y - 4, 8, 8);
+            batch.draw(PlayerBulletTexture, position.x - 4, position.y - 4, bulletWidth, bulletHeight);
             batch.end();
 
             renderHitbox();

@@ -3,6 +3,7 @@ package com.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -21,6 +22,7 @@ public class Enemy {
 
     private boolean stopped = false;
     private float stopX; // vị trí X sẽ dừng lại (gần boss)
+    private Texture bulletTexture;
 
     public Enemy(float bossX, float bossY) {
         texture = new Texture("Bosses/Ship2/Ship2.png");
@@ -32,6 +34,7 @@ public class Enemy {
 
         velocity = new Vector2(-1, 0).scl(speed);
         bullets = new ArrayList<>();
+        bulletTexture = new Texture("Stuffs/Player/playerbullet.png");
     }
 
     public void update(float delta) {
@@ -74,7 +77,7 @@ public class Enemy {
             float dy = MathUtils.sin(radians);
 
             Vector2 dir = new Vector2(dx, dy).nor().scl(400f);
-            Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y);
+            Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y, 600f, bulletTexture, 64, 64, 30);
             bullets.add(bullet);
         }
     }

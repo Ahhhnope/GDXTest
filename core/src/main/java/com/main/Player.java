@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -147,7 +148,7 @@ public class Player {
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
         System.out.println(centerX + " | " + centerY);
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture));
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture, 8, 8, 5));
     }
 
 
