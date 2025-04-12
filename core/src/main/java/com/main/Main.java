@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.main.Inputs.InputHandler;
 
 import javax.swing.*;
 
@@ -21,6 +22,7 @@ public class Main extends ApplicationAdapter {
     float deltatime;
 
     GameManager gm;
+    InputHandler ih;
 
     private float middleScreen;
 
@@ -39,7 +41,8 @@ public class Main extends ApplicationAdapter {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-
+        ih = new InputHandler();
+        Gdx.input.setInputProcessor(ih);
     }
 
     @Override
