@@ -59,7 +59,6 @@ public class Main extends ApplicationAdapter {
         player.render(batch);
 //
 //        //boss
-        batch.begin();
 
        /* gm.render(batch);
         gm.update();*/
@@ -68,7 +67,6 @@ public class Main extends ApplicationAdapter {
         BossOne.render(batch);
         BossOne.update(deltatime, player);
 
-        batch.end();
 
     }
 

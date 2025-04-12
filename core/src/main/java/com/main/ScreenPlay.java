@@ -59,6 +59,7 @@ public class ScreenPlay {
     }
 
     public void render(SpriteBatch batch){
+        batch.begin();
         //nền Background
         batch.draw(BackgroundScreen, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Vẽ trên nền background
@@ -79,6 +80,7 @@ public class ScreenPlay {
 
         //vẽ nút backicon
         batch.draw(btnbackicon, 10, 292, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
+        batch.end();
 
     }
 

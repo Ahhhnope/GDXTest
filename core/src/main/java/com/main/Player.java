@@ -202,10 +202,6 @@ public class Player {
 
         batch.begin();
 
-        for (Bullet bullet : bullets){
-            bullet.render(batch);
-        }
-
         batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
             texture,
@@ -226,8 +222,11 @@ public class Player {
             false
         );
 
-
         batch.end();
+
+        for (Bullet bullet : bullets){
+            bullet.render(batch);
+        }
 
         for (Bullet b : bullets) {
             b.renderHitbox();

@@ -40,6 +40,7 @@ public class ScoreBoard {
     }
 
     public void render(SpriteBatch batch){
+        batch.begin();
         //nền Background
         batch.draw(BackgroundScreen, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Vẽ trên nền background
@@ -54,7 +55,8 @@ public class ScoreBoard {
 
         //vẽ nút backicon
         batch.draw(btnbackicon, 10 , 322, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
-
+        
+        batch.end();
     }
 
     public void dispose(){
