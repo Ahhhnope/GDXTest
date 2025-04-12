@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -54,6 +55,9 @@ public class Boss {
     private float amplitudeX = 80f;
     private float frequencyX = 0.5f;
 
+    private Rectangle bossHitbox;
+    private int width = 128;
+    private int height = 128;
 
     public Boss (float x, float y){
         BossOne = new Texture("Bosses/Ship6/Ship6.png");
@@ -62,7 +66,7 @@ public class Boss {
         baseY = y;
 
         baseX = MathUtils.clamp(position.x, 100f, Gdx.graphics.getWidth() - 150f);
-
+//        bossHitbox = new Rectangle(position.x, position.y, );
     }
 
     public void update(float delta, Player player){
@@ -151,14 +155,13 @@ public class Boss {
     public void render(SpriteBatch batch){
         batch.begin();
         batch.draw(BossOne, position.x, position.y, 128, 128);
+        batch.end();
+
+
         for (Bullet bullet : bullets){
             bullet.render(batch);
         }
-        batch.end();
 
-        for (Bullet b : bullets) {
-            b.renderHitbox();
-        }
 
     }
     public void dispose(){

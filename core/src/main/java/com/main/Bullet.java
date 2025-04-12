@@ -2,6 +2,7 @@ package com.main;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -49,7 +50,7 @@ public class Bullet {
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
-        bulletHitbox = new Circle(20, 20, 15);
+        bulletHitbox = new Circle(20, 20, 7);
     }
     //Đạn player
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture) {
@@ -58,7 +59,7 @@ public class Bullet {
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
-        bulletHitbox = new Circle(20, 20, 15);
+        bulletHitbox = new Circle(20, 20, 8);
     }
 
     //Đạn tracking
@@ -120,18 +121,27 @@ public class Bullet {
     }
 
     public void render(SpriteBatch batch) {
-
-
         if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
+            batch.begin();
             batch.draw(trackingBullet, position.x, position.y, width, height);
+            batch.end();
+
+            renderHitbox();
         } else if (!isTracking && bulletTexture != null) {
+            batch.begin();
             batch.draw(bulletTexture, position.x, position.y, width, height);
+            batch.end();
+
+            renderHitbox();
         }
 
         if (PlayerBulletTexture != null){
-            batch.draw(PlayerBulletTexture, position.x,position.y,8,8);
-        }
+            batch.begin();
+            batch.draw(PlayerBulletTexture, position.x,position.y, width, height);
+            batch.end();
 
+            renderHitbox();
+        }
     }
 
     public void setBulletTexture(Texture texture) {
