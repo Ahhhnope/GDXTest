@@ -8,7 +8,7 @@ public class ScoreBoard {
     private Texture backgroudDiem;
 
     public ScoreBoard(){
-
+        batch = new SpriteBatch();
     }
 
     public void Draw(){

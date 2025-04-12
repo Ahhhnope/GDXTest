@@ -34,6 +34,10 @@ public class GameManager {
 //                vẽ game
                 manhinh.Draw();
                 break;
+            case "ScoreBoard":
+//               bảng điểm
+                BangDiem.Draw();
+                break;
         }
 
         // Xử lý sau khi vẽ
