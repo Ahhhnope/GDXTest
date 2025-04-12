@@ -64,17 +64,17 @@ public class Setting {
             (Gdx.graphics.getHeight() - NenManHinh.getHeight() * 1.5f) / 2,
             NenManHinh.getWidth() * 1.5f,
             NenManHinh.getHeight() * 1.5f);
-        // Vẽ nút Tăng trên bên phải
-        batch.draw(btnTang, 427, 374, (float) btnTang1Hitbox.getWidth(), (float) btnTang1Hitbox.getHeight());
+        // Vẽ nút Giảm trên bên phải trên
+        batch.draw(btnGiam, 427, 390, (float) btnGiam1Hitbox.getWidth(), (float) btnGiam1Hitbox.getHeight());
 
-        // Vẽ nút Tăng trên bên trái
-        batch.draw(btnTang, 950, 374, (float) btnTang2Hitbox.getWidth(), (float) btnTang2Hitbox.getHeight());
+        // Vẽ nút Tăng trên bên trái trên
+        batch.draw(btnTang, 950, 374, (float) btnTang1Hitbox.getWidth(), (float) btnTang1Hitbox.getHeight());
 
-        // Vẽ nút Tăng trên bên phải
-        batch.draw(btnGiam, 429, 270, (float) btnGiam1Hitbox.getWidth(), (float) btnGiam1Hitbox.getHeight());
+        // Vẽ nút Giảm trên bên bên phải dưới
+        batch.draw(btnGiam, 429, 270, (float) btnGiam2Hitbox.getWidth(), (float) btnGiam2Hitbox.getHeight());
 
-        // Vẽ nút Tăng trên bên trái
-        batch.draw(btnGiam, 953, 270, (float) btnGiam2Hitbox.getWidth(), (float) btnGiam2Hitbox.getHeight());
+        // Vẽ nút Tăng trên bên trái dưới
+        batch.draw(btnTang, 953, 255, (float) btnTang2Hitbox.getWidth(), (float) btnTang2Hitbox.getHeight());
 
         //vẽ nút backicon
         batch.draw(btnbackicon, 10, 292, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
