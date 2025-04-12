@@ -18,6 +18,7 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
     int screenWidth;
     int screenHeight;
+    float deltatime;
 
     GameManager gm;
 
@@ -43,7 +44,8 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        float deltatime = Gdx.graphics.getDeltaTime();
+        deltatime = Gdx.graphics.getDeltaTime();
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -51,18 +53,20 @@ public class Main extends ApplicationAdapter {
         //player
 
 
-        player.update();
-
-        player.render(batch);
-
-        //boss
+//        player.update();
+//        player.render(batch);
+//
+//        //boss
         batch.begin();
-        BossOne.render(batch);
-        BossOne.update(deltatime, player);
+
+        gm.render(batch);
+        gm.update();
+
+//        BossOne.render(batch);
+//        BossOne.update(deltatime, player);
+
         batch.end();
 
-        //gm.render();
-        //gm.update();
     }
 
     @Override

@@ -1,57 +1,78 @@
 package com.main;
 
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import javax.swing.*;
-import java.awt.*;
+
 
 public class GameManager {
-    private SpriteBatch batch;
     Menu menu;
-    GamePanel gamePanel;
+    ScreenPlay manhinh;
+    ScoreBoard BangDiem;
+    Setting caidat;
     public static String currScreen;
 
 
     public GameManager(String screen){
-
         menu = new Menu();
-        gamePanel = new GamePanel();
-
-
+        manhinh = new ScreenPlay();
+        BangDiem = new ScoreBoard();
+        caidat = new Setting();
         currScreen = screen;
     }
 
     public void update() {
-
-    }
-
-    public void render(SpriteBatch batch) {
-
         switch (currScreen) {
             case "menu":
-//                vẽ menu
-                menu.render();
                 menu.update();
                 break;
 
             case "game":
+                manhinh.update();
+                break;
+
+            case "scoreboard":
+                BangDiem.update();
+                break;
+
+            case "setting":
+                caidat.update();
+                break;
+
+            case "quit":
+                Gdx.app.exit();
+                break;
+        }
+    }
+
+    public void render(SpriteBatch batch) {
+        switch (currScreen) {
+            case "menu":
+//                vẽ menu
+                menu.render(batch);
+                break;
+            case "game":
 //                vẽ game
-
-                gamePanel.render(batch);
-                gamePanel.update();
-
+                manhinh.render(batch);
+                break;
+            case "scoreboard":
+//               bảng điểm
+                BangDiem.render(batch);
+                break;
+            case "setting":
+//               Cài đặt
+                caidat.render(batch);
                 break;
         }
     }
 
     public void dispose() {
         menu.dispose();
-        gamePanel.dispose();
+        manhinh.dispose();
+        BangDiem.dispose();
+        caidat.Dispose();
+//        gamePanel.dispose();
     }
 
 

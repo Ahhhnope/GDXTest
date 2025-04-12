@@ -10,8 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Menu {
-    private SpriteBatch batch;
-
     private Texture background;
     private Texture title;
 
@@ -49,13 +47,9 @@ public class Menu {
         btnQuit = new Texture("Stuffs/Buttons/Exit.png");
         btnQuitHitbox = new Rectangle(10, 122, btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
 
-
-        // cấu hình
-        batch = new SpriteBatch();
     }
 
     public void update() {
-
 //      Test lệnh vào chế dộ chơi game bằng nút Enter
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             GameManager.currScreen = "game";
@@ -67,26 +61,25 @@ public class Menu {
 //            Đảo ngược y (Vì một lí do nào đó "Gdx.input.getY()" trả về tọa độ y tính từ trên xuống =w=)
 
             if (btnPlayHitbox.contains(x, y)) {
-                System.out.println("Play");
+                GameManager.currScreen = "game";
             }
 
             if (btnSettingHitbox.contains(x, y)) {
-                System.out.println("Setting");
+                GameManager.currScreen = "setting";
             }
 
             if (btnScoreHitbox.contains(x, y)) {
-                System.out.println("Score board");
+                GameManager.currScreen = "scoreboard";
             }
 
             if (btnQuitHitbox.contains(x, y)) {
-                System.out.println("Quit");
+                GameManager.currScreen = "quit";
             }
         }
     }
 
 
-    public void render() {
-        batch.begin();
+    public void render(SpriteBatch batch) {
         // vẽ nền background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -112,7 +105,6 @@ public class Menu {
 
         // Vẽ nút EXIT
         batch.draw(btnQuit, btnX, currentY, (float) (btnQuitHitbox.getWidth()), (float) (btnQuitHitbox.getHeight()));
-        batch.end();
     }
 
     public void dispose() {
@@ -122,6 +114,5 @@ public class Menu {
         btnSetting.dispose();
         btnScore.dispose();
         btnQuit.dispose();
-        batch.dispose();
     }
 }
