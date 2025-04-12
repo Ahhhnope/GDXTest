@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Color;
-import com.main.Inputs.InputHandler;
 
 import java.awt.*;
 
@@ -34,8 +33,6 @@ public class Player {
         width = 64;
         height = 64;
         shapeRenderer = new ShapeRenderer();
-
-
     }
 
     public float getX(){
@@ -61,13 +58,6 @@ public class Player {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             x += speed * delta;  // Di chuyển phải
         }
-
-
-        // Bắn pew pew
-        if (InputHandler.isMouseDown) {
-
-        }
-
 
 
 

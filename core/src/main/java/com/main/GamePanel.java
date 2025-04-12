@@ -13,6 +13,7 @@ public class GamePanel  {
 
     public GamePanel() {
         player = new Player();
+
     }
 
     public void update() {
