@@ -32,7 +32,7 @@ public class Boss {
 
     //Đạn nổ timer
     private float explosionTimer = 0f;
-    private float explosionInterval = 2.5f;
+    private float explosionInterval = 2f;
     //
     private float trackingShootTimer = 0f;
     private float trackingShootInterval = 1f;

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Circle;
 
 public class Bullet {
+    protected Texture PlayerBulletTexture;
     //hitbox
 
 
@@ -28,15 +29,19 @@ public class Bullet {
     private float width = 32f;
     private float height = 32f;
 
+    //Đạn meteor
+
+
     private Circle bulletHitbox;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
+
 
     public Bullet(float startX, float startY, float targetX, float targetY) {
 //        EXPLOSION
         this(startX, startY, targetX, targetY, 650f); // gọi constructor bên dưới
         bulletHitbox = new Circle(100, 100, 32);
     }
-
+    //Đạn thường
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed) {
 //        NORMAL BULLET
         this.bulletTexture = new Texture("Bosses/Ship6/Exhaust/Turbo_flight/Exhaust3/exhaust4.png");
@@ -46,7 +51,16 @@ public class Bullet {
         this.isTracking = false;
         bulletHitbox = new Circle(20, 20, 6);
     }
+    //Đạn player
+    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture) {
+        this.PlayerBulletTexture = PlayerBulletTexture;
+        this.position = new Vector2(startX, startY);
+        Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
+        this.velocity = direction.scl(customspeed);
+        this.isTracking = false;
+    }
 
+    //Đạn tracking
     public Bullet(float startX, float startY, Player player) {
 //        TRACKING (your mom) BULLET
         this.trackingBullet = new Texture("Bosses/EnergyBall/0.png");
@@ -111,6 +125,10 @@ public class Bullet {
             batch.draw(trackingBullet, position.x, position.y, width, height);
         } else if (!isTracking && bulletTexture != null) {
             batch.draw(bulletTexture, position.x, position.y, width, height);
+        }
+
+        if (PlayerBulletTexture != null){
+            batch.draw(PlayerBulletTexture, position.x,position.y,8,8);
         }
 
     }
