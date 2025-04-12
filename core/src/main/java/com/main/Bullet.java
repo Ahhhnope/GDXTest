@@ -12,7 +12,7 @@ public class Bullet {
     protected Texture PlayerBulletTexture;
     //hitbox
 
-
+    Circle playerBulletHitbox;
     //khởi tạo bình thường
     private boolean isTracking = true;
     private boolean hasFinishedTracking = false; // ✅ NEW
@@ -53,9 +53,9 @@ public class Bullet {
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
 
-        bulletHitbox = new Circle(20, 20, 7);
-
+        bulletHitbox = new Circle(20, 20, 8);
     }
+
     //Đạn player
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture, float width, float height, float radius) {
         this.PlayerBulletTexture = PlayerBulletTexture;
@@ -63,12 +63,15 @@ public class Bullet {
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
+
         this.bulletWidth = width;
         this.bulletHeight = height;
 
         bulletHitbox = new Circle(startX, startY, radius);
 
+
     }
+
 
     //Đạn tracking
     public Bullet(float startX, float startY, Player player) {
@@ -92,28 +95,30 @@ public class Bullet {
 
 
     public void update(float delta) {
-        if (this.isTracking) {
-            this.trackingTimer += delta;
-
-            if (this.trackingTimer <= this.trackingTime) {
-                Vector2 targetDir = new Vector2(
-                    this.player.getX() - this.position.x,
-                    this.player.getY() - this.position.y
-                ).nor().scl(175);
-
-
-                //Keyframe trơn hơn
-                this.velocity.lerp(targetDir, 0.5f);
+        if (isTracking) {
+            trackingTimer += delta;
+            if (trackingTimer <= trackingTime) {
+                Vector2 targetDir = new Vector2(player.getX() - position.x, player.getY() - position.y).nor().scl(175);
+                velocity.lerp(targetDir, 0.5f);
             } else {
-                this.isTracking = false;
-                this.hasFinishedTracking = true; // ✅ Mark là đã hết tracking
+                isTracking = false;
+                hasFinishedTracking = true;
             }
         }
+
+
 
         this.position.add(this.velocity.x * delta, this.velocity.y * delta);
         bulletHitbox.x = position.x;
         bulletHitbox.y = position.y;
 
+        // Update hitboxes
+        if (bulletHitbox != null) {
+            bulletHitbox.setPosition(position.x + width / 2, position.y + height / 2);
+        }
+        if (playerBulletHitbox != null) {
+            playerBulletHitbox.setPosition(position.x + bulletWidth / 2, position.y + bulletHeight / 2);
+        }
     }
 
     //custom size
@@ -124,13 +129,22 @@ public class Bullet {
 
     public void renderHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.circle(bulletHitbox.x, bulletHitbox.y, bulletHitbox.radius);
+        if (bulletHitbox != null) {
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.circle(bulletHitbox.x, bulletHitbox.y, bulletHitbox.radius);
+        }
+        if (playerBulletHitbox != null) {
+            shapeRenderer.setColor(Color.GREEN);
+            shapeRenderer.circle(playerBulletHitbox.x, playerBulletHitbox.y, playerBulletHitbox.radius);
+        }
         shapeRenderer.end();
     }
 
     public void render(SpriteBatch batch) {
+        batch.begin();
+
         if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
+
             batch.begin();
             batch.draw(trackingBullet, position.x - width/2f, position.y - height/2f, width, height);
             batch.end();
@@ -142,15 +156,18 @@ public class Bullet {
             batch.end();
 
             renderHitbox();
+
         }
+        batch.end();
+        renderHitbox();
+
 
         if (PlayerBulletTexture != null){
             batch.begin();
             batch.draw(PlayerBulletTexture, position.x - 4, position.y - 4, bulletWidth, bulletHeight);
             batch.end();
 
-            renderHitbox();
-        }
+
     }
 
     public void setBulletTexture(Texture texture) {

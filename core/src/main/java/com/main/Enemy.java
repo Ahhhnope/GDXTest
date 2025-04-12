@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class Enemy {
     private Texture texture;
+    private Texture enemyBullet;
+
     private Vector2 position;
     private Vector2 velocity;
     private float speed = 200f;
@@ -25,8 +27,8 @@ public class Enemy {
     private Texture bulletTexture;
 
     public Enemy(float bossX, float bossY) {
-        texture = new Texture("Bosses/Ship2/Ship2.png");
-
+        texture = new Texture("Bosses/Ship3/Ship3.png");
+        enemyBullet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/0.png");
         float screenWidth = Gdx.graphics.getWidth();
         position = new Vector2(screenWidth + 50, bossY);
 
@@ -77,7 +79,11 @@ public class Enemy {
             float dy = MathUtils.sin(radians);
 
             Vector2 dir = new Vector2(dx, dy).nor().scl(400f);
+
+     
             Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y, 600f, bulletTexture, 64, 64, 30);
+
+          
             bullets.add(bullet);
         }
     }

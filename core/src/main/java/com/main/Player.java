@@ -145,10 +145,12 @@ public class Player {
 
     public void shoot(float targetX, float targetY) {
         playerBulletTexture = new Texture("Stuffs/Player/playerbullet.png");
+
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
         System.out.println(centerX + " | " + centerY);
         bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture, 8, 8, 5));
+
     }
 
 
