@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.main.Inputs.InputHandler;
 
 import javax.swing.*;
 
@@ -21,6 +22,7 @@ public class Main extends ApplicationAdapter {
     float deltatime;
 
     GameManager gm;
+    InputHandler ih;
 
     private float middleScreen;
 
@@ -28,7 +30,6 @@ public class Main extends ApplicationAdapter {
     private Boss BossOne;
     @Override
     public void create() {
-        float deltatime = Gdx.graphics.getDeltaTime();
         middleScreen = (Gdx.graphics.getHeight() / 2) - 60;
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
@@ -39,6 +40,8 @@ public class Main extends ApplicationAdapter {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
+        ih = new InputHandler();
+        Gdx.input.setInputProcessor(ih);
 
     }
 
@@ -61,6 +64,7 @@ public class Main extends ApplicationAdapter {
        /* gm.render(batch);
         gm.update();*/
 
+
         BossOne.render(batch);
         BossOne.update(deltatime, player);
 
@@ -72,7 +76,6 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         background.dispose();
         player.dispose();
-        gm.dispose();
         BossOne.dispose();
     }
 

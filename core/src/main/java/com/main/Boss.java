@@ -19,7 +19,7 @@ public class Boss {
      private Vector2 position;
      private ArrayList<Bullet> bullets;
      private float shootTimer = 0f;
-     private float shootInterval = 0.3f;
+     private float shootInterval = 0.3f; //0,3
      private Player player;
      //sin wave movement
 
@@ -120,6 +120,7 @@ public class Boss {
          float centerX = position.x;
          float centerY = position.y + 64 - 15;
          bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f));
+
      }
 
     public void shootExplosion() {
@@ -155,7 +156,6 @@ public class Boss {
          batch.draw(BossOne, position.x, position.y, 128, 128);
          for (Bullet bullet : bullets){
              bullet.render(batch);
-
          }
 
      }

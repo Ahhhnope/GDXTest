@@ -8,21 +8,37 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.main.Inputs.InputHandler;
+
+import java.awt.*;
+import java.util.ArrayList;
+
 
 public class Player {
     private Rectangle hitbox;
     private Texture texture;
-    private Vector2 position;
+
     private Vector2 velocity;
+
 
     private float width, height;
     private float speed = 300f;
     private float friction = 0.95f;
     private float rotation = 0f;
 
+    private Vector2 position;
+    private ArrayList<Bullet> bullets;
+
+
+
     private int maxHP = 100;
     private int currentHP = 50;
+
+    private float shootTimer = 0f;
+    private float shootInterval = 0.3f;
 
     private ShapeRenderer shapeRenderer;
 
@@ -33,6 +49,9 @@ public class Player {
         width = 64;
         height = 64;
         shapeRenderer = new ShapeRenderer();
+
+        position = new Vector2(x, y);
+        bullets = new ArrayList<>();
     }
 
     public float getX() { return position.x; }
@@ -60,18 +79,69 @@ public class Player {
 
         position.add(velocity.x * delta, velocity.y * delta);
 
+
         // Xoay theo chuột
+
+        // Get mouse position
+
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         float deltaX = mouseX - position.x;
         float deltaY = mouseY - position.y;
         rotation = (float) Math.toDegrees(Math.atan2(deltaY, deltaX)) - 90;
 
+
         // Cập nhật hitbox
+
+//          Ấn chuột để bắn
+        position.x = x;
+        position.y = y;
+        shootTimer += delta;
+        if (InputHandler.isMouseDown) {
+            if (shootTimer >= shootInterval) {
+                shoot(mouseX, mouseY); // đạn thường
+                shootTimer = 0;
+            }
+        }
+
+//        Update đạn
+        for (int i = 0; i < bullets.size();i++){
+            Bullet b = bullets.get(i);
+            b.update(delta);
+            if (b.isOutOfScreen()){
+                b.dispose();
+                bullets.remove(i);
+                i--;
+            }
+        }
+
+        // Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
+
+        // Find center of player
+        float deltaX = mouseX - x;
+        float deltaY = mouseY - y;
+
+// Calculate angle in radians and convert to degrees
+        float angleRad = (float)Math.atan2(deltaY, deltaX);
+        float angleDeg = (float)Math.toDegrees(angleRad);
+
+// Apply rotation to your player
+        rotation = angleDeg - 90;
+
+        //hitbox
         float hitboxSize = 40f;
         float offset = (width - hitboxSize) / 2f;
         hitbox = new Rectangle(position.x - width / 2 + offset, position.y - height / 2 + offset, hitboxSize, hitboxSize);
     }
+
+
+    public void shoot(float targetX, float targetY) {
+        float centerX = x - 16;
+        float centerY = y - 16;
+        System.out.println(position.x + " | " + position.y);
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY));
+    }
+
 
     public Rectangle getHitbox() {
         return hitbox;
@@ -108,17 +178,26 @@ public class Player {
         } else {
             shapeRenderer.circle(barX + radius, barY + radius, filledWidth / 2f);
         }
+
         shapeRenderer.end();
 
         // Hitbox
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1f);
         shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         shapeRenderer.end();
 
+
         // Vẽ player
+
         batch.begin();
+
+        for (Bullet bullet : bullets){
+            bullet.render(batch);
+        }
+
         batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
             texture,
@@ -138,10 +217,18 @@ public class Player {
             false,
             false
         );
+
+
         batch.end();
+
+
     }
 
     public void dispose() {
+        // Giải phóng bộ nhớ khi thoát game
         texture.dispose();
+        for (Bullet bullet : bullets){
+            bullet.dispose();
+        }
     }
 }
