@@ -23,6 +23,17 @@ public class Boss {
      private Player player;
      //sin wave movement
 
+
+    //MeteorTime
+
+    float meteorTimer = 0f;
+    float meteorInterval = 2f;
+
+
+    //Đạn nổ timer
+    private float explosionTimer = 0f;
+    private float explosionInterval = 2.5f;
+    //
     private float trackingShootTimer = 0f;
     private float trackingShootInterval = 1f;
 
@@ -68,6 +79,13 @@ public class Boss {
              spawnTrackingBullet(player);
              trackingShootTimer = 0;
          }
+
+         meteorTimer += delta;
+         if (meteorTimer >= meteorInterval) {
+             spawnMeteor();
+             meteorTimer = 0f;
+         }
+
         for (int i = 0; i < bullets.size();i++){
             Bullet b = bullets.get(i);
             b.update(delta);
@@ -77,18 +95,45 @@ public class Boss {
                 i--;
             }
         }
+         explosionTimer += delta;
+         if (explosionTimer >= explosionInterval) {
+             shootExplosion();
+             explosionTimer = 0;
+         }
          time += delta;
          position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
          position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
 
      }
 
+    public void spawnMeteor() {
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
+        float startX = screenWidth + 200; // spawn ngoài màn hình bên phải
+        float startY = MathUtils.random(64, screenHeight - 64); // tránh mép
+
+        bullets.add(new MeteorBullet(startX, startY)); // Không cần truyền direction nữa
+    }
+
      public void shoot(float targetX, float targetY){
          float centerX = position.x;
          float centerY = position.y + 64 - 15;
-         bullets.add(new Bullet(centerX, centerY, targetX, targetY));
-
+         bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f));
      }
+
+    public void shootExplosion() {
+        float startX = position.x + 64 / 2f;
+        float startY = position.y + 64 - 15;
+
+        float offsetX = MathUtils.random(-200f, 200f);
+        float offsetY = MathUtils.random(-100f, 150f);
+        float targetX = player.getX() + offsetX;
+        float targetY = player.getY() + offsetY;
+
+        bullets.add(new ExplosionBullet(startX, startY, targetX, targetY));
+    }
+
     public void spawnTrackingBullet(Player player) {
          float delta = Gdx.graphics.getDeltaTime();
          int screenWidth = Gdx.graphics.getWidth();
@@ -112,6 +157,7 @@ public class Boss {
              bullet.render(batch);
 
          }
+
      }
      public void dispose(){
          for (Bullet bullet : bullets){
