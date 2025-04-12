@@ -14,7 +14,9 @@ public class MeteorBullet extends Bullet {
     public MeteorBullet(float startX, float startY) {
         super(startX, startY, startX, startY); // placeholder position
 
-        this.velocity = new Vector2(-1, 0).scl(200f); // bay ngang trái
+        // ➤ Rơi thẳng từ trên xuống
+        this.velocity = new Vector2(0, -1).scl(200f); // 200 là tốc độ rơi
+
         this.texture = new Texture("Bosses/ExplosiveBullet/Meteor/0.png");
 
         this.setBulletTexture(texture);
@@ -28,7 +30,7 @@ public class MeteorBullet extends Bullet {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x, position.y, -width, height);
+        batch.draw(texture, position.x, position.y, width / 2, height / 2, width, height, 1f, 1f, 270f, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
     }
 
     @Override
@@ -36,3 +38,4 @@ public class MeteorBullet extends Bullet {
         if (texture != null) texture.dispose();
     }
 }
+
