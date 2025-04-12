@@ -18,7 +18,7 @@ public class ScreenPlay {
 
     public ScreenPlay(){
 
-        //load ảnh từ file
+        //load ảnh background
         BackgroundScreen = new Texture("Stuffs/backgroundScreen.jpeg");
         //Load ảnh nền Chọn Level
         nenMapLevel = new Texture("Stuffs/nenGameMap.png");
@@ -26,8 +26,8 @@ public class ScreenPlay {
         title = new Texture("Stuffs/Buttons/TenDanhBoss.png");
         //Load ảnh các nút
         btnPlay = new Texture("Stuffs/Buttons/Play.png");
-        // cấu hình
         btnbackicon = new Texture("Stuffs/Buttons/backicon.png");
+        // cấu hình
         batch = new SpriteBatch();
     }
 

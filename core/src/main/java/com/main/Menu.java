@@ -58,10 +58,12 @@ public class Menu {
         currentY -= 80 + spacing;
 
         // Vẽ nút SETTING
+        int SettingY = currentY;
         batch.draw(btnSetting, btnX, currentY, btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
         currentY -= 80 + spacing;
 
         // Vẽ nút SCORE
+        int scoreY = currentY;  //lưu vị trí
         batch.draw(btnScore, btnX, currentY, btnScore.getWidth() / 2, btnScore.getHeight() / 2);
         currentY -= 80 + spacing;
 
@@ -81,6 +83,10 @@ public class Menu {
             if (touchX >= btnX && touchX <= btnX + width) {
                 if (touchY >= playY && touchY <= playY + height) {
                     clickedButton = "play";
+                } else if (touchY >= scoreY && touchY <= scoreY + height) {
+                    clickedButton = "score";
+                } else if (touchY >= SettingY && touchY <= SettingY + height) {
+                    clickedButton = "setting";
                 } else if (touchY >= quitY && touchY <= quitY + height) {
                     clickedButton = "exit";
                 }
@@ -89,7 +95,7 @@ public class Menu {
     }
 
     public void dispose() {
-        background.dispose();
+
         title.dispose();
         btnPlay.dispose();
         btnSetting.dispose();
