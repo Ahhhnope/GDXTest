@@ -107,13 +107,10 @@ public class Boss {
     }
 
     public void spawnMeteor() {
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
+        float startX = MathUtils.random(64, Gdx.graphics.getWidth() - 64);
+        float startY = Gdx.graphics.getHeight() + 50; // spawn trên màn hình
 
-        float startX = screenWidth + 200; // spawn ngoài màn hình bên phải
-        float startY = MathUtils.random(64, screenHeight - 64); // tránh mép
-
-        bullets.add(new MeteorBullet(startX, startY)); // Không cần truyền direction nữa
+        bullets.add(new MeteorBullet(startX, startY));
     }
 
     public void shoot(float targetX, float targetY){

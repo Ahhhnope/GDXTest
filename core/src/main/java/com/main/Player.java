@@ -31,6 +31,7 @@ public class Player {
     private float rotation = 0f;
 
     private Vector2 position;
+
     private ArrayList<Bullet> bullets;
     private float x = 100;
     private float y = 100;
@@ -67,22 +68,23 @@ public class Player {
         float delta = Gdx.graphics.getDeltaTime();
 
         // Di chuyển trơn mượt bằng velocity và friction
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            velocity.y = MathUtils.lerp(velocity.y, speed, 0.1f);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            velocity.y = MathUtils.lerp(velocity.y, -speed, 0.1f);
+        Vector2 input = new Vector2(0, 0);
+
+// Lấy input từ bàn phím
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) input.y += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) input.y -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) input.x -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) input.x += 1;
+
+// Nếu đang ấn phím nào đó → chuẩn hóa và nhân với tốc độ
+        if (input.len() > 0) {
+            input.nor().scl(speed);  // tốc độ đều nhau
+            velocity.lerp(input, 0.2f);  // làm mượt
         } else {
-            velocity.y *= friction;
+            velocity.scl(friction);  // giảm dần
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            velocity.x = MathUtils.lerp(velocity.x, -speed, 0.1f);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            velocity.x = MathUtils.lerp(velocity.x, speed, 0.1f);
-        } else {
-            velocity.x *= friction;
-        }
-
+// Cập nhật vị trí
         position.add(velocity.x * delta, velocity.y * delta);
 
 
