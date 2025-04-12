@@ -1,7 +1,9 @@
 package com.main;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Circle;
 
@@ -26,17 +28,28 @@ public class Bullet {
 
     private float width = 32f;
     private float height = 32f;
+
     //Đạn meteor
+
+
+    private Circle bulletHitbox;
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+
     public Bullet(float startX, float startY, float targetX, float targetY) {
+//        EXPLOSION
         this(startX, startY, targetX, targetY, 650f); // gọi constructor bên dưới
+        bulletHitbox = new Circle(100, 100, 32);
     }
     //Đạn thường
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed) {
+//        NORMAL BULLET
         this.bulletTexture = new Texture("Bosses/Ship6/Exhaust/Turbo_flight/Exhaust3/exhaust4.png");
         this.position = new Vector2(startX, startY);
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
+        bulletHitbox = new Circle(20, 20, 6);
     }
     //Đạn player
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture) {
@@ -49,6 +62,7 @@ public class Bullet {
 
     //Đạn tracking
     public Bullet(float startX, float startY, Player player) {
+//        TRACKING (your mom) BULLET
         this.trackingBullet = new Texture("Bosses/EnergyBall/0.png");
         this.position = new Vector2(startX, startY);
         this.player = player;
@@ -57,6 +71,12 @@ public class Bullet {
 
         Vector2 direction = new Vector2(player.getX() - startX, player.getY() - startY).nor();
         this.velocity = direction.scl(speed);
+        bulletHitbox = new Circle(100, 100, 32);
+    }
+
+
+    public Circle getBulletHitbox() {
+        return bulletHitbox;
     }
 
 
@@ -70,6 +90,7 @@ public class Bullet {
                     this.player.getY() - this.position.y
                 ).nor().scl(175);
 
+
                 //Keyframe trơn hơn
                 this.velocity.lerp(targetDir, 0.5f);
             } else {
@@ -79,23 +100,37 @@ public class Bullet {
         }
 
         this.position.add(this.velocity.x * delta, this.velocity.y * delta);
+        bulletHitbox.x = position.x + width / 2;
+        bulletHitbox.y = position.y + height / 2;
+
     }
+
     //custom size
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
     }
 
+    public void renderHitbox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.circle(bulletHitbox.x, bulletHitbox.y, bulletHitbox.radius);
+        shapeRenderer.end();
+    }
+
     public void render(SpriteBatch batch) {
+
+
         if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
             batch.draw(trackingBullet, position.x, position.y, width, height);
         } else if (!isTracking && bulletTexture != null) {
             batch.draw(bulletTexture, position.x, position.y, width, height);
-
         }
+
         if (PlayerBulletTexture != null){
             batch.draw(PlayerBulletTexture, position.x,position.y,8,8);
         }
+
     }
 
     public void setBulletTexture(Texture texture) {
