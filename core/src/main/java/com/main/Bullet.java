@@ -12,10 +12,12 @@ public class Bullet {
     protected Texture PlayerBulletTexture;
     //hitbox
 
+    private Circle playerBulletHitbox;
+    private Circle bulletHitbox;
 
     //khởi tạo bình thường
     private boolean isTracking = true;
-    private boolean hasFinishedTracking = false; // ✅ NEW
+    private boolean hasFinishedTracking = false;
     private float trackingTime = 3.5f;
     private float trackingTimer = 0f;
     private Player player;
@@ -30,10 +32,11 @@ public class Bullet {
     private float width = 32f;
     private float height = 32f;
 
+    private float bulletWidth;
+    private float bulletHeight;
     //Đạn meteor
 
 
-    private Circle bulletHitbox;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
 
@@ -52,19 +55,21 @@ public class Bullet {
         this.isTracking = false;
 
         bulletHitbox = new Circle(20, 20, 7);
-
     }
+
     //Đạn player
-    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture) {
+    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture, float radius, float width, float height) {
         this.PlayerBulletTexture = PlayerBulletTexture;
         this.position = new Vector2(startX, startY);
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
 
-        bulletHitbox = new Circle(20, 20, 8);
-
+        bulletWidth = width;
+        bulletHeight = height;
+        this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
     }
+
 
     //Đạn tracking
     public Bullet(float startX, float startY, Player player) {
@@ -78,7 +83,7 @@ public class Bullet {
         Vector2 direction = new Vector2(player.getX() - startX, player.getY() - startY).nor();
         this.velocity = direction.scl(speed);
         this.bulletHitbox = new Circle(startX, startY, 8f);
-        bulletHitbox = new Circle(position.x, position.y, 8);
+        bulletHitbox = new Circle(position.x, position.y, 10);
     }
 
 
@@ -97,19 +102,25 @@ public class Bullet {
                     this.player.getY() - this.position.y
                 ).nor().scl(175);
 
-
-                //Keyframe trơn hơn
                 this.velocity.lerp(targetDir, 0.5f);
             } else {
                 this.isTracking = false;
-                this.hasFinishedTracking = true; // ✅ Mark là đã hết tracking
+                this.hasFinishedTracking = true;
             }
         }
 
         this.position.add(this.velocity.x * delta, this.velocity.y * delta);
-        bulletHitbox.x = position.x + width / 2;
-        bulletHitbox.y = position.y + height / 2;
 
+        // ✅ Cập nhật hitbox tương ứng
+        if (bulletHitbox != null) {
+            bulletHitbox.x = position.x + width / 2;
+            bulletHitbox.y = position.y + height / 2;
+        }
+
+        if (playerBulletHitbox != null) {
+            playerBulletHitbox.x = position.x + 4;  // Hoặc chỉnh lại nếu texture lệch
+            playerBulletHitbox.y = position.y + 4;
+        }
     }
 
     //custom size
@@ -121,32 +132,31 @@ public class Bullet {
     public void renderHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.circle(bulletHitbox.x, bulletHitbox.y, bulletHitbox.radius);
+        if (bulletHitbox != null) {
+            shapeRenderer.circle(bulletHitbox.x, bulletHitbox.y, bulletHitbox.radius);
+        }
+        if (playerBulletHitbox != null) {
+            shapeRenderer.setColor(Color.GREEN); // đạn người chơi màu xanh
+            shapeRenderer.circle(playerBulletHitbox.x, playerBulletHitbox.y, playerBulletHitbox.radius);
+        }
+
         shapeRenderer.end();
     }
 
     public void render(SpriteBatch batch) {
+        batch.begin();
+
         if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
-            batch.begin();
             batch.draw(trackingBullet, position.x, position.y, width, height);
-            batch.end();
-
-            renderHitbox();
         } else if (!isTracking && bulletTexture != null) {
-            batch.begin();
             batch.draw(bulletTexture, position.x, position.y, width, height);
-            batch.end();
-
-            renderHitbox();
+        } else if (PlayerBulletTexture != null) {
+            batch.draw(PlayerBulletTexture, position.x, position.y, bulletWidth,bulletHeight);
         }
+        batch.end();
+        renderHitbox();
 
-        if (PlayerBulletTexture != null){
-            batch.begin();
-            batch.draw(PlayerBulletTexture, position.x,position.y, width, height);
-            batch.end();
 
-            renderHitbox();
-        }
     }
 
     public void setBulletTexture(Texture texture) {

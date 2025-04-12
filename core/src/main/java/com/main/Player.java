@@ -144,10 +144,13 @@ public class Player {
 
     public void shoot(float targetX, float targetY) {
         playerBulletTexture = new Texture("Stuffs/Player/playerbullet.png");
-        float centerX = position.x - 16;
-        float centerY = position.y - 7;
-        System.out.println(position.x + " | " + position.y);
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture));
+
+        // Tính tâm của hitbox
+        float centerX = hitbox.x + hitbox.width / 2;
+        float centerY = hitbox.y + hitbox.height / 2;
+
+        System.out.println("Bắn từ: " + centerX + " | " + centerY);
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 1250f, playerBulletTexture, 100, 8, 8));
     }
 
 
