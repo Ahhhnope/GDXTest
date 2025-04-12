@@ -63,12 +63,9 @@ public class Bullet {
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
-
-        this.bulletWidth = width;
-        this.bulletHeight = height;
-
-        bulletHitbox = new Circle(startX, startY, radius);
-
+        bulletWidth = width;
+        bulletHeight = height;
+        this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
 
     }
 
@@ -106,11 +103,7 @@ public class Bullet {
             }
         }
 
-
-
-        this.position.add(this.velocity.x * delta, this.velocity.y * delta);
-        bulletHitbox.x = position.x;
-        bulletHitbox.y = position.y;
+        position.add(velocity.x * delta, velocity.y * delta);
 
         // Update hitboxes
         if (bulletHitbox != null) {
@@ -144,28 +137,14 @@ public class Bullet {
         batch.begin();
 
         if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
-
-            batch.begin();
-            batch.draw(trackingBullet, position.x - width/2f, position.y - height/2f, width, height);
-            batch.end();
-
-            renderHitbox();
+            batch.draw(trackingBullet, position.x, position.y, width, height);
         } else if (!isTracking && bulletTexture != null) {
-            batch.begin();
-            batch.draw(bulletTexture, position.x - width/2f, position.y - height/2f, width, height);
-            batch.end();
-
-            renderHitbox();
-
+            batch.draw(bulletTexture, position.x, position.y, width, height);
+        } else if (PlayerBulletTexture != null) {
+            batch.draw(PlayerBulletTexture, position.x, position.y, bulletWidth, bulletHeight);
         }
         batch.end();
         renderHitbox();
-
-
-        if (PlayerBulletTexture != null){
-            batch.begin();
-            batch.draw(PlayerBulletTexture, position.x - 4, position.y - 4, bulletWidth, bulletHeight);
-            batch.end();
 
 
     }
