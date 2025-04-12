@@ -34,7 +34,7 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         gm = new GameManager("menu");
         player = new Player();
-        BossOne = new Boss(1000,middleScreen);
+        BossOne = new Boss(1200,middleScreen);
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -52,12 +52,12 @@ public class Main extends ApplicationAdapter {
 
         //player
 
-        batch.begin();
+
         player.update();
         player.render(batch);
 
         //boss
-
+        batch.begin();
         BossOne.render(batch);
         BossOne.update(deltatime, player);
         batch.end();

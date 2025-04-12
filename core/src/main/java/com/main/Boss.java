@@ -68,8 +68,8 @@ public class Boss {
 
      }
     public void shootTracking(Player player) {
-        float centerX = position.x + 64 - 16;
-        float centerY = position.y + 64 - 16;
+        float centerX = position.x;
+        float centerY = position.y + 64 - 15;
 
         bullets.add(new Bullet(centerX, centerY, player)); // đạn tracking
     }

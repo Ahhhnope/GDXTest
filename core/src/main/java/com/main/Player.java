@@ -2,30 +2,29 @@ package com.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.Color;
 
 import java.awt.*;
-import java.util.ArrayList;
 
-public class Player extends InputAdapter {
+public class Player {
+    private Rectangle hitbox;
     private Texture texture;
     private float x, y, width, height;
-    private float speed = 200;
+    private float speed = 220;
     private float rotation = 0f;
 
-    private Vector2 position;
-    private ArrayList<Bullet> bullets;
-    private float shootTimer = 0f;
-    private float shootInterval = 0.2f;
-    private boolean shooting = false;
 
-    boolean isMouseDown;
+    private int maxHP = 100;
+    private int currentHP = 50;
+
+    private ShapeRenderer shapeRenderer;
 
     public Player() {
         texture = new Texture("Stuffs/Player/lvl2.png");  // Load ảnh từ thư mục assets
@@ -33,9 +32,7 @@ public class Player extends InputAdapter {
         y = 100;
         width = 64;
         height = 64;
-
-        position = new Vector2(x, y);
-        bullets = new ArrayList<>();
+        shapeRenderer = new ShapeRenderer();
     }
 
     public float getX(){
@@ -43,12 +40,6 @@ public class Player extends InputAdapter {
     }
     public float getY(){
         return y;
-    }
-
-    public void shoot(float targetX, float targetY){
-        float centerX = position.x;
-        float centerY = position.y + 32;
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY));
     }
 
     public void update() {
@@ -68,33 +59,9 @@ public class Player extends InputAdapter {
             x += speed * delta;  // Di chuyển phải
         }
 
-//        Nhấn chuột sẽ bắn đạn
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            shooting = true;
-        }
-
-//        Update đạn
-        shootTimer += delta;
-        if (shooting) {
-            System.out.println(shooting);
-            if (shootTimer >= shootInterval) {
-                shoot(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-                shootTimer = 0;
-            }
-            for (int i = 0 ; i < bullets.size(); i++) {
-                Bullet b = bullets.get(i);
-                b.update(delta);
-                if (b.isOutOfScreen()) {
-                    b.dispose();
-                    bullets.remove(b);
-                    i--;
-                }
-            }
-        }
 
 
-
-//        Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
+        // Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
         // Get mouse position
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // flip Y
@@ -103,17 +70,76 @@ public class Player extends InputAdapter {
         float deltaX = mouseX - x;
         float deltaY = mouseY - y;
 
-//      Calculate angle in radians and convert to degrees
+// Calculate angle in radians and convert to degrees
         float angleRad = (float)Math.atan2(deltaY, deltaX);
         float angleDeg = (float)Math.toDegrees(angleRad);
 
-//      Apply rotation to your player
-        rotation = angleDeg - 90; //- 90 để làm cái ảnh quay sang phải
+// Apply rotation to your player
+        rotation = angleDeg - 90;
 
+        //hitbox
+        float hitboxSize = 40f;
+        float offset = (width - hitboxSize) / 2f;
+        hitbox = new Rectangle(x - width / 2 + offset, y - height / 2 + offset, hitboxSize, hitboxSize);
+    }
+    public Rectangle getHitbox(){
+        return hitbox;
     }
 
-    public void render(SpriteBatch batch) {
+    public void takeDamage(int Damage){
+        currentHP -= Damage;
+        if (currentHP < 0){
+            currentHP = 0;
+        }
+    }
 
+
+    public void render(SpriteBatch batch) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        float barX = (Gdx.graphics.getWidth() / 2) - 600f;
+        float barY = 20f;
+        float healthbarWidth = 300f;
+        float healthbarHeight = 20f;
+        float padding = 20f;
+        float radius = healthbarHeight / 2;
+
+        float percent = (float) currentHP / maxHP;
+        float filledWidth = healthbarWidth * percent;
+        float fillRight = barX + filledWidth;
+
+        shapeRenderer.setColor(0.3f, 0.3f, 0.3f, 1f);
+        shapeRenderer.rect(barX + radius, barY, healthbarWidth - radius * 2, healthbarHeight);
+        shapeRenderer.circle(barX + radius, barY + radius, radius);
+        shapeRenderer.circle(barX + healthbarWidth - radius, barY + radius, radius);
+
+// 🔴 Thanh máu (đỏ bo tròn theo phần trăm máu)
+        shapeRenderer.setColor(1f, 0f, 0f, 1f);
+        if (filledWidth > radius * 2) {
+            shapeRenderer.rect(barX + radius, barY, filledWidth - radius * 2, healthbarHeight);
+            shapeRenderer.circle(barX + radius, barY + radius, radius);                // đầu trái
+            shapeRenderer.circle(fillRight - radius, barY + radius, radius);           // đầu phải
+        } else {
+            // Nếu thanh máu quá ngắn, vẽ nửa vòng tròn
+            shapeRenderer.circle(barX + radius, barY + radius, filledWidth / 2f);
+        }
+        shapeRenderer.end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 0, 0, 1f); // đỏ hitbox
+        shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        shapeRenderer.end();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+
+       /* shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1f, 1f, 1f, 0.3f);
+        shapeRenderer.rect(x - width / 2, y - height / 2, width, height);
+        shapeRenderer.end();*/
+
+
+        batch.begin();
+        batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
                 texture,
                 x - width / 2,       // X position (adjust to center the texture)
@@ -132,25 +158,10 @@ public class Player extends InputAdapter {
                 false,               // Flip X
                 false                // Flip Y
         );
+        batch.end();
     }
 
     public void dispose() {
         texture.dispose();  // Giải phóng bộ nhớ khi thoát game
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
-            isMouseDown = true;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
-            isMouseDown = false;
-        }
-        return true;
     }
 }
