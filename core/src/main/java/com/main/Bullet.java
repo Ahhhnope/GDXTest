@@ -19,15 +19,22 @@ public class Bullet {
     private Texture trackingBullet;
     private Texture bulletTexture;
 
-    private Vector2 position;
+    protected Vector2 position;
     private Vector2 velocity;
     private float speed = 650f;
 
+    private float width = 32f;
+    private float height = 32f;
+
     public Bullet(float startX, float startY, float targetX, float targetY) {
+        this(startX, startY, targetX, targetY, 650f); // gọi constructor bên dưới
+    }
+
+    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed) {
         this.bulletTexture = new Texture("Bosses/Ship6/Exhaust/Turbo_flight/Exhaust3/exhaust4.png");
         this.position = new Vector2(startX, startY);
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
-        this.velocity = direction.scl(speed);
+        this.velocity = direction.scl(customspeed);
         this.isTracking = false;
     }
 
@@ -42,16 +49,19 @@ public class Bullet {
         this.velocity = direction.scl(speed);
     }
 
+
     public void update(float delta) {
         if (this.isTracking) {
             this.trackingTimer += delta;
 
             if (this.trackingTimer <= this.trackingTime) {
-                Vector2 direction = new Vector2(
+                Vector2 targetDir = new Vector2(
                     this.player.getX() - this.position.x,
                     this.player.getY() - this.position.y
-                ).nor();
-                this.velocity = direction.scl(175);
+                ).nor().scl(175);
+
+                //Keyframe trơn hơn
+                this.velocity.lerp(targetDir, 0.5f);
             } else {
                 this.isTracking = false;
                 this.hasFinishedTracking = true; // ✅ Mark là đã hết tracking
@@ -60,13 +70,23 @@ public class Bullet {
 
         this.position.add(this.velocity.x * delta, this.velocity.y * delta);
     }
+    //custom size
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
+    }
 
     public void render(SpriteBatch batch) {
         if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
-            batch.draw(trackingBullet, position.x, position.y, 32, 32);
+            batch.draw(trackingBullet, position.x, position.y, width, height);
         } else if (!isTracking && bulletTexture != null) {
-            batch.draw(bulletTexture, position.x, position.y, 32, 32);
+            batch.draw(bulletTexture, position.x, position.y, width, height);
+
         }
+    }
+
+    public void setBulletTexture(Texture texture) {
+        this.bulletTexture = texture;
     }
 
     public boolean isOutOfScreen() {
