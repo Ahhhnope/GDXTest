@@ -53,17 +53,17 @@ public class Main extends ApplicationAdapter {
         //player
 
 
-        player.update();
-        player.render(batch);
+//        player.update();
+//        player.render(batch);
+//
+//        //boss
+//        batch.begin();
+//        BossOne.render(batch);
+//        BossOne.update(deltatime, player);
+//        batch.end();
 
-        //boss
-        batch.begin();
-        BossOne.render(batch);
-        BossOne.update(deltatime, player);
-        batch.end();
-
-        //gm.render();
-        //gm.update();
+        gm.render(batch);
+        gm.update();
     }
 
     @Override

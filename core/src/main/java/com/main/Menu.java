@@ -49,7 +49,6 @@ public class Menu {
         btnQuit = new Texture("Stuffs/Buttons/Exit.png");
         btnQuitHitbox = new Rectangle(10, 122, btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
 
-
         // cấu hình
         batch = new SpriteBatch();
     }
@@ -85,8 +84,7 @@ public class Menu {
     }
 
 
-    public void render() {
-        batch.begin();
+    public void render(SpriteBatch batch) {
         // vẽ nền background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -112,7 +110,6 @@ public class Menu {
 
         // Vẽ nút EXIT
         batch.draw(btnQuit, btnX, currentY, (float) (btnQuitHitbox.getWidth()), (float) (btnQuitHitbox.getHeight()));
-        batch.end();
     }
 
     public void dispose() {

@@ -6,18 +6,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 public class GameManager {
-    private SpriteBatch batch;
     Menu menu;
-    GamePanel gamePanel;
+    ScreenPlay manhinh;
+    ScoreBoard BangDiem;
+    Setting caidat;
     public static String currScreen;
 
 
     public GameManager(String screen){
-
         menu = new Menu();
-        gamePanel = new GamePanel();
-
-
+        manhinh = new ScreenPlay();
+        BangDiem = new ScoreBoard();
+        caidat = new Setting();
         currScreen = screen;
     }
 
@@ -30,23 +30,26 @@ public class GameManager {
         switch (currScreen) {
             case "menu":
 //                vẽ menu
-                menu.render();
-                menu.update();
+                menu.render(batch);
                 break;
-
             case "game":
-//                vẽ game nyeh
-
-                gamePanel.render(batch);
-                gamePanel.update();
-
+//                vẽ game
+                manhinh.render(batch);
+                break;
+            case "ScoreBoard":
+//               bảng điểm
+                BangDiem.render(batch);
+                break;
+            case "Setting":
+//               Cài đặt
+                caidat.render(batch);
                 break;
         }
     }
 
     public void dispose() {
         menu.dispose();
-        gamePanel.dispose();
+//        gamePanel.dispose();
     }
 
 
