@@ -15,13 +15,13 @@ import jdk.jfr.Frequency;
 import java.util.ArrayList;
 
 public class Boss {
-     private Texture BossOne;
-     private Vector2 position;
-     private ArrayList<Bullet> bullets;
-     private float shootTimer = 0f;
-     private float shootInterval = 0.3f; //0,3
-     private Player player;
-     //sin wave movement
+    private Texture BossOne;
+    private Vector2 position;
+    private ArrayList<Bullet> bullets;
+    private float shootTimer = 0f;
+    private float shootInterval = 0.3f;
+    private Player player;
+    //sin wave movement
 
 
     //MeteorTime
@@ -56,35 +56,35 @@ public class Boss {
 
 
     public Boss (float x, float y){
-         BossOne = new Texture("Bosses/Ship6/Ship6.png");
-         position = new Vector2(x,y);
-         bullets = new ArrayList<>();
-         baseY = y;
+        BossOne = new Texture("Bosses/Ship6/Ship6.png");
+        position = new Vector2(x,y);
+        bullets = new ArrayList<>();
+        baseY = y;
 
-         baseX = MathUtils.clamp(position.x, 100f, Gdx.graphics.getWidth() - 150f);
+        baseX = MathUtils.clamp(position.x, 100f, Gdx.graphics.getWidth() - 150f);
 
     }
 
-     public void update(float delta, Player player){
+    public void update(float delta, Player player){
         this.player = player;
-         shootTimer += delta;
-         trackingShootTimer += delta;
+        shootTimer += delta;
+        trackingShootTimer += delta;
 
-         if (shootTimer >= shootInterval) {
-             shoot(player.getX(), player.getY()); // đạn thường
-             shootTimer = 0;
-         }
+        if (shootTimer >= shootInterval) {
+            shoot(player.getX(), player.getY()); // đạn thường
+            shootTimer = 0;
+        }
 
-         if (trackingShootTimer >= trackingShootInterval) {
-             spawnTrackingBullet(player);
-             trackingShootTimer = 0;
-         }
+        if (trackingShootTimer >= trackingShootInterval) {
+            spawnTrackingBullet(player);
+            trackingShootTimer = 0;
+        }
 
-         meteorTimer += delta;
-         if (meteorTimer >= meteorInterval) {
-             spawnMeteor();
-             meteorTimer = 0f;
-         }
+        meteorTimer += delta;
+        if (meteorTimer >= meteorInterval) {
+            spawnMeteor();
+            meteorTimer = 0f;
+        }
 
         for (int i = 0; i < bullets.size();i++){
             Bullet b = bullets.get(i);
@@ -95,16 +95,16 @@ public class Boss {
                 i--;
             }
         }
-         explosionTimer += delta;
-         if (explosionTimer >= explosionInterval) {
-             shootExplosion();
-             explosionTimer = 0;
-         }
-         time += delta;
-         position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
-         position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
+        explosionTimer += delta;
+        if (explosionTimer >= explosionInterval) {
+            shootExplosion();
+            explosionTimer = 0;
+        }
+        time += delta;
+        position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
+        position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
 
-     }
+    }
 
     public void spawnMeteor() {
         int screenWidth = Gdx.graphics.getWidth();
@@ -116,12 +116,11 @@ public class Boss {
         bullets.add(new MeteorBullet(startX, startY)); // Không cần truyền direction nữa
     }
 
-     public void shoot(float targetX, float targetY){
-         float centerX = position.x;
-         float centerY = position.y + 64 - 15;
-         bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f));
-
-     }
+    public void shoot(float targetX, float targetY){
+        float centerX = position.x;
+        float centerY = position.y + 64 - 15;
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f));
+    }
 
     public void shootExplosion() {
         float startX = position.x + 64 / 2f;
@@ -136,11 +135,11 @@ public class Boss {
     }
 
     public void spawnTrackingBullet(Player player) {
-         float delta = Gdx.graphics.getDeltaTime();
-         int screenWidth = Gdx.graphics.getWidth();
-         int screenHeight = Gdx.graphics.getHeight();
+        float delta = Gdx.graphics.getDeltaTime();
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
 
-         int side = MathUtils.random(2); // 0: top, 1: bottom, 2: left, 3: right
+        int side = MathUtils.random(2); // 0: top, 1: bottom, 2: left, 3: right
 
         float startX = 0, startY = 0;
         switch (side) {
@@ -152,17 +151,18 @@ public class Boss {
         bullets.add(new Bullet(startX, startY, player));
     }
 
-     public void render(SpriteBatch batch){
-         batch.draw(BossOne, position.x, position.y, 128, 128);
-         for (Bullet bullet : bullets){
-             bullet.render(batch);
-         }
+    public void render(SpriteBatch batch){
+        batch.draw(BossOne, position.x, position.y, 128, 128);
+        for (Bullet bullet : bullets){
+            bullet.render(batch);
 
-     }
-     public void dispose(){
-         for (Bullet bullet : bullets){
-             bullet.dispose();
-         }
-     }
+        }
+
+    }
+    public void dispose(){
+        for (Bullet bullet : bullets){
+            bullet.dispose();
+        }
+    }
 }
 

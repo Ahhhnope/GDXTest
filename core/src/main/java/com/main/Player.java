@@ -31,6 +31,8 @@ public class Player {
 
     private Vector2 position;
     private ArrayList<Bullet> bullets;
+    private float x = 100;
+    private float y = 100;
 
 
 
@@ -49,6 +51,7 @@ public class Player {
         width = 64;
         height = 64;
         shapeRenderer = new ShapeRenderer();
+
 
         position = new Vector2(x, y);
         bullets = new ArrayList<>();
@@ -94,8 +97,7 @@ public class Player {
         // Cập nhật hitbox
 
 //          Ấn chuột để bắn
-        position.x = x;
-        position.y = y;
+
         shootTimer += delta;
         if (InputHandler.isMouseDown) {
             if (shootTimer >= shootInterval) {
@@ -118,8 +120,8 @@ public class Player {
         // Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
 
         // Find center of player
-        float deltaX = mouseX - x;
-        float deltaY = mouseY - y;
+        deltaX = mouseX - position.x;
+        deltaY = mouseY - position.y;
 
 // Calculate angle in radians and convert to degrees
         float angleRad = (float)Math.atan2(deltaY, deltaX);
@@ -136,8 +138,8 @@ public class Player {
 
 
     public void shoot(float targetX, float targetY) {
-        float centerX = x - 16;
-        float centerY = y - 16;
+        float centerX = position.x - 16;
+        float centerY = position.y - 16;
         System.out.println(position.x + " | " + position.y);
         bullets.add(new Bullet(centerX, centerY, targetX, targetY));
     }
