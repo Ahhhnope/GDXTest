@@ -29,7 +29,7 @@ public class GameManager {
                 break;
 
             case "game":
-//                vẽ game
+//                vẽ game y
                 break;
         }
     }
