@@ -21,14 +21,15 @@ public class Boss {
     private float shootTimer = 0f;
     private float shootInterval = 0.3f;
     private Player player;
-    //sin wave movement
 
+    private ArrayList<Enemy> enemies = new ArrayList<>();
+    private float spawnEnemyTimer = 0f;
+    private float spawnEnemyInterval = 5f;
 
     //MeteorTime
 
     float meteorTimer = 0f;
     float meteorInterval = 2f;
-
 
     //Đạn nổ timer
     private float explosionTimer = 0f;
@@ -104,6 +105,16 @@ public class Boss {
         position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
         position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
 
+        spawnEnemyTimer += delta;
+        if (spawnEnemyTimer >= spawnEnemyInterval) {
+            enemies.add(new Enemy(position.x, position.y)); // spawn gần boss
+            spawnEnemyTimer = 0f;
+        }
+
+        for (Enemy enemy : enemies){
+            enemy.update(delta);
+        }
+
     }
 
     public void spawnMeteor() {
@@ -152,6 +163,9 @@ public class Boss {
         batch.draw(BossOne, position.x, position.y, 128, 128);
         for (Bullet bullet : bullets){
             bullet.render(batch);
+        }
+        for (Enemy enemy : enemies){
+            enemy.render(batch);
         }
 
     }
