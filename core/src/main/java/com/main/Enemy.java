@@ -80,7 +80,10 @@ public class Enemy {
     }
 
     public void render(SpriteBatch batch) {
+        batch.begin();
         batch.draw(texture, position.x, position.y, 128, 128);
+        batch.end();
+
         for (Bullet bullet : bullets) {
             bullet.render(batch);
         }
