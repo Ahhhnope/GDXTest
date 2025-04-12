@@ -150,7 +150,7 @@ public class Player {
         float centerY = hitbox.y + hitbox.height / 2;
 
         System.out.println("Bắn từ: " + centerX + " | " + centerY);
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 1250f, playerBulletTexture, 100, 8, 8));
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 1250f, playerBulletTexture,8,8, 5));
     }
 
 
@@ -208,10 +208,10 @@ public class Player {
         batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
             texture,
-            position.x - width / 2,
-            position.y - height / 2,
-            width / 2,
-            height / 2,
+            position.x - width / 2f,
+            position.y - height / 2f,
+            width / 2f,
+            height / 2f,
             width,
             height,
             1f,

@@ -16,7 +16,6 @@ public class Enemy {
     private Vector2 velocity;
     private float speed = 200f;
 
-
     private ArrayList<Bullet> bullets;
 
     private float shootTimer = 0f;
@@ -30,6 +29,7 @@ public class Enemy {
         enemyBullet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/0.png");
         float screenWidth = Gdx.graphics.getWidth();
         position = new Vector2(screenWidth + 50, bossY);
+
         stopX = MathUtils.random(bossX - 50f, bossX - 100f);
 
         velocity = new Vector2(-1, 0).scl(speed);
@@ -76,14 +76,12 @@ public class Enemy {
             float dy = MathUtils.sin(radians);
 
             Vector2 dir = new Vector2(dx, dy).nor().scl(400f);
-            Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y,300f,enemyBullet, 20, 32, 32);
-            bullet.setSize(16,16);
+            Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y,300f,enemyBullet,32,32, 12);
             bullets.add(bullet);
         }
     }
 
     public void render(SpriteBatch batch) {
-
         batch.begin();
         batch.draw(texture, position.x, position.y, 128, 128);
         batch.end();
@@ -95,10 +93,8 @@ public class Enemy {
 
     public void dispose() {
         texture.dispose();
-        enemyBullet.dispose();
         for (Bullet bullet : bullets) {
             bullet.dispose();
-
         }
     }
 }
