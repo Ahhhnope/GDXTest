@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -145,12 +146,11 @@ public class Player {
     public void shoot(float targetX, float targetY) {
         playerBulletTexture = new Texture("Stuffs/Player/playerbullet.png");
 
-        // Tính tâm của hitbox
-        float centerX = hitbox.x + hitbox.width / 2;
-        float centerY = hitbox.y + hitbox.height / 2;
+        float centerX = hitbox.x + hitbox.width / 2f;
+        float centerY = hitbox.y + hitbox.height / 2f;
+        System.out.println(centerX + " | " + centerY);
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture, 8, 8, 5));
 
-        System.out.println("Bắn từ: " + centerX + " | " + centerY);
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 1250f, playerBulletTexture,8,8, 5));
     }
 
 
