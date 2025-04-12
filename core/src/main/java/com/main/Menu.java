@@ -52,7 +52,7 @@ public class Menu {
     public void update() {
 //      Test lệnh vào chế dộ chơi game bằng nút Enter
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            GameManager.currScreen = "game";
+            GameManager.currScreen = "testing";
         }
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {

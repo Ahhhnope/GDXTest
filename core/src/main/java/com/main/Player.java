@@ -118,8 +118,8 @@ public class Player {
     }
 
     public void shoot(float targetX, float targetY) {
-        float centerX = position.x;
-        float centerY = position.y;
+        float centerX = x - 16;
+        float centerY = y - 16;
         System.out.println(position.x + " | " + position.y);
         bullets.add(new Bullet(centerX, centerY, targetX, targetY));
     }
@@ -210,8 +210,9 @@ public class Player {
         );
 
 
-
         batch.end();
+
+
     }
 
     public void dispose() {
