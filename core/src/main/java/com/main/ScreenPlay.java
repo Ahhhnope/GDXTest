@@ -49,11 +49,11 @@ public class ScreenPlay {
             }
 
             if (btnPlay1Hitbox.contains(touchX, touchY)) {
-                System.out.println("Boss 1");
+                GameManager.currScreen = "MapBossOne";
             }
 
             if (btnPlay2Hitbox.contains(touchX, touchY)) {
-                System.out.println("Boss 2");
+                GameManager.currScreen = "MapBossTwo";
             }
         }
     }
@@ -72,10 +72,10 @@ public class ScreenPlay {
         batch.draw(title, 500, Gdx.graphics.getHeight() - 200, title.getWidth() * 0.5f, title.getHeight() * 0.5f);
 
         // Vẽ nút PLAY bên phải
-        batch.draw(btnPlay, 440, 225, (float) btnPlay1Hitbox.getWidth(), (float) btnPlay1Hitbox.getHeight());
+        batch.draw(btnPlay, 440, 220, (float) btnPlay1Hitbox.getWidth(), (float) btnPlay1Hitbox.getHeight());
 
         // Vẽ nút PLAY bên trái
-        batch.draw(btnPlay, 775, 225, (float) btnPlay2Hitbox.getWidth(), (float) btnPlay2Hitbox.getHeight());
+        batch.draw(btnPlay, 780, 220, (float) btnPlay2Hitbox.getWidth(), (float) btnPlay2Hitbox.getHeight());
 
         //vẽ nút backicon
         batch.draw(btnbackicon, 10, 292, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
