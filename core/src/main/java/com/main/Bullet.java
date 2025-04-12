@@ -3,8 +3,13 @@ package com.main;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Circle;
 
 public class Bullet {
+    //hitbox
+
+
+    //khởi tạo bình thường
     private boolean isTracking = true;
     private boolean hasFinishedTracking = false; // ✅ NEW
     private float trackingTime = 3f;
@@ -46,7 +51,7 @@ public class Bullet {
                     this.player.getX() - this.position.x,
                     this.player.getY() - this.position.y
                 ).nor();
-                this.velocity = direction.scl(220);
+                this.velocity = direction.scl(200);
             } else {
                 this.isTracking = false;
                 this.hasFinishedTracking = true; // ✅ Mark là đã hết tracking
