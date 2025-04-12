@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.main.Inputs.InputHandler;
 
 import javax.swing.*;
 
@@ -16,66 +17,64 @@ import javax.swing.*;
 public class Main extends ApplicationAdapter {
     Texture background;
     SpriteBatch batch;
-    GameManager gm;
     int screenWidth;
     int screenHeight;
+    float deltatime;
 
-    Player player;
+    GameManager gm;
+    InputHandler ih;
 
+    private float middleScreen;
+
+    private Player player;
+    private Boss BossOne;
     @Override
     public void create() {
+        float deltatime = Gdx.graphics.getDeltaTime();
+        middleScreen = (Gdx.graphics.getHeight() / 2) - 30;
         background = new Texture("Stuffs/background.png");
-        player = new Player();
         batch = new SpriteBatch();
         gm = new GameManager("menu");
-
+        player = new Player();
+        BossOne = new Boss(1200,middleScreen);
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-
+        ih = new InputHandler();
+        Gdx.input.setInputProcessor(ih);
     }
-
-    public void inputs() {
-
-    }
-
-    public void update() {
-    }
-
-    public void draw() {
-//        batch.setColor(Color.BLACK);
-    }
-
 
     @Override
     public void render() {
+        deltatime = Gdx.graphics.getDeltaTime();
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        float delta = Gdx.graphics.getDeltaTime();
-
-        gm.draw();
+        //player
 
 
-        //gm.render(0); render map
-        inputs();
-        update();
-        draw();
-        player.update(delta);
-        //        Draw stuff inside begin and end
-        batch.begin();
-//        batch.draw(background, 0, 0, screenWidth, screenHeight);
+        player.update();
         player.render(batch);
+
+        //boss
+        batch.begin();
+        BossOne.render(batch);
+        BossOne.update(deltatime, player);
         batch.end();
 
+        //gm.render();
+        //gm.update();
     }
 
     @Override
     public void dispose() {
         background.dispose();
         player.dispose();
+        gm.dispose();
+        BossOne.dispose();
     }
 
 
