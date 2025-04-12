@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Circle;
 
 public class Bullet {
+    protected Texture PlayerBulletTexture;
     //hitbox
 
 
@@ -25,11 +26,11 @@ public class Bullet {
 
     private float width = 32f;
     private float height = 32f;
-
+    //Đạn meteor
     public Bullet(float startX, float startY, float targetX, float targetY) {
         this(startX, startY, targetX, targetY, 650f); // gọi constructor bên dưới
     }
-
+    //Đạn thường
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed) {
         this.bulletTexture = new Texture("Bosses/Ship6/Exhaust/Turbo_flight/Exhaust3/exhaust4.png");
         this.position = new Vector2(startX, startY);
@@ -37,7 +38,16 @@ public class Bullet {
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
     }
+    //Đạn player
+    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture) {
+        this.PlayerBulletTexture = PlayerBulletTexture;
+        this.position = new Vector2(startX, startY);
+        Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
+        this.velocity = direction.scl(customspeed);
+        this.isTracking = false;
+    }
 
+    //Đạn tracking
     public Bullet(float startX, float startY, Player player) {
         this.trackingBullet = new Texture("Bosses/EnergyBall/0.png");
         this.position = new Vector2(startX, startY);
@@ -82,6 +92,9 @@ public class Bullet {
         } else if (!isTracking && bulletTexture != null) {
             batch.draw(bulletTexture, position.x, position.y, width, height);
 
+        }
+        if (PlayerBulletTexture != null){
+            batch.draw(PlayerBulletTexture, position.x,position.y,8,8);
         }
     }
 

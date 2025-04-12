@@ -20,13 +20,14 @@ import java.util.ArrayList;
 public class Player {
     private Rectangle hitbox;
     private Texture texture;
+    private Texture playerBulletTexture;
 
     private Vector2 velocity;
 
 
     private float width, height;
     private float speed = 300f;
-    private float friction = 0.95f;
+    private float friction = 0.975f;
     private float rotation = 0f;
 
     private Vector2 position;
@@ -40,7 +41,7 @@ public class Player {
     private int currentHP = 50;
 
     private float shootTimer = 0f;
-    private float shootInterval = 0.3f;
+    private float shootInterval = 0.175f;
 
     private ShapeRenderer shapeRenderer;
 
@@ -65,17 +66,17 @@ public class Player {
 
         // Di chuyển trơn mượt bằng velocity và friction
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            velocity.y = MathUtils.lerp(velocity.y, speed, 0.2f);
+            velocity.y = MathUtils.lerp(velocity.y, speed, 0.1f);
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            velocity.y = MathUtils.lerp(velocity.y, -speed, 0.2f);
+            velocity.y = MathUtils.lerp(velocity.y, -speed, 0.1f);
         } else {
             velocity.y *= friction;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            velocity.x = MathUtils.lerp(velocity.x, -speed, 0.2f);
+            velocity.x = MathUtils.lerp(velocity.x, -speed, 0.1f);
         } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            velocity.x = MathUtils.lerp(velocity.x, speed, 0.2f);
+            velocity.x = MathUtils.lerp(velocity.x, speed, 0.1f);
         } else {
             velocity.x *= friction;
         }
@@ -138,10 +139,11 @@ public class Player {
 
 
     public void shoot(float targetX, float targetY) {
+        playerBulletTexture = new Texture("Stuffs/Player/playerbullet.png");
         float centerX = position.x - 16;
-        float centerY = position.y - 16;
+        float centerY = position.y - 7;
         System.out.println(position.x + " | " + position.y);
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY));
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture));
     }
 
 

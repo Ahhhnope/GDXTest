@@ -56,7 +56,7 @@ public class ExplosionBullet extends Bullet {
     public void explode() {
         Texture fragmentTexture = new Texture("Bosses/ExplosiveBullet/SmallBulletOfExplosives/0.png");
 
-        int numBullets = 15;
+        int numBullets = 16;
         float speed = 80f;
         float angleStep = 360f / numBullets;
 
