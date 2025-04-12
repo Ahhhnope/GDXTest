@@ -1,37 +1,78 @@
 package com.main;
 
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import javax.swing.*;
-import java.awt.*;
+
 
 public class GameManager {
     Menu menu;
-    String currScreen;
+    ScreenPlay manhinh;
+    ScoreBoard BangDiem;
+    Setting caidat;
+    public static String currScreen;
+
 
     public GameManager(String screen){
         menu = new Menu();
-
-
-
+        manhinh = new ScreenPlay();
+        BangDiem = new ScoreBoard();
+        caidat = new Setting();
         currScreen = screen;
     }
 
-    public void draw() {
-
+    public void update() {
         switch (currScreen) {
             case "menu":
-//                vẽ menu
-                menu.draw();
+                menu.update();
                 break;
 
             case "game":
-//                vẽ game y
+                manhinh.update();
+                break;
+
+            case "scoreboard":
+                BangDiem.update();
+                break;
+
+            case "setting":
+                caidat.update();
+                break;
+
+            case "quit":
+                Gdx.app.exit();
                 break;
         }
+    }
+
+    public void render(SpriteBatch batch) {
+        switch (currScreen) {
+            case "menu":
+//                vẽ menu
+                menu.render(batch);
+                break;
+            case "game":
+//                vẽ game
+                manhinh.render(batch);
+                break;
+            case "scoreboard":
+//               bảng điểm
+                BangDiem.render(batch);
+                break;
+            case "setting":
+//               Cài đặt
+                caidat.render(batch);
+                break;
+        }
+    }
+
+    public void dispose() {
+        menu.dispose();
+        manhinh.dispose();
+        BangDiem.dispose();
+        caidat.Dispose();
+//        gamePanel.dispose();
     }
 
 

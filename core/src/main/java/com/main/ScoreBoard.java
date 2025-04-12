@@ -1,35 +1,45 @@
 package com.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.awt.*;
+
 public class ScoreBoard {
-    private SpriteBatch batch;
 
     private Texture BackgroundScreen;
     private Texture backgroudDiem;
     private Texture title;
 
     private Texture btnbackicon;
+    private Rectangle btnBackHitbox;
 
-    public String clickedButton = "";
 
     public ScoreBoard(){
-        //load ảnh background
+//        Load ảnh & hitbox
         BackgroundScreen = new Texture("Stuffs/backgroundScreen.jpeg");
-        //load ảnh nền
         backgroudDiem = new Texture("Stuffs/ScoreBoard.png");
-        //load ảnh chữ ( tên game )
         title = new Texture("Stuffs/Buttons/Score.png");
-        //Load ảnh các nút
+
         btnbackicon = new Texture("Stuffs/Buttons/backicon.png");
-        //Cấu hình
-        batch = new SpriteBatch();
+        btnBackHitbox = new Rectangle(10, 322, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
     }
 
-    public void Draw(){
-        batch.begin();
+    public void update() {
+        // Xử lý click
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            int touchX = Gdx.input.getX();
+            int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+            if (btnBackHitbox.contains(touchX, touchY)) {
+                GameManager.currScreen = "menu";
+            }
+        }
+    }
+
+    public void render(SpriteBatch batch){
         //nền Background
         batch.draw(BackgroundScreen, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Vẽ trên nền background
@@ -41,29 +51,9 @@ public class ScoreBoard {
         // vẽ chữ hiện trên nền background
         batch.draw(title, 500, Gdx.graphics.getHeight() - 70, title.getWidth() * 0.5f, title.getHeight() * 0.5f);
 
-        // vị trí ban đầu để vẽ các nút
-        int btnX = 10; // Vị trí x của nút
-        int currentY = Gdx.graphics.getHeight() - 250; // Bắt đầu từ trên cao, dưới tiêu đề
 
         //vẽ nút backicon
-        int Backicon = currentY; //lưu vị trí
-        batch.draw(btnbackicon, btnX , currentY - 100, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
-        batch.end();
-
-        // Xử lý click
-        if (Gdx.input.justTouched()) {
-            int touchX = Gdx.input.getX();
-            int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
-
-            int width = btnbackicon.getWidth() / 2;
-            int height = btnbackicon.getHeight() / 2;
-            int backY = currentY - 100;
-
-            if (touchX >= btnX && touchX <= btnX + width &&
-                touchY >= backY && touchY <= backY + height) {
-                clickedButton = "back";
-            }
-        }
+        batch.draw(btnbackicon, 10 , 322, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
 
     }
 
@@ -72,6 +62,5 @@ public class ScoreBoard {
         backgroudDiem.dispose();
         title.dispose();
         btnbackicon.dispose();
-        batch.dispose();
     }
 }
