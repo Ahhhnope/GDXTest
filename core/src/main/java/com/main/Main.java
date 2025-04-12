@@ -29,12 +29,12 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         float deltatime = Gdx.graphics.getDeltaTime();
-        middleScreen = (Gdx.graphics.getHeight() / 2) - 30;
+        middleScreen = (Gdx.graphics.getHeight() / 2) - 60;
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
         gm = new GameManager("menu");
         player = new Player();
-        BossOne = new Boss(1200,middleScreen);
+        BossOne = new Boss(1150,middleScreen);
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();

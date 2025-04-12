@@ -12,7 +12,7 @@ public class Bullet {
     //khởi tạo bình thường
     private boolean isTracking = true;
     private boolean hasFinishedTracking = false; // ✅ NEW
-    private float trackingTime = 3f;
+    private float trackingTime = 3.5f;
     private float trackingTimer = 0f;
     private Player player;
 
@@ -51,7 +51,7 @@ public class Bullet {
                     this.player.getX() - this.position.x,
                     this.player.getY() - this.position.y
                 ).nor();
-                this.velocity = direction.scl(200);
+                this.velocity = direction.scl(175);
             } else {
                 this.isTracking = false;
                 this.hasFinishedTracking = true; // ✅ Mark là đã hết tracking
