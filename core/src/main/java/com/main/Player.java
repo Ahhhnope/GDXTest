@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.main.Inputs.InputHandler;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player {
     private Rectangle hitbox;
@@ -20,9 +23,15 @@ public class Player {
     private float speed = 220;
     private float rotation = 0f;
 
+    private Vector2 position;
+    private ArrayList<Bullet> bullets;
+
 
     private int maxHP = 100;
     private int currentHP = 50;
+
+    private float shootTimer = 0f;
+    private float shootInterval = 0.3f;
 
     private ShapeRenderer shapeRenderer;
 
@@ -33,6 +42,9 @@ public class Player {
         width = 64;
         height = 64;
         shapeRenderer = new ShapeRenderer();
+
+        position = new Vector2(x, y);
+        bullets = new ArrayList<>();
     }
 
     public float getX(){
@@ -60,11 +72,33 @@ public class Player {
         }
 
 
-
-        // Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
         // Get mouse position
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // flip Y
+
+//          Ấn chuột để bắn
+        position.x = x;
+        position.y = y;
+        shootTimer += delta;
+        if (InputHandler.isMouseDown) {
+            if (shootTimer >= shootInterval) {
+                shoot(mouseX, mouseY); // đạn thường
+                shootTimer = 0;
+            }
+        }
+
+//        Update đạn
+        for (int i = 0; i < bullets.size();i++){
+            Bullet b = bullets.get(i);
+            b.update(delta);
+            if (b.isOutOfScreen()){
+                b.dispose();
+                bullets.remove(i);
+                i--;
+            }
+        }
+
+        // Đổi góc nhìn của Player hướng vào vị trí của chuột so với player
 
         // Find center of player
         float deltaX = mouseX - x;
@@ -82,7 +116,15 @@ public class Player {
         float offset = (width - hitboxSize) / 2f;
         hitbox = new Rectangle(x - width / 2 + offset, y - height / 2 + offset, hitboxSize, hitboxSize);
     }
-    public Rectangle getHitbox(){
+
+    public void shoot(float targetX, float targetY) {
+        float centerX = position.x;
+        float centerY = position.y;
+        System.out.println(position.x + " | " + position.y);
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY));
+    }
+
+    public Rectangle getHitbox() {
         return hitbox;
     }
 
@@ -92,7 +134,6 @@ public class Player {
             currentHP = 0;
         }
     }
-
 
     public void render(SpriteBatch batch) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -123,7 +164,9 @@ public class Player {
             // Nếu thanh máu quá ngắn, vẽ nửa vòng tròn
             shapeRenderer.circle(barX + radius, barY + radius, filledWidth / 2f);
         }
+
         shapeRenderer.end();
+
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -138,7 +181,14 @@ public class Player {
         shapeRenderer.end();*/
 
 
+
+
         batch.begin();
+
+        for (Bullet bullet : bullets){
+            bullet.render(batch);
+        }
+
         batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
                 texture,
@@ -158,10 +208,17 @@ public class Player {
                 false,               // Flip X
                 false                // Flip Y
         );
+
+
+
         batch.end();
     }
 
     public void dispose() {
-        texture.dispose();  // Giải phóng bộ nhớ khi thoát game
+        // Giải phóng bộ nhớ khi thoát game
+        texture.dispose();
+        for (Bullet bullet : bullets){
+            bullet.dispose();
+        }
     }
 }
