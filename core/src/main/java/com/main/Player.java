@@ -40,7 +40,7 @@ public class Player {
     private int currentHP = 50;
 
     private float shootTimer = 0f;
-    private float shootInterval = 0.3f;
+    private float shootInterval = 0.1f;
 
     private ShapeRenderer shapeRenderer;
 
@@ -223,7 +223,9 @@ public class Player {
 
         batch.end();
 
-
+        for (Bullet b : bullets) {
+            b.renderHitbox();
+        }
     }
 
     public void dispose() {

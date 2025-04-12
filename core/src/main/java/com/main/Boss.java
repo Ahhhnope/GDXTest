@@ -155,7 +155,6 @@ public class Boss {
         batch.draw(BossOne, position.x, position.y, 128, 128);
         for (Bullet bullet : bullets){
             bullet.render(batch);
-
         }
 
     }
