@@ -50,6 +50,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
+
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -58,6 +59,7 @@ public class Main extends ApplicationAdapter {
         gm.draw();
 
 
+        //gm.render(0); render map
         inputs();
         update();
         draw();
