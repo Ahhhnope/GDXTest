@@ -73,6 +73,7 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         background.dispose();
         player.dispose();
+        gm.dispose();
         BossOne.dispose();
     }
 

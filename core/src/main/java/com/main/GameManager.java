@@ -1,37 +1,52 @@
 package com.main;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import javax.swing.*;
-import java.awt.*;
+
 
 public class GameManager {
+    private SpriteBatch batch;
     Menu menu;
-    String currScreen;
+    GamePanel gamePanel;
+    public static String currScreen;
+
 
     public GameManager(String screen){
-        menu = new Menu();
 
+        menu = new Menu();
+        gamePanel = new GamePanel();
 
 
         currScreen = screen;
     }
 
-    public void draw() {
+    public void update() {
+
+    }
+
+    public void render(SpriteBatch batch) {
 
         switch (currScreen) {
             case "menu":
 //                vẽ menu
-                menu.draw();
+                menu.render();
+                menu.update();
                 break;
 
             case "game":
-//                vẽ game
+//                vẽ game nyeh
+
+                gamePanel.render(batch);
+                gamePanel.update();
+
                 break;
         }
+    }
+
+    public void dispose() {
+        menu.dispose();
+        gamePanel.dispose();
     }
 
 
