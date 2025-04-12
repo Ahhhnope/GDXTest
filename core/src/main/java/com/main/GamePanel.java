@@ -26,4 +26,6 @@ public class GamePanel  {
     public void dispose() {
         player.dispose();
     }
+
+
 }
