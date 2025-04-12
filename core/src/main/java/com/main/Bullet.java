@@ -49,7 +49,7 @@ public class Bullet {
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
-        bulletHitbox = new Circle(20, 20, 6);
+        bulletHitbox = new Circle(20, 20, 15);
     }
     //Đạn player
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, Texture PlayerBulletTexture) {
@@ -58,6 +58,7 @@ public class Bullet {
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
+        bulletHitbox = new Circle(20, 20, 15);
     }
 
     //Đạn tracking

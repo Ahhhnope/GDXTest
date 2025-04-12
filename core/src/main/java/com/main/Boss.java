@@ -152,9 +152,15 @@ public class Boss {
     }
 
     public void render(SpriteBatch batch){
+        batch.begin();
         batch.draw(BossOne, position.x, position.y, 128, 128);
         for (Bullet bullet : bullets){
             bullet.render(batch);
+        }
+        batch.end();
+
+        for (Bullet b : bullets) {
+            b.renderHitbox();
         }
 
     }
