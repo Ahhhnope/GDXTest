@@ -1,7 +1,6 @@
 package com.main;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,16 +15,10 @@ public class Menu {
     private Texture title;
 
     private Texture btnPlay;
-    private Rectangle btnPlayHitbox;
-
     private Texture btnSetting;
-    private Rectangle btnSettingHitbox;
-
     private Texture btnScore;
-    private Rectangle btnScoreHitbox;
-
     private Texture btnQuit;
-    private Rectangle btnQuitHitbox;
+
 
 
     public Menu(){
@@ -36,56 +29,18 @@ public class Menu {
         //load ảnh chữ ( tên game )
         title = new Texture("Stuffs/Title.png");
 
-        //Load ảnh các nút và hitbox của nút
+        //Load ảnh các nút
         btnPlay = new Texture("Stuffs/Buttons/Play.png");
-        btnPlayHitbox = new Rectangle(10, 422, btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
-
         btnSetting = new Texture("Stuffs/Buttons/Setting.png");
-        btnSettingHitbox = new Rectangle(10, 322, btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
-
         btnScore = new Texture("Stuffs/Buttons/Score.png");
-        btnScoreHitbox = new Rectangle(10, 222, btnScore.getWidth() / 2, btnScore.getHeight() / 2);
-
         btnQuit = new Texture("Stuffs/Buttons/Exit.png");
-        btnQuitHitbox = new Rectangle(10, 122, btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
-
 
         // cấu hình
         batch = new SpriteBatch();
     }
 
-    public void update() {
 
-//      Test lệnh vào chế dộ chơi game bằng nút Enter
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            GameManager.currScreen = "game";
-        }
-
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            int x = Gdx.input.getX();
-            int y = Gdx.graphics.getHeight() - Gdx.input.getY();
-//            Đảo ngược y (Vì một lí do nào đó "Gdx.input.getY()" trả về tọa độ y tính từ trên xuống =w=)
-
-            if (btnPlayHitbox.contains(x, y)) {
-                System.out.println("Play");
-            }
-
-            if (btnSettingHitbox.contains(x, y)) {
-                System.out.println("Setting");
-            }
-
-            if (btnScoreHitbox.contains(x, y)) {
-                System.out.println("Score board");
-            }
-
-            if (btnQuitHitbox.contains(x, y)) {
-                System.out.println("Quit");
-            }
-        }
-    }
-
-
-    public void render() {
+    public void draw() {
         batch.begin();
         // vẽ nền background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -96,22 +51,22 @@ public class Menu {
         // vị trí ban đầu để vẽ các nút
         int btnX = 10; // Vị trí x của nút, dịch chuyển sang bên trái hơn
         int currentY = Gdx.graphics.getHeight() - 250; // Bắt đầu từ trên cao, dưới tiêu đề
-        int spacing = 100; // Khoảng cách giữa các nút
+        int spacing = 20; // Khoảng cách giữa các nút
 
         // Vẽ nút PLAY
-        batch.draw(btnPlay, btnX, currentY, (float) (btnPlayHitbox.getWidth()), (float) (btnPlayHitbox.getHeight()));
-        currentY -= spacing;
+        batch.draw(btnPlay, btnX, currentY, btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
+        currentY -= 80 + spacing;
 
         // Vẽ nút SETTING
-        batch.draw(btnSetting, btnX, currentY, (float) (btnSettingHitbox.getWidth()), (float) (btnSettingHitbox.getHeight()));
-        currentY -= spacing;
+        batch.draw(btnSetting, btnX, currentY, btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
+        currentY -= 80 + spacing;
 
         // Vẽ nút SCORE
-        batch.draw(btnScore, btnX, currentY, (float) (btnScoreHitbox.getWidth()), (float) (btnScoreHitbox.getHeight()));
-        currentY -= spacing;
+        batch.draw(btnScore, btnX, currentY, btnScore.getWidth() / 2, btnScore.getHeight() / 2);
+        currentY -= 80 + spacing;
 
         // Vẽ nút EXIT
-        batch.draw(btnQuit, btnX, currentY, (float) (btnQuitHitbox.getWidth()), (float) (btnQuitHitbox.getHeight()));
+        batch.draw(btnQuit, btnX, currentY, btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
         batch.end();
     }
 
