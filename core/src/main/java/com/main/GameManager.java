@@ -11,12 +11,13 @@ import java.awt.*;
 public class GameManager {
     Menu menu;
     ScreenPlay manhinh;
+    ScoreBoard BangDiem;
     String currScreen;
 
     public GameManager(String screen){
         menu = new Menu();
         manhinh = new ScreenPlay();
-
+        BangDiem = new ScoreBoard();
 
         currScreen = screen;
     }
@@ -35,16 +36,22 @@ public class GameManager {
                 break;
         }
 
-
-        // 👇 Xử lý sau khi vẽ
+        // Xử lý sau khi vẽ
         if (currScreen.equals("menu")) {
             if (menu.clickedButton.equals("play")) {
                 currScreen = "game";
+                menu.clickedButton = "";
             } else if (menu.clickedButton.equals("exit")) {
                 Gdx.app.exit();
             }
         }
-    }
 
+        if (currScreen.equals("game")) {
+            if (manhinh.clickedButton.equals("back")) {
+                currScreen = "menu";
+                manhinh.clickedButton = "";
+            }
+        }
+    }
 
 }

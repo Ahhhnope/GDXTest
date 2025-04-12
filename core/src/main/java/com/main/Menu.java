@@ -48,7 +48,7 @@ public class Menu {
         batch.draw(title, 150, Gdx.graphics.getHeight() - title.getHeight() - 20);
 
         // vị trí ban đầu để vẽ các nút
-        int btnX = 10; // Vị trí x của nút, dịch chuyển sang bên trái hơn
+        int btnX = 10; // Vị trí x của nút
         int currentY = Gdx.graphics.getHeight() - 250; // Bắt đầu từ trên cao, dưới tiêu đề
         int spacing = 20; // Khoảng cách giữa các nút
 
