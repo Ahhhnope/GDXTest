@@ -62,7 +62,7 @@ public class Bullet {
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
 
-        bulletHitbox = new Circle(20, 20, 8);
+        bulletHitbox = new Circle(startX, startY, 5);
 
     }
 
@@ -107,8 +107,8 @@ public class Bullet {
         }
 
         this.position.add(this.velocity.x * delta, this.velocity.y * delta);
-        bulletHitbox.x = position.x + width / 2;
-        bulletHitbox.y = position.y + height / 2;
+        bulletHitbox.x = position.x;
+        bulletHitbox.y = position.y;
 
     }
 
@@ -128,13 +128,13 @@ public class Bullet {
     public void render(SpriteBatch batch) {
         if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
             batch.begin();
-            batch.draw(trackingBullet, position.x, position.y, width, height);
+            batch.draw(trackingBullet, position.x - width/2f, position.y - height/2f, width, height);
             batch.end();
 
             renderHitbox();
         } else if (!isTracking && bulletTexture != null) {
             batch.begin();
-            batch.draw(bulletTexture, position.x, position.y, width, height);
+            batch.draw(bulletTexture, position.x - width/2f, position.y - height/2f, width, height);
             batch.end();
 
             renderHitbox();
@@ -142,7 +142,7 @@ public class Bullet {
 
         if (PlayerBulletTexture != null){
             batch.begin();
-            batch.draw(PlayerBulletTexture, position.x,position.y, width, height);
+            batch.draw(PlayerBulletTexture, position.x - 4, position.y - 4, 8, 8);
             batch.end();
 
             renderHitbox();

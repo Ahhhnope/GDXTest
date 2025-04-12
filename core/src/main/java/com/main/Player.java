@@ -144,9 +144,9 @@ public class Player {
 
     public void shoot(float targetX, float targetY) {
         playerBulletTexture = new Texture("Stuffs/Player/playerbullet.png");
-        float centerX = position.x - 16;
-        float centerY = position.y - 7;
-        System.out.println(position.x + " | " + position.y);
+        float centerX = hitbox.x + hitbox.width / 2f;
+        float centerY = hitbox.y + hitbox.height / 2f;
+        System.out.println(centerX + " | " + centerY);
         bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture));
     }
 
@@ -205,10 +205,10 @@ public class Player {
         batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
             texture,
-            position.x - width / 2,
-            position.y - height / 2,
-            width / 2,
-            height / 2,
+            position.x - width / 2f,
+            position.y - height / 2f,
+            width / 2f,
+            height / 2f,
             width,
             height,
             1f,
