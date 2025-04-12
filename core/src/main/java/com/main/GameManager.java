@@ -11,6 +11,8 @@ public class GameManager {
     ScreenPlay manhinh;
     ScoreBoard BangDiem;
     Setting caidat;
+    MapBossOne MapOne;
+    MapBossTwo MapTwo;
     public static String currScreen;
 
 
@@ -20,6 +22,8 @@ public class GameManager {
         BangDiem = new ScoreBoard();
         caidat = new Setting();
         currScreen = screen;
+        MapOne = new MapBossOne();
+        MapTwo = new MapBossTwo();
     }
 
     public void update() {
@@ -40,9 +44,18 @@ public class GameManager {
                 caidat.update();
                 break;
 
+            case "MapBossOne":
+                MapOne.update();
+                break;
+
+            case "MapBossTwo":
+                MapTwo.update();
+                break;
+
             case "quit":
                 Gdx.app.exit();
                 break;
+
         }
     }
 
@@ -64,6 +77,14 @@ public class GameManager {
 //               Cài đặt
                 caidat.render(batch);
                 break;
+            case "MapBossOne":
+//               bảng điểm
+                MapOne.render(batch);
+                break;
+            case "MapBossTwo":
+//               Cài đặt
+                MapTwo.render(batch);
+                break;
         }
     }
 
@@ -72,6 +93,7 @@ public class GameManager {
         manhinh.dispose();
         BangDiem.dispose();
         caidat.Dispose();
+
 //        gamePanel.dispose();
     }
 
