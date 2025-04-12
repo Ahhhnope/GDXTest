@@ -1,6 +1,7 @@
 package com.main;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
@@ -22,11 +23,30 @@ public class GameManager {
     }
 
     public void update() {
+        switch (currScreen) {
+            case "menu":
+                menu.update();
+                break;
 
+            case "game":
+                manhinh.update();
+                break;
+
+            case "scoreboard":
+                BangDiem.update();
+                break;
+
+            case "setting":
+                caidat.update();
+                break;
+
+            case "quit":
+                Gdx.app.exit();
+                break;
+        }
     }
 
     public void render(SpriteBatch batch) {
-
         switch (currScreen) {
             case "menu":
 //                vẽ menu
@@ -36,11 +56,11 @@ public class GameManager {
 //                vẽ game
                 manhinh.render(batch);
                 break;
-            case "ScoreBoard":
+            case "scoreboard":
 //               bảng điểm
                 BangDiem.render(batch);
                 break;
-            case "Setting":
+            case "setting":
 //               Cài đặt
                 caidat.render(batch);
                 break;
@@ -49,6 +69,9 @@ public class GameManager {
 
     public void dispose() {
         menu.dispose();
+        manhinh.dispose();
+        BangDiem.dispose();
+        caidat.Dispose();
 //        gamePanel.dispose();
     }
 

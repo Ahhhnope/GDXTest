@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Setting {
 
     public Setting(){
+
     }
 
     public void update() {
@@ -12,6 +13,7 @@ public class Setting {
     }
 
     public void render(SpriteBatch batch){
+
     }
 
     public void Dispose(){
