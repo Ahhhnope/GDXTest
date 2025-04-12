@@ -10,11 +10,12 @@ import java.awt.*;
 
 public class GameManager {
     Menu menu;
+    ScreenPlay manhinh;
     String currScreen;
 
     public GameManager(String screen){
         menu = new Menu();
-
+        manhinh = new ScreenPlay();
 
 
         currScreen = screen;
@@ -30,7 +31,18 @@ public class GameManager {
 
             case "game":
 //                vẽ game
+                manhinh.Draw();
                 break;
+        }
+
+
+        // 👇 Xử lý sau khi vẽ
+        if (currScreen.equals("menu")) {
+            if (menu.clickedButton.equals("play")) {
+                currScreen = "game";
+            } else if (menu.clickedButton.equals("exit")) {
+                Gdx.app.exit();
+            }
         }
     }
 

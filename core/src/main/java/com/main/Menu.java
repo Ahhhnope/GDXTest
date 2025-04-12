@@ -19,6 +19,8 @@ public class Menu {
     private Texture btnScore;
     private Texture btnQuit;
 
+    public String clickedButton = "";
+
     public Menu(){
 
         //load ảnh từ file
@@ -37,7 +39,6 @@ public class Menu {
         batch = new SpriteBatch();
     }
 
-
     public void draw() {
         batch.begin();
         // vẽ nền background
@@ -52,6 +53,7 @@ public class Menu {
         int spacing = 20; // Khoảng cách giữa các nút
 
         // Vẽ nút PLAY
+        int playY = currentY; //lưu vị trí
         batch.draw(btnPlay, btnX, currentY, btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
         currentY -= 80 + spacing;
 
@@ -64,8 +66,26 @@ public class Menu {
         currentY -= 80 + spacing;
 
         // Vẽ nút EXIT
+        int quitY = currentY; // lưu vị trí
         batch.draw(btnQuit, btnX, currentY, btnQuit.getWidth() / 2, btnQuit.getHeight() / 2);
         batch.end();
+
+        // Xử lý click
+        if (Gdx.input.justTouched()) {
+            int touchX = Gdx.input.getX();
+            int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+            int width = btnPlay.getWidth() / 2;
+            int height = btnPlay.getHeight() / 2;
+
+            if (touchX >= btnX && touchX <= btnX + width) {
+                if (touchY >= playY && touchY <= playY + height) {
+                    clickedButton = "play";
+                } else if (touchY >= quitY && touchY <= quitY + height) {
+                    clickedButton = "exit";
+                }
+            }
+        }
     }
 
     public void dispose() {
