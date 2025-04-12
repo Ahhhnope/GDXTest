@@ -35,7 +35,7 @@ public class GameManager {
                 break;
 
             case "game":
-//                vẽ game
+//                vẽ game nyeh
 
                 gamePanel.render(batch);
                 gamePanel.update();
