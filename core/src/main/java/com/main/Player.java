@@ -93,7 +93,6 @@ public class Player {
         }
     }
 
-
     public void render(SpriteBatch batch) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
