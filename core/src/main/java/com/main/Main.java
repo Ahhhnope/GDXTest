@@ -15,6 +15,10 @@ import javax.swing.*;
 import com.badlogic.gdx.audio.Music;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
+    //Timer
+    private HUD hud;
+
+
     Texture background;
     SpriteBatch batch;
     int screenWidth;
@@ -30,7 +34,9 @@ public class Main extends ApplicationAdapter {
     public void create() {
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
-        gm = new GameManager("menu");
+
+        hud = new HUD();
+        gm = new GameManager("menu",hud);
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -40,27 +46,24 @@ public class Main extends ApplicationAdapter {
 
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Stuffs/Musics/Hokma battle.mp3"));
         backgroundMusic.setVolume(0.5f);
-        backgroundMusic.play();
-
-
     }
 
     @Override
     public void render() {
         deltatime = Gdx.graphics.getDeltaTime();
 
-
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gm.update(deltatime);
         gm.render(batch);
-
-
+        hud.update(deltatime);
+        hud.render(batch);
     }
 
     @Override
     public void dispose() {
+        hud.dispose();
         background.dispose();
     }
 

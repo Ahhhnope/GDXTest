@@ -29,6 +29,7 @@ public class Enemy {
 
     private boolean stopped = false;
     private float stopX; // vị trí X sẽ dừng lại (gần boss)
+    private Texture bulletTexture;
 
     //dao động
     private float baseY;
@@ -46,6 +47,7 @@ public class Enemy {
         this.baseY = bossY;
         velocity = new Vector2(-1, 0).scl(speed);
         bullets = new ArrayList<>();
+
 
         Texture bulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
         TextureRegion[][] tmp = TextureRegion.split(bulletSheet, 15, 13);
