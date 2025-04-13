@@ -31,7 +31,7 @@ public class Setting {
         //load ảnh nền màn hình
         NenManHinh = new Texture("Stuffs/anhnenSetting.png");
         //Load ảnh tắt âm thanh
-        TatAmLuong = new Texture("Stuffs/Buttons/thanhGiam.png");
+        TatAmLuong = new Texture("Stuffs/Buttons/TatAmThanh.png");
         //Load ảnh các nút
         btnTang = new Texture("Stuffs/Buttons/thanhTang.png");
         btnTang1Hitbox = new Rectangle(440, 225, btnTang.getWidth() / 9, btnTang.getHeight() / 9);
