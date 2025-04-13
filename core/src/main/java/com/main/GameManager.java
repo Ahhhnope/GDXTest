@@ -22,7 +22,7 @@ public class GameManager {
         MapTwo = new MapBossTwo();
     }
 
-    public void update() {
+    public void update(float deltaTime) {
         switch (currScreen) {
             case "menu":
                 menu.update();
@@ -41,7 +41,7 @@ public class GameManager {
                 break;
 
             case "MapBossOne":
-                MapOne.update();
+                MapOne.update(deltaTime);
                 break;
 
             case "MapBossTwo":

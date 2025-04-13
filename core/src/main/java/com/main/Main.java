@@ -21,23 +21,16 @@ public class Main extends ApplicationAdapter {
     int screenHeight;
     float deltatime;
 
-
-
     GameManager gm;
     InputHandler ih;
 
-    private float middleScreen;
     private Music backgroundMusic;
-    private Player player;
-    private Boss BossOne;
+
     @Override
     public void create() {
-        middleScreen = (Gdx.graphics.getHeight() / 2) - 60;
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
         gm = new GameManager("menu");
-        player = new Player();
-        BossOne = new Boss(1150,middleScreen);
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -60,27 +53,15 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //player
+        gm.update(deltatime);
+        gm.render(batch);
 
-
-//
-//        //boss
-
-       /* gm.render(batch);
-        gm.update();*/
-
-        player.update();
-        player.render(batch);
-        BossOne.render(batch);
-        BossOne.update(deltatime, player);
 
     }
 
     @Override
     public void dispose() {
         background.dispose();
-        player.dispose();
-        BossOne.dispose();
     }
 
 
