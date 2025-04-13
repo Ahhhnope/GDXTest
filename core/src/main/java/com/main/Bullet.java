@@ -116,7 +116,7 @@ public class Bullet {
 
 
     public Circle getBulletHitbox() {
-        return bulletHitbox;
+        return bulletHitbox; //lmao
     }
 
 
