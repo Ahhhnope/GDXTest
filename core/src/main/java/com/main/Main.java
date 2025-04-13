@@ -54,18 +54,17 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //player
-
-        player.update();
-        player.render(batch);
+//
+//        player.update();
+//        player.render(batch);
 //
 //        //boss
 
-       /* gm.render(batch);
-        gm.update();*/
+        gm.render(batch);
+        gm.update();
 
-
-        BossOne.render(batch);
-        BossOne.update(deltatime, player);
+//        BossOne.render(batch);
+//        BossOne.update(deltatime, player);
 
 
     }
