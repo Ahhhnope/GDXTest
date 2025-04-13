@@ -57,7 +57,7 @@ public class Setting {
 
     public void render(SpriteBatch batch){
         batch.begin();
-        //nền Background
+
         batch.draw(BackgroundScreen, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // hiện ảnh trên nền background
         batch.draw(NenManHinh,
