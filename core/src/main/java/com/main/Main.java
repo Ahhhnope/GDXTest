@@ -54,7 +54,7 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //player
-
+//
 //        player.update();
 //        player.render(batch);
 //
@@ -62,7 +62,6 @@ public class Main extends ApplicationAdapter {
 
         gm.render(batch);
         gm.update();
-
 
 //        BossOne.render(batch);
 //        BossOne.update(deltatime, player);
