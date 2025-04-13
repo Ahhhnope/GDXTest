@@ -2,7 +2,9 @@ package com.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -18,6 +20,9 @@ public class Enemy {
     private float speed = 200f;
 
     private ArrayList<Bullet> bullets;
+
+    private Animation<TextureRegion> meteorAnimation;
+    private float animTime = 0f;
 
     private float shootTimer = 0f;
     private float shootInterval = 2f;
@@ -43,6 +48,10 @@ public class Enemy {
         velocity = new Vector2(-1, 0).scl(speed);
         bullets = new ArrayList<>();
         bulletTexture = new Texture("Stuffs/Player/playerbullet.png");
+
+        Texture bulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
+        TextureRegion[][] tmp = TextureRegion.split(bulletSheet, 15, 13);
+        meteorAnimation = new Animation<>(0.3f, tmp[0]);
     }
 
     public void update(float delta) {
@@ -55,6 +64,8 @@ public class Enemy {
                 stopped = true;
                 velocity.setZero(); // dừng lại
             }
+            animTime += delta;
+
         }
 
         // Bắn nếu đã dừng
@@ -81,24 +92,35 @@ public class Enemy {
     }
 
     public void shoot() {
+        Texture enemyBulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
+        TextureRegion[][] tmp = TextureRegion.split(enemyBulletSheet, 15, 13);
+        Animation<TextureRegion> enemyBulletAnim = new Animation<>(0.1f, tmp[0]);
+
+        // Bắn 3 viên đạn rẽ quạt (góc 160, 180, 200 độ)
         float angleBase = 180f; // bắn sang trái
         for (int i = -1; i <= 1; i++) {
-            float angle = angleBase + i * 20f; // 160, 180, 200 độ
+            float angle = angleBase + i * 20f;
             float radians = MathUtils.degreesToRadians * angle;
-            float dx = MathUtils.cos(radians);
-            float dy = MathUtils.sin(radians);
+            Vector2 dir = new Vector2(MathUtils.cos(radians), MathUtils.sin(radians)).nor().scl(400f);
 
-            Vector2 dir = new Vector2(dx, dy).nor().scl(400f);
-
-
-            Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y, 600f, enemyBullet, 32, 32, 10);
-
+            Bullet bullet = new Bullet(
+                position.x,
+                position.y + 48,
+                position.x + dir.x,
+                position.y + dir.y,
+                600f,
+                enemyBulletAnim,
+                32, 32,
+                10
+            );
 
             bullets.add(bullet);
         }
     }
 
     public void render(SpriteBatch batch) {
+        TextureRegion currentFrame = meteorAnimation.getKeyFrame(animTime, true);
+
         batch.begin();
         batch.draw(texture, position.x, position.y, 128, 128);
         batch.end();

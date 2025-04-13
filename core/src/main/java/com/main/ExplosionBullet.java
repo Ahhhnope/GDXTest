@@ -1,5 +1,6 @@
 package com.main;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -19,13 +20,15 @@ public class ExplosionBullet extends Bullet {
     private float timer = 0f;
 
 
+
     private float width = 16f;
     private float height = 16f;
     private Animation<TextureRegion> meteorAnimation;
     private float animTime = 0f;
     private TextureRegion currentFrame;
 
-    private List<Bullet> fragments = new ArrayList<>();
+    private List<FragmentBullet> fragments = new ArrayList<>();
+    ;
 
     public ExplosionBullet(float startX, float startY, float targetX, float targetY) {
         super(startX, startY, targetX, targetY); // bay về hướng bất kỳ
@@ -48,8 +51,8 @@ public class ExplosionBullet extends Bullet {
                 exploded = true;
             }
         } else {
-            for (Bullet bullet : fragments) {
-                bullet.update(delta);
+            for (FragmentBullet frag : fragments) {
+                frag.update(delta);
             }
         }
         animTime += delta;
@@ -60,17 +63,18 @@ public class ExplosionBullet extends Bullet {
     public void render(SpriteBatch batch) {
         if (!exploded && currentFrame != null) {
             batch.begin();
-            batch.draw(currentFrame, position.x, position.y,39,39);
+            batch.draw(currentFrame, position.x, position.y, 39, 39);
             batch.end();
         } else {
-            for (Bullet bullet : fragments) {
-                bullet.render(batch);
+            for (FragmentBullet frag : fragments) {
+                frag.render(batch);
             }
         }
-        currentFrame = meteorAnimation.getKeyFrame(animTime, true);
     }
     public void explode() {
-        Texture fragmentTexture = new Texture("Bosses/ExplosiveBullet/SmallBulletOfExplosives/0.png");
+        Texture fragmentSheet = new Texture("Bosses/ExplosiveBullet/SmallBulletOfExplosives/SmallBulletOfExplosivesAnimation/0.png");
+        TextureRegion[][] tmp = TextureRegion.split(fragmentSheet, 15, 15);
+        Animation<TextureRegion> fragAnim = new Animation<>(0.3f, tmp[0]);
 
         int numBullets = 16;
         float speed = 80f;
@@ -78,18 +82,14 @@ public class ExplosionBullet extends Bullet {
 
         for (int i = 0; i < numBullets; i++) {
             float angle = (float) Math.toRadians(i * angleStep);
-            float dx = (float) Math.cos(angle);
-            float dy = (float) Math.sin(angle);
-            Vector2 dir = new Vector2(dx, dy).nor().scl(speed);
+            Vector2 dir = new Vector2((float) Math.cos(angle), (float) Math.sin(angle)).nor().scl(speed);
+            Vector2 pos = new Vector2(getX(), getY());
 
-            float startX = getX();
-            float startY = getY();
-
-            Bullet child = new Bullet(startX, startY, startX + dir.x, startY + dir.y, 100f);
-            child.setBulletTexture(fragmentTexture);
-            child.setSize(16,16);
-            fragments.add(child);
+            fragments.add(new FragmentBullet(pos, dir, fragAnim));
         }
+
+    }
+    public void fragmentBullet(){
 
     }
 
@@ -104,18 +104,13 @@ public class ExplosionBullet extends Bullet {
     @Override
     public void dispose() {
         super.dispose();
-        for (Bullet bullet : fragments) {
-            bullet.dispose();
+        for (FragmentBullet frag : fragments) {
+            frag.dispose();
         }
     }
 
     @Override
     public boolean isOutOfScreen() {
-        if (!exploded) return super.isOutOfScreen();
-
-        for (Bullet b : fragments) {
-            if (!b.isOutOfScreen()) return false;
-        }
-        return true;
+        return position.x < 0 || position.x > Gdx.graphics.getWidth() || position.y < 0 || position.y > Gdx.graphics.getHeight();
     }
 }

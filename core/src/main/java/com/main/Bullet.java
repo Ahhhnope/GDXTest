@@ -21,6 +21,9 @@ public class Bullet {
     private Texture ExplosiveBulletSheet;
     private Animation<TextureRegion> TrackingAnimation;
     private float TrackingBulletAnimTime = 0f;
+
+    private Animation<TextureRegion> enemyAnimation;
+    private float enemyAnimTime = 0f;
     //khởi tạo bình thường
     private boolean isTracking = true;
     private boolean hasFinishedTracking = false; // ✅ NEW
@@ -99,6 +102,17 @@ public class Bullet {
             this.TrackingAnimation = new Animation<>(0.3f, tmp[0]); // 5 frame đầu tiên ở hàng 0
         }
     }
+    //Đạn enemy
+    public Bullet(float startX, float startY, float targetX, float targetY, float speed, Animation<TextureRegion> animation, float width, float height, float radius) {
+        this.position = new Vector2(startX, startY);
+        Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
+        this.velocity = direction.scl(speed);
+        this.enemyAnimation = animation;
+        this.width = width;
+        this.height = height;
+        this.bulletHitbox = new Circle(position.x + width / 2, position.y + height / 2, radius);
+        this.isTracking = false;
+    }
 
 
     public Circle getBulletHitbox() {
@@ -127,7 +141,9 @@ public class Bullet {
         if (playerBulletHitbox != null) {
             playerBulletHitbox.setPosition(position.x + bulletWidth / 2, position.y + bulletHeight / 2);
         }
-
+        if (enemyAnimation != null) {
+            enemyAnimTime += delta;
+        }
         //animation time
         TrackingBulletAnimTime += delta;
     }
@@ -155,19 +171,21 @@ public class Bullet {
         TextureRegion TrackingBulletCurrentFrame = null;
 
         batch.begin();
-        if (TrackingAnimation != null) {
-            TrackingBulletCurrentFrame = TrackingAnimation.getKeyFrame(TrackingBulletAnimTime, true);
-        }
-        if ((isTracking || hasFinishedTracking) && TrackingBulletCurrentFrame != null) {
-            batch.draw(TrackingBulletCurrentFrame, position.x, position.y, width, height);
-        }
-        else if (!isTracking && bulletTexture != null) {
+
+        if (TrackingAnimation != null && (isTracking || hasFinishedTracking)) {
+            TextureRegion frame = TrackingAnimation.getKeyFrame(TrackingBulletAnimTime, true);
+            batch.draw(frame, position.x, position.y, width, height);
+        } else if (enemyAnimation != null) {
+            TextureRegion frame = enemyAnimation.getKeyFrame(enemyAnimTime, true);
+            batch.draw(frame, position.x, position.y, width, height);
+        } else if (bulletTexture != null) {
             batch.draw(bulletTexture, position.x, position.y, width, height);
-        }
-        else if (PlayerBulletTexture != null) {
+        } else if (PlayerBulletTexture != null) {
             batch.draw(PlayerBulletTexture, position.x, position.y, bulletWidth, bulletHeight);
         }
+
         batch.end();
+        renderHitbox();
 
 
         renderHitbox();
