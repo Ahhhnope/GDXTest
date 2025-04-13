@@ -16,6 +16,7 @@ import jdk.jfr.Frequency;
 import java.util.ArrayList;
 
 public class Boss {
+
     private Texture BossOne;
     private Vector2 position;
     private ArrayList<Bullet> bullets;
@@ -61,13 +62,15 @@ public class Boss {
     private int height = 128;
 
     public Boss (float x, float y){
-        BossOne = new Texture("Bosses/Ship6/Ship6.png");
+        BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
         bullets = new ArrayList<>();
         baseY = y;
 
         baseX = MathUtils.clamp(position.x, 100f, Gdx.graphics.getWidth() - 150f);
 //        bossHitbox = new Rectangle(position.x, position.y, );
+        //boss part
+
     }
 
     public void update(float delta, Player player){
@@ -130,7 +133,7 @@ public class Boss {
 
     public void shoot(float targetX, float targetY){
         float centerX = position.x;
-        float centerY = position.y + 64 - 15;
+        float centerY = position.y + 110;
         bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f));
     }
 
@@ -161,11 +164,13 @@ public class Boss {
         }
 
         bullets.add(new Bullet(startX, startY, player));
+
+
     }
 
     public void render(SpriteBatch batch){
         batch.begin();
-        batch.draw(BossOne, position.x, position.y, 128, 128);
+        batch.draw(BossOne, position.x, position.y, 256, 256);
         batch.end();
 
         for (Bullet bullet : bullets){
