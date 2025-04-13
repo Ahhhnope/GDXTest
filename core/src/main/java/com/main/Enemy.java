@@ -24,7 +24,6 @@ public class Enemy {
 
     private boolean stopped = false;
     private float stopX; // vị trí X sẽ dừng lại (gần boss)
-    private Texture bulletTexture;
 
     //dao động
     private float baseY;
@@ -42,7 +41,6 @@ public class Enemy {
         this.baseY = bossY;
         velocity = new Vector2(-1, 0).scl(speed);
         bullets = new ArrayList<>();
-        bulletTexture = new Texture("Stuffs/Player/playerbullet.png");
     }
 
     public void update(float delta) {

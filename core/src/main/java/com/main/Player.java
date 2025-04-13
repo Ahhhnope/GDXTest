@@ -45,7 +45,8 @@ public class Player {
     private float shootTimer = 0f;
 
     private float shootInterval = 0.15f;
-
+    float hitboxSize;
+    float offset;
 
     private ShapeRenderer shapeRenderer;
 
@@ -60,6 +61,12 @@ public class Player {
 
         position = new Vector2(x, y);
         bullets = new ArrayList<>();
+
+
+        //hitbox
+        hitboxSize = 40f;
+        offset = (width - hitboxSize) / 2f;
+        hitbox = new Rectangle(position.x - width / 2 + offset, position.y - height / 2 + offset, hitboxSize, hitboxSize);
     }
 
     public float getX() { return position.x; }
@@ -136,9 +143,7 @@ public class Player {
 // Apply rotation to your player
         rotation = angleDeg - 90;
 
-        //hitbox
-        float hitboxSize = 40f;
-        float offset = (width - hitboxSize) / 2f;
+//        Update hitbox
         hitbox = new Rectangle(position.x - width / 2 + offset, position.y - height / 2 + offset, hitboxSize, hitboxSize);
     }
 
