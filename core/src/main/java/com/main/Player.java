@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -20,16 +21,18 @@ import java.util.ArrayList;
 public class Player {
     private Rectangle hitbox;
     private Texture texture;
+    private Texture playerBulletTexture;
 
     private Vector2 velocity;
 
 
     private float width, height;
     private float speed = 300f;
-    private float friction = 0.95f;
+    private float friction = 0.975f;
     private float rotation = 0f;
 
     private Vector2 position;
+
     private ArrayList<Bullet> bullets;
     private float x = 100;
     private float y = 100;
@@ -40,7 +43,9 @@ public class Player {
     private int currentHP = 50;
 
     private float shootTimer = 0f;
-    private float shootInterval = 0.3f;
+
+    private float shootInterval = 0.175f;
+
 
     private ShapeRenderer shapeRenderer;
 
@@ -64,22 +69,23 @@ public class Player {
         float delta = Gdx.graphics.getDeltaTime();
 
         // Di chuyển trơn mượt bằng velocity và friction
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            velocity.y = MathUtils.lerp(velocity.y, speed, 0.2f);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            velocity.y = MathUtils.lerp(velocity.y, -speed, 0.2f);
+        Vector2 input = new Vector2(0, 0);
+
+// Lấy input từ bàn phím
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) input.y += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) input.y -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) input.x -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) input.x += 1;
+
+// Nếu đang ấn phím nào đó → chuẩn hóa và nhân với tốc độ
+        if (input.len() > 0) {
+            input.nor().scl(speed);  // tốc độ đều nhau
+            velocity.lerp(input, 0.2f);  // làm mượt
         } else {
-            velocity.y *= friction;
+            velocity.scl(friction);  // giảm dần
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            velocity.x = MathUtils.lerp(velocity.x, -speed, 0.2f);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            velocity.x = MathUtils.lerp(velocity.x, speed, 0.2f);
-        } else {
-            velocity.x *= friction;
-        }
-
+// Cập nhật vị trí
         position.add(velocity.x * delta, velocity.y * delta);
 
 
@@ -138,10 +144,13 @@ public class Player {
 
 
     public void shoot(float targetX, float targetY) {
-        float centerX = position.x - 16;
-        float centerY = position.y - 16;
-        System.out.println(position.x + " | " + position.y);
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY));
+        playerBulletTexture = new Texture("Stuffs/Player/playerbullet.png");
+
+        float centerX = hitbox.x + hitbox.width / 2f;
+        float centerY = hitbox.y + hitbox.height / 2f;
+        System.out.println(centerX + " | " + centerY);
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture, 8, 8, 5));
+
     }
 
 
@@ -196,17 +205,13 @@ public class Player {
 
         batch.begin();
 
-        for (Bullet bullet : bullets){
-            bullet.render(batch);
-        }
-
         batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
             texture,
-            position.x - width / 2,
-            position.y - height / 2,
-            width / 2,
-            height / 2,
+            position.x - width / 2f,
+            position.y - height / 2f,
+            width / 2f,
+            height / 2f,
             width,
             height,
             1f,
@@ -220,10 +225,15 @@ public class Player {
             false
         );
 
-
         batch.end();
 
+        for (Bullet bullet : bullets){
+            bullet.render(batch);
+        }
 
+        for (Bullet b : bullets) {
+            b.renderHitbox();
+        }
     }
 
     public void dispose() {

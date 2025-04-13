@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -21,18 +22,19 @@ public class Boss {
     private float shootTimer = 0f;
     private float shootInterval = 0.3f;
     private Player player;
-    //sin wave movement
 
+    private ArrayList<Enemy> enemies = new ArrayList<>();
+    private float spawnEnemyTimer = 0f;
+    private float spawnEnemyInterval = 5f;
 
     //MeteorTime
 
     float meteorTimer = 0f;
     float meteorInterval = 2f;
 
-
     //Đạn nổ timer
     private float explosionTimer = 0f;
-    private float explosionInterval = 2.5f;
+    private float explosionInterval = 2f;
     //
     private float trackingShootTimer = 0f;
     private float trackingShootInterval = 1f;
@@ -54,6 +56,9 @@ public class Boss {
     private float amplitudeX = 80f;
     private float frequencyX = 0.5f;
 
+    private Rectangle bossHitbox;
+    private int width = 128;
+    private int height = 128;
 
     public Boss (float x, float y){
         BossOne = new Texture("Bosses/Ship6/Ship6.png");
@@ -62,7 +67,7 @@ public class Boss {
         baseY = y;
 
         baseX = MathUtils.clamp(position.x, 100f, Gdx.graphics.getWidth() - 150f);
-
+//        bossHitbox = new Rectangle(position.x, position.y, );
     }
 
     public void update(float delta, Player player){
@@ -104,16 +109,23 @@ public class Boss {
         position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
         position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
 
+        spawnEnemyTimer += delta;
+        if (spawnEnemyTimer >= spawnEnemyInterval) {
+            enemies.add(new Enemy(position.x, position.y)); // spawn gần boss
+            spawnEnemyTimer = 0f;
+        }
+
+        for (Enemy enemy : enemies){
+            enemy.update(delta);
+        }
+
     }
 
     public void spawnMeteor() {
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
+        float startX = MathUtils.random(64, Gdx.graphics.getWidth() - 64);
+        float startY = Gdx.graphics.getHeight() + 50; // spawn trên màn hình
 
-        float startX = screenWidth + 200; // spawn ngoài màn hình bên phải
-        float startY = MathUtils.random(64, screenHeight - 64); // tránh mép
-
-        bullets.add(new MeteorBullet(startX, startY)); // Không cần truyền direction nữa
+        bullets.add(new MeteorBullet(startX, startY));
     }
 
     public void shoot(float targetX, float targetY){
@@ -152,11 +164,18 @@ public class Boss {
     }
 
     public void render(SpriteBatch batch){
+        batch.begin();
         batch.draw(BossOne, position.x, position.y, 128, 128);
+        batch.end();
+
+
         for (Bullet bullet : bullets){
             bullet.render(batch);
-
         }
+        for (Enemy enemy : enemies){
+            enemy.render(batch);
+        }
+
 
     }
     public void dispose(){

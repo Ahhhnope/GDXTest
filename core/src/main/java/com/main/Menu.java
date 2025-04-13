@@ -80,6 +80,7 @@ public class Menu {
 
 
     public void render(SpriteBatch batch) {
+        batch.begin();
         // vẽ nền background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -105,6 +106,7 @@ public class Menu {
 
         // Vẽ nút EXIT
         batch.draw(btnQuit, btnX, currentY, (float) (btnQuitHitbox.getWidth()), (float) (btnQuitHitbox.getHeight()));
+        batch.end();
     }
 
     public void dispose() {

@@ -60,6 +60,7 @@ public class GameManager {
     }
 
     public void render(SpriteBatch batch) {
+        batch.begin();
         switch (currScreen) {
             case "menu":
 //                vẽ menu
@@ -86,6 +87,7 @@ public class GameManager {
                 MapTwo.render(batch);
                 break;
         }
+        batch.end();
     }
 
     public void dispose() {
