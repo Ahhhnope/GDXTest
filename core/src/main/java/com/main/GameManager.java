@@ -1,10 +1,6 @@
 package com.main;
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-
 
 public class GameManager {
     Menu menu;
@@ -60,7 +56,6 @@ public class GameManager {
     }
 
     public void render(SpriteBatch batch) {
-        batch.begin();
         switch (currScreen) {
             case "menu":
 //                vẽ menu
@@ -87,7 +82,6 @@ public class GameManager {
                 MapTwo.render(batch);
                 break;
         }
-        batch.end();
     }
 
     public void dispose() {
