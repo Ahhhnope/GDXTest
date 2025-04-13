@@ -45,7 +45,8 @@ public class Player {
     private float shootTimer = 0f;
 
     private float shootInterval = 0.15f;
-
+    float hitboxSize;
+    float offset;
 
     private ShapeRenderer shapeRenderer;
 
@@ -60,10 +61,21 @@ public class Player {
 
         position = new Vector2(x, y);
         bullets = new ArrayList<>();
+
+
+        //hitbox
+        hitboxSize = 40f;
+        offset = (width - hitboxSize) / 2f;
+        hitbox = new Rectangle(position.x - width / 2 + offset, position.y - height / 2 + offset, hitboxSize, hitboxSize);
     }
 
     public float getX() { return position.x; }
     public float getY() { return position.y; }
+
+
+    public boolean isInsideScreen(float x, float y) {
+        return position.x < -200 || position.x > 2000 || position.y < -50 || position.y > 2000;
+    }
 
     public void update() {
         float delta = Gdx.graphics.getDeltaTime();
@@ -86,13 +98,14 @@ public class Player {
         }
 
 // Cập nhật vị trí
-        position.add(velocity.x * delta, velocity.y * delta);
 
+        position.x = MathUtils.clamp(position.x, width / 2 - 10, Gdx.graphics.getWidth() - width / 2 + 14);
+        position.y = MathUtils.clamp(position.y, height / 2 - 10, Gdx.graphics.getHeight() - height / 2 + 14);
+        position.add(velocity.x * delta, velocity.y * delta);
 
         // Xoay theo chuột
 
         // Get mouse position
-
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         float deltaX = mouseX - position.x;
@@ -136,9 +149,7 @@ public class Player {
 // Apply rotation to your player
         rotation = angleDeg - 90;
 
-        //hitbox
-        float hitboxSize = 40f;
-        float offset = (width - hitboxSize) / 2f;
+//        Update hitbox
         hitbox = new Rectangle(position.x - width / 2 + offset, position.y - height / 2 + offset, hitboxSize, hitboxSize);
     }
 
@@ -148,7 +159,6 @@ public class Player {
 
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
-        System.out.println(centerX + " | " + centerY);
         bullets.add(new Bullet(centerX, centerY, targetX, targetY,2500f,playerBulletTexture, 8, 8, 5));
 
     }
