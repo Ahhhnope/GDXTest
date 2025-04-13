@@ -41,7 +41,6 @@ public class MeteorBullet extends Bullet {
 
         this.getBulletHitbox().x = position.x + width / 2;
         this.getBulletHitbox().y = position.y + 25;
-        System.out.println(this.getBulletHitbox().x + " | " + this.getBulletHitbox().y);
     }
 
     @Override
