@@ -124,7 +124,7 @@ public class Bullet {
         if (isTracking) {
             trackingTimer += delta;
             if (trackingTimer <= trackingTime) {
-                Vector2 targetDir = new Vector2(player.getX() - position.x, player.getY() - position.y).nor().scl(175);
+                Vector2 targetDir = new Vector2(player.getHitbox().x - position.x + 4, player.getHitbox().y - position.y + 4).nor().scl(175);
                 velocity.lerp(targetDir, 0.5f);
             } else {
                 isTracking = false;

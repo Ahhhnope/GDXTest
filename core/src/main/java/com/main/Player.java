@@ -40,7 +40,7 @@ public class Player {
 
 
     private int maxHP = 100;
-    private int currentHP = 50;
+    private int currentHP = 100;
 
     private float shootTimer = 0f;
 
