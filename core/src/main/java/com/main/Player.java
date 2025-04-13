@@ -44,7 +44,7 @@ public class Player {
 
     private float shootTimer = 0f;
 
-    private float shootInterval = 0.15f;
+    private float shootInterval = 0.1f;
     float hitboxSize;
     float offset;
 
@@ -159,7 +159,7 @@ public class Player {
 
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY,2500f,playerBulletTexture, 8, 8, 5));
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY,2500,playerBulletTexture, 8, 8, 5));
 
     }
 

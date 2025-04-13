@@ -3,6 +3,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameManager {
+    private HUD hud;
+    private boolean hasStartedTimer = false;
+
     Menu menu;
     ScreenPlay manhinh;
     ScoreBoard BangDiem;
@@ -12,7 +15,11 @@ public class GameManager {
     public static String currScreen;
 
 
-    public GameManager(String screen){
+    public GameManager(String screen, HUD hud){
+
+        this.hud = hud;
+
+
         menu = new Menu();
         manhinh = new ScreenPlay();
         BangDiem = new ScoreBoard();
@@ -41,6 +48,11 @@ public class GameManager {
                 break;
 
             case "MapBossOne":
+                if (!hasStartedTimer) {
+                    hud.start();            // bắt đầu timer
+                    hud.show();
+                    hasStartedTimer = true;
+                }
                 MapOne.update(deltaTime);
                 break;
 
