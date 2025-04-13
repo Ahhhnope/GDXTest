@@ -26,6 +26,12 @@ public class Enemy {
     private float stopX; // vị trí X sẽ dừng lại (gần boss)
     private Texture bulletTexture;
 
+    //dao động
+    private float baseY;
+    private float floatTime = 0f;
+    private float floatAmplitude = 20f; // Độ cao dao động
+    private float floatFrequency = 2f;  // Tốc độ dao động
+
     public Enemy(float bossX, float bossY) {
         texture = new Texture("Bosses/Ship3/Ship3.png");
         enemyBullet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/0.png");
@@ -33,7 +39,7 @@ public class Enemy {
         position = new Vector2(screenWidth + 50, bossY);
 
         stopX = MathUtils.random(bossX - 50f, bossX - 100f);
-
+        this.baseY = bossY;
         velocity = new Vector2(-1, 0).scl(speed);
         bullets = new ArrayList<>();
         bulletTexture = new Texture("Stuffs/Player/playerbullet.png");
@@ -42,6 +48,8 @@ public class Enemy {
     public void update(float delta) {
         // Di chuyển đến khi tới vị trí gần boss
         if (!stopped) {
+            floatTime += delta;
+            position.y = baseY + MathUtils.sin(floatTime * floatFrequency) * floatAmplitude;
             position.add(velocity.x * delta, velocity.y * delta);
             if (position.x <= stopX) {
                 stopped = true;
@@ -52,6 +60,8 @@ public class Enemy {
         // Bắn nếu đã dừng
         if (stopped) {
             shootTimer += delta;
+            floatTime += delta;
+            position.y = baseY + MathUtils.sin(floatTime * floatFrequency) * floatAmplitude;
             if (shootTimer >= shootInterval) {
                 shoot();
                 shootTimer = 0f;

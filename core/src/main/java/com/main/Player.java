@@ -44,7 +44,7 @@ public class Player {
 
     private float shootTimer = 0f;
 
-    private float shootInterval = 0.175f;
+    private float shootInterval = 0.15f;
 
 
     private ShapeRenderer shapeRenderer;
@@ -149,7 +149,7 @@ public class Player {
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
         System.out.println(centerX + " | " + centerY);
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY,1250f,playerBulletTexture, 8, 8, 5));
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY,2500f,playerBulletTexture, 8, 8, 5));
 
     }
 
@@ -200,11 +200,8 @@ public class Player {
         shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         shapeRenderer.end();
 
-
-        // Vẽ player
-
         batch.begin();
-
+        // Vẽ player
         batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(
             texture,
@@ -224,7 +221,6 @@ public class Player {
             false,
             false
         );
-
         batch.end();
 
         for (Bullet bullet : bullets){

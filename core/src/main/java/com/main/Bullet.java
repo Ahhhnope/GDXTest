@@ -7,12 +7,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 public class Bullet {
     protected Texture PlayerBulletTexture;
     //hitbox
 
     Circle playerBulletHitbox;
+
+    //Animation
+    private Texture TrackingBulletSheet;
+    private Texture ExplosiveBulletSheet;
+    private Animation<TextureRegion> TrackingAnimation;
+    private float TrackingBulletAnimTime = 0f;
     //khởi tạo bình thường
     private boolean isTracking = true;
     private boolean hasFinishedTracking = false; // ✅ NEW
@@ -83,6 +91,13 @@ public class Bullet {
         this.velocity = direction.scl(speed);
         this.bulletHitbox = new Circle(startX, startY, 8f);
         bulletHitbox = new Circle(position.x, position.y, 8);
+
+        //Animation
+        TrackingBulletSheet = new Texture("Bosses/EnergyBall/EnergyBallAnimation/0.png");
+        TextureRegion[][] tmp = TextureRegion.split(TrackingBulletSheet, 16, 16);
+        if (tmp.length > 0) {
+            this.TrackingAnimation = new Animation<>(0.3f, tmp[0]); // 5 frame đầu tiên ở hàng 0
+        }
     }
 
 
@@ -112,6 +127,9 @@ public class Bullet {
         if (playerBulletHitbox != null) {
             playerBulletHitbox.setPosition(position.x + bulletWidth / 2, position.y + bulletHeight / 2);
         }
+
+        //animation time
+        TrackingBulletAnimTime += delta;
     }
 
     //custom size
@@ -134,18 +152,25 @@ public class Bullet {
     }
 
     public void render(SpriteBatch batch) {
-        batch.begin();
+        TextureRegion TrackingBulletCurrentFrame = null;
 
-        if ((isTracking || hasFinishedTracking) && trackingBullet != null) {
-            batch.draw(trackingBullet, position.x, position.y, width, height);
-        } else if (!isTracking && bulletTexture != null) {
+        batch.begin();
+        if (TrackingAnimation != null) {
+            TrackingBulletCurrentFrame = TrackingAnimation.getKeyFrame(TrackingBulletAnimTime, true);
+        }
+        if ((isTracking || hasFinishedTracking) && TrackingBulletCurrentFrame != null) {
+            batch.draw(TrackingBulletCurrentFrame, position.x, position.y, width, height);
+        }
+        else if (!isTracking && bulletTexture != null) {
             batch.draw(bulletTexture, position.x, position.y, width, height);
-        } else if (PlayerBulletTexture != null) {
+        }
+        else if (PlayerBulletTexture != null) {
             batch.draw(PlayerBulletTexture, position.x, position.y, bulletWidth, bulletHeight);
         }
         batch.end();
-        renderHitbox();
 
+
+        renderHitbox();
 
     }
 
@@ -160,5 +185,6 @@ public class Bullet {
     public void dispose() {
         if (bulletTexture != null) bulletTexture.dispose();
         if (trackingBullet != null) trackingBullet.dispose();
+        if (TrackingBulletSheet != null) TrackingBulletSheet.dispose();
     }
 }
