@@ -80,10 +80,10 @@ public class Enemy {
 
             Vector2 dir = new Vector2(dx, dy).nor().scl(400f);
 
-     
-            Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y, 600f, bulletTexture, 64, 64, 30);
 
-          
+            Bullet bullet = new Bullet(position.x, position.y + 48, position.x + dir.x, position.y + dir.y, 600f, enemyBullet, 32, 32, 10);
+
+
             bullets.add(bullet);
         }
     }
