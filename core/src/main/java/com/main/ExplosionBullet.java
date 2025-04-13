@@ -1,8 +1,10 @@
 package com.main;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,10 +14,16 @@ import java.util.List;
 
 public class ExplosionBullet extends Bullet {
     private Texture explosionTexture;
-
     private boolean exploded = false;
     private float explodeDelay = 1f;
     private float timer = 0f;
+
+
+    private float width = 16f;
+    private float height = 16f;
+    private Animation<TextureRegion> meteorAnimation;
+    private float animTime = 0f;
+    private TextureRegion currentFrame;
 
     private List<Bullet> fragments = new ArrayList<>();
 
@@ -24,6 +32,10 @@ public class ExplosionBullet extends Bullet {
         explosionTexture = new Texture("Bosses/ExplosiveBullet/Explosive1/0.png");
         this.setBulletTexture(explosionTexture);
         this.explodeDelay = MathUtils.random(0.5f, 1.5f);
+
+        Texture bulletSheet = new Texture("Bosses/ExplosiveBullet/Explosive1/ExplosiveAnimation/2.png");
+        TextureRegion[][] tmp = TextureRegion.split(bulletSheet, 16, 15); // mỗi frame 32x32 chẳng hạn
+        meteorAnimation = new Animation<>(0.3f, tmp[0]);
     }
 
     @Override
@@ -40,19 +52,23 @@ public class ExplosionBullet extends Bullet {
                 bullet.update(delta);
             }
         }
+        animTime += delta;
+        currentFrame = meteorAnimation.getKeyFrame(animTime, true);
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        if (!exploded) {
-            super.render(batch);
+        if (!exploded && currentFrame != null) {
+            batch.begin();
+            batch.draw(currentFrame, position.x, position.y,39,39);
+            batch.end();
         } else {
             for (Bullet bullet : fragments) {
                 bullet.render(batch);
             }
         }
+        currentFrame = meteorAnimation.getKeyFrame(animTime, true);
     }
-
     public void explode() {
         Texture fragmentTexture = new Texture("Bosses/ExplosiveBullet/SmallBulletOfExplosives/0.png");
 

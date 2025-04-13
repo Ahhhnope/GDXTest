@@ -25,7 +25,7 @@ public class Boss {
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
     private float spawnEnemyTimer = 0f;
-    private float spawnEnemyInterval = 5f;
+    private float spawnEnemyInterval = 10f;
 
     //MeteorTime
 
@@ -168,14 +168,12 @@ public class Boss {
         batch.draw(BossOne, position.x, position.y, 128, 128);
         batch.end();
 
-
         for (Bullet bullet : bullets){
             bullet.render(batch);
         }
         for (Enemy enemy : enemies){
             enemy.render(batch);
         }
-
 
     }
     public void dispose(){

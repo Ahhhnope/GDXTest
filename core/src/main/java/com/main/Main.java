@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.main.Inputs.InputHandler;
 
 import javax.swing.*;
-
+import com.badlogic.gdx.audio.Music;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     Texture background;
@@ -21,11 +21,13 @@ public class Main extends ApplicationAdapter {
     int screenHeight;
     float deltatime;
 
+
+
     GameManager gm;
     InputHandler ih;
 
     private float middleScreen;
-
+    private Music backgroundMusic;
     private Player player;
     private Boss BossOne;
     @Override
@@ -43,6 +45,11 @@ public class Main extends ApplicationAdapter {
         ih = new InputHandler();
         Gdx.input.setInputProcessor(ih);
 
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Stuffs/Musics/Hokma battle.mp3"));
+        backgroundMusic.setVolume(0.5f);
+        backgroundMusic.play();
+
+
     }
 
     @Override
@@ -55,18 +62,17 @@ public class Main extends ApplicationAdapter {
 
         //player
 
-        player.update();
-        player.render(batch);
+
 //
 //        //boss
 
        /* gm.render(batch);
         gm.update();*/
 
-
+        player.update();
+        player.render(batch);
         BossOne.render(batch);
         BossOne.update(deltatime, player);
-
 
     }
 
