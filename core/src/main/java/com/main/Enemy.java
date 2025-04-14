@@ -41,11 +41,11 @@ public class Enemy {
     private float floatAmplitude = 20f; // Độ cao dao động
     private float floatFrequency = 2f;  // Tốc độ dao động
 
+//    HP bar stuff
     private Rectangle hitbox;
-    private int hp = 200;
+    private int maxHP = 200;
     private int currentHP = 200;
-    private float hpX;
-    private float hpY;
+
 
     private ShapeRenderer shapeRenderer;
     public Enemy(float bossX, float bossY) {
@@ -67,9 +67,13 @@ public class Enemy {
 
         shapeRenderer = new ShapeRenderer();
         hitbox = new Rectangle(0, 0, 80, 35);
+
+
     }
 
     public void update(float delta) {
+
+
         // Di chuyển đến khi tới vị trí gần boss
         if (!stopped) {
             floatTime += delta;
@@ -118,8 +122,6 @@ public class Enemy {
     }
 
 
-
-
     public void shoot() {
         Texture enemyBulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
         TextureRegion[][] tmp = TextureRegion.split(enemyBulletSheet, 15, 13);
@@ -147,7 +149,35 @@ public class Enemy {
         }
     }
 
+    public void renderHP() {
+        // HP BABYYYYYYYYYYYYYYYYYY
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        float barX = hitbox.x;
+        float barY = hitbox.y + 50;
+        float healthbarWidth = hitbox.width;
+        float healthbarHeight = 7;
+        float radius = healthbarHeight / 2;
 
+        float percent = (float) currentHP / maxHP;
+        float filledWidth = healthbarWidth * percent;
+        float fillRight = barX + filledWidth;
+
+        shapeRenderer.setColor(0.3f, 0.3f, 0.3f, 1f);
+        shapeRenderer.rect(barX + radius, barY, healthbarWidth - radius * 2, healthbarHeight);
+        shapeRenderer.circle(barX + radius, barY + radius, radius);
+        shapeRenderer.circle(barX + healthbarWidth - radius, barY + radius, radius);
+
+        shapeRenderer.setColor(1f, 0f, 0f, 1f);
+        if (filledWidth > radius * 2) {
+            shapeRenderer.rect(barX + radius, barY, filledWidth - radius * 2, healthbarHeight);
+            shapeRenderer.circle(barX + radius, barY + radius, radius);
+            shapeRenderer.circle(fillRight - radius, barY + radius, radius);
+        } else {
+            shapeRenderer.circle(barX + radius, barY + radius, filledWidth / 2f);
+        }
+
+        shapeRenderer.end();
+    }
 
     public void renderHitbox() {
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -161,6 +191,8 @@ public class Enemy {
         }
     }
 
+
+
     public void render(SpriteBatch batch) {
         TextureRegion currentFrame = meteorAnimation.getKeyFrame(animTime, true);
 
@@ -172,6 +204,7 @@ public class Enemy {
             bullet.render(batch);
         }
 
+        renderHP();
         renderHitbox();
     }
 
