@@ -40,7 +40,7 @@ public class Player {
 
 
     private int maxHP = 100;
-    private int currentHP = 50;
+    private int currentHP = 100;
 
     private float shootTimer = 0f;
 
@@ -168,10 +168,20 @@ public class Player {
         return hitbox;
     }
 
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
     public void takeDamage(int damage) {
         currentHP -= damage;
         if (currentHP < 0) currentHP = 0;
     }
+
+    public void heal(int healing) {
+        currentHP += healing;
+        if (currentHP > 100) currentHP = 100;
+    }
+
 
     public void render(SpriteBatch batch) {
         // Thanh máu
