@@ -19,7 +19,7 @@ public class MeteorBullet extends Bullet {
 
 
     public MeteorBullet(float startX, float startY) {
-        super(startX, startY, startX, startY); // placeholder position
+        super(startX, startY, startX, startY, 28); // placeholder position
         // ➤ Rơi thẳng từ trên xuống
         this.velocity = new Vector2(0, -1).scl(200f); // 200 là tốc độ rơi
 
@@ -40,7 +40,7 @@ public class MeteorBullet extends Bullet {
         position.add(velocity.x * delta, velocity.y * delta);
 
         this.getBulletHitbox().x = position.x + width / 2;
-        this.getBulletHitbox().y = position.y + 25;
+        this.getBulletHitbox().y = position.y + 20;
     }
 
     @Override
@@ -50,6 +50,7 @@ public class MeteorBullet extends Bullet {
         batch.draw(currentFrame, position.x, position.y, width / 2f, height / 2f, width, height, 1f, 1f, 270f);
         batch.end();
 
+        renderHitbox();
     }
 
     @Override

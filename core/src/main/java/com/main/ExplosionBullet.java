@@ -20,6 +20,7 @@ public class ExplosionBullet extends Bullet {
     private float timer = 0f;
 
 
+
     private float width = 16f;
     private float height = 16f;
     private Animation<TextureRegion> meteorAnimation;
@@ -27,10 +28,9 @@ public class ExplosionBullet extends Bullet {
     private TextureRegion currentFrame;
 
     private ArrayList<FragmentBullet> fragments = new ArrayList<>();
-    ;
 
-    public ExplosionBullet(float startX, float startY, float targetX, float targetY) {
-        super(startX, startY, targetX, targetY); // bay về hướng bất kỳ
+    public ExplosionBullet(float startX, float startY, float targetX, float targetY, float radius) {
+        super(startX, startY, targetX, targetY, radius); // bay về hướng bất kỳ
         explosionTexture = new Texture("Bosses/ExplosiveBullet/Explosive1/0.png");
         this.setBulletTexture(explosionTexture);
         this.explodeDelay = MathUtils.random(0.5f, 1.5f);
@@ -72,19 +72,22 @@ public class ExplosionBullet extends Bullet {
     public void render(SpriteBatch batch) {
         if (!exploded && currentFrame != null) {
             batch.begin();
-            batch.draw(currentFrame, position.x, position.y, 39, 39);
+            batch.draw(currentFrame, position.x - 4, position.y - 3, 39, 39);
             batch.end();
         } else {
             for (FragmentBullet frag : fragments) {
                 frag.render(batch);
             }
         }
+
+        if (!exploded) {
+            renderHitbox();
+        }
     }
 
     public ArrayList<FragmentBullet> getfragments() {
         return fragments;
     }
-
 
     public void explode() {
         Texture fragmentSheet = new Texture("Bosses/ExplosiveBullet/SmallBulletOfExplosives/SmallBulletOfExplosivesAnimation/0.png");

@@ -51,22 +51,24 @@ public class Bullet {
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
 
-    public Bullet(float startX, float startY, float targetX, float targetY) {
-//        EXPLOSION
-        this(startX, startY, targetX, targetY, 650f); // gọi constructor bên dưới
-        bulletHitbox = new Circle(100, 100, 32);
+    //        EXPLOSION
+    public Bullet(float startX, float startY, float targetX, float targetY, float radius) {
+        this(startX, startY, targetX, targetY, 650f, radius); // gọi constructor bên dưới
+        bulletHitbox = new Circle(100, 100, radius);
         damage = 20;
     }
+
+
+
     //Đạn thường
-    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed) {
-//        NORMAL BULLET
+    public Bullet(float startX, float startY, float targetX, float targetY, float customspeed, float radius) {
         this.bulletTexture = new Texture("Bosses/Ship6/Exhaust/Turbo_flight/Exhaust3/exhaust4.png");
         this.position = new Vector2(startX, startY);
         Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.velocity = direction.scl(customspeed);
         this.isTracking = false;
 
-        bulletHitbox = new Circle(20, 20, 8);
+        bulletHitbox = new Circle(20, 20, radius);
         damage = 10;
     }
 
@@ -95,8 +97,7 @@ public class Bullet {
 
         Vector2 direction = new Vector2(player.getX() - startX, player.getY() - startY).nor();
         this.velocity = direction.scl(speed);
-        this.bulletHitbox = new Circle(startX, startY, 8f);
-        bulletHitbox = new Circle(position.x, position.y, 8);
+        bulletHitbox = new Circle(position.x, position.y, 15);
 
         //Animation
         TrackingBulletSheet = new Texture("Bosses/EnergyBall/EnergyBallAnimation/0.png");

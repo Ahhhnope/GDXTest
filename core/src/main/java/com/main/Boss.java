@@ -1,9 +1,11 @@
 package com.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -22,8 +24,8 @@ public class Boss {
     private ArrayList<Bullet> bullets;
     private float shootTimer = 0f;
     private float shootInterval = 0.3f;
+    private ShapeRenderer shapeRenderer;
     private Player player;
-
 
 
     //MeteorTime
@@ -55,30 +57,30 @@ public class Boss {
     private float amplitudeX = 80f;
     private float frequencyX = 0.5f;
 
-    private Rectangle bossHitbox;
+    private Rectangle hitbox;
     private int width = 128;
     private int height = 128;
 
     private int hp = 2000;
     private int currentHp = 2000;
 
-
     public Boss (float x, float y){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
         bullets = new ArrayList<>();
         baseY = y;
-
         baseX = MathUtils.clamp(position.x, 100f, Gdx.graphics.getWidth() - 150f);
-//        bossHitbox = new Rectangle(position.x, position.y, );
-        //boss part
 
+        shapeRenderer = new ShapeRenderer();
+        hitbox = new Rectangle(position.x, position.y, width, height);
     }
 
     public void update(float delta, Player player){
         this.player = player;
         shootTimer += delta;
         trackingShootTimer += delta;
+
+        hitbox.setPosition(position.x, position.y);
 
         if (shootTimer >= shootInterval) {
             shoot(player.getX(), player.getY()); // đạn thường
@@ -104,6 +106,7 @@ public class Boss {
                 bullets.remove(i);
                 i--;
             }
+
         }
 
         explosionTimer += delta;
@@ -130,7 +133,7 @@ public class Boss {
     public void shoot(float targetX, float targetY){
         float centerX = position.x;
         float centerY = position.y + 110;
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f));
+        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f, 8));
     }
 
     public void shootExplosion() {
@@ -142,7 +145,7 @@ public class Boss {
         float targetX = player.getX() + offsetX;
         float targetY = player.getY() + offsetY;
 
-        bullets.add(new ExplosionBullet(startX, startY, targetX, targetY));
+        bullets.add(new ExplosionBullet(startX, startY, targetX, targetY, 18));
     }
 
     public void spawnTrackingBullet(Player player) {
@@ -174,9 +177,12 @@ public class Boss {
     }
 
     public void renderHitbox() {
-        for (Bullet b : bullets) {
-//            b.renderHitbox();
-        }
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 0, 0, 1f);
+        shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        shapeRenderer.end();
+
     }
 
     public void render(SpriteBatch batch){

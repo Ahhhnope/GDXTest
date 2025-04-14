@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,8 @@ public class MapBossOne {
 
     private float spawnEnemyTimer = 0f;
     private float spawnEnemyInterval = 10f;
+
+
 
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 60;
