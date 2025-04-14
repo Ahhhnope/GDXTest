@@ -12,10 +12,9 @@ public class ShootEffect {
     private float stateTime = 0f;
     private boolean finished = false;
     private float rotation;
-    private float angle; // Góc quay
 
     public ShootEffect(float x, float y, float rotation) {
-        this.position = new Vector2(x, y);
+        this.position = new Vector2(x - 8, y  - 8);
         this.rotation = rotation;
 
         Texture sheet = new Texture("Player/Effects/Explosion-duplicate frames.png"); // Sprite sheet
@@ -42,6 +41,7 @@ public class ShootEffect {
                 rotation                          // góc quay
             );
             batch.end();
+
         }
     }
 

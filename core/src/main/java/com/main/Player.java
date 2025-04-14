@@ -193,13 +193,6 @@ public class Player {
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
 
-
-        Vector2 direction = new Vector2(targetX - centerX, targetY - centerY).nor();
-        float fx = centerX + direction.x * 10;
-        float fy = centerY + direction.y * 10;
-
-        float angle = direction.angleDeg();
-
         bullets.add(new Bullet(centerX, centerY, targetX, targetY,2500,playerBulletTexture, 8, 8, 5));
 
 
@@ -209,9 +202,8 @@ public class Player {
         float muzzleOffset = 20f; // khoảng cách từ tâm đến đầu súng
         float muzzleX = position.x + MathUtils.cos(angleRad) * muzzleOffset;
         float muzzleY = position.y + MathUtils.sin(angleRad) * muzzleOffset;
-
+//
         shootEffects.add(new ShootEffect(muzzleX, muzzleY, rotation));
-//        shootEffects.add(new ShootEffect(position.x + 20 * 10f, position.y + 20 * 10f, rotation));
 
 
     }
