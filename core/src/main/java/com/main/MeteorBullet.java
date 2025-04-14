@@ -14,12 +14,12 @@ public class MeteorBullet extends Bullet {
     private Animation<TextureRegion> meteorAnimation;
     private float animTime = 0f;
 
-    private float width = 128f;
-    private float height = 64f;
+    private float width = 256f;
+    private float height = 128f;
 
 
     public MeteorBullet(float startX, float startY) {
-        super(startX, startY, startX, startY, 28); // placeholder position
+        super(startX, startY, startX, startY, 40); // placeholder position
         // ➤ Rơi thẳng từ trên xuống
         this.velocity = new Vector2(0, -1).scl(200f); // 200 là tốc độ rơi
 

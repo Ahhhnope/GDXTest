@@ -27,7 +27,7 @@ public class Bullet {
     //khởi tạo bình thường
     private boolean isTracking = true;
     private boolean hasFinishedTracking = false; // ✅ NEW
-    private float trackingTime = 3.5f;
+    private float trackingTime = 4.5f;
     private float trackingTimer = 0f;
     private Player player;
 
@@ -82,9 +82,9 @@ public class Bullet {
         bulletWidth = width;
         bulletHeight = height;
         this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
-        this.bulletHitbox = playerBulletHitbox;
+        this.bulletHitbox = playerBulletHitbox; // ✅ Thêm dòng này!
 
-        damage = 5;
+        damage = 50;
     }
 
 
@@ -213,9 +213,8 @@ public class Bullet {
     }
 
     public boolean isOutOfScreen() {
-        return position.x < -200 || position.x > 2000 || position.y < -50 || position.y > 2000;
+        return position.x < - 3000 || position.x > 3000 || position.y < - 3000 || position.y > 3000;
     }
-
     public void dispose() {
         if (bulletTexture != null) bulletTexture.dispose();
         if (trackingBullet != null) trackingBullet.dispose();

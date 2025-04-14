@@ -125,7 +125,15 @@ public class Enemy {
     public Rectangle getHitbox(){
         return hitbox;
     }
-
+    public int getCurrentHP() {
+        return currentHP;
+    }
+    public float getX(){
+        return position.x;
+    }
+    public float getY(){
+        return baseY;
+    }
     public void shoot() {
         Texture enemyBulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
         TextureRegion[][] tmp = TextureRegion.split(enemyBulletSheet, 15, 13);
@@ -151,6 +159,7 @@ public class Enemy {
 
             bullets.add(bullet);
         }
+
     }
 
     public void renderHP() {

@@ -24,10 +24,12 @@ public class MapBossOne {
 
 
     private float spawnEnemyTimer = 0f;
-    private float spawnEnemyInterval = 5f;
+    private float spawnEnemyInterval = 10f;
 
     private ArrayList<HitEffect> hitEffects = new ArrayList<>();
 
+    //Enemy Death Effect
+    ArrayList<DeathExplosionEffect> deathEffects = new ArrayList<>();
 
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
@@ -109,6 +111,7 @@ public class MapBossOne {
             }
         }
 
+
         ArrayList<Bullet> playerBullets = player.getBullets();
         Rectangle bossHitbox = BossOne.getHitbox();
 
@@ -134,6 +137,35 @@ public class MapBossOne {
                 i--;
             }
         }
+
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy enemy = enemies.get(i);
+            Rectangle enemyHitbox = enemy.getHitbox();
+
+            for (int j = 0; j < playerBullets.size(); j++) {
+                Bullet bullet = playerBullets.get(j);
+                if (bullet.getBulletHitbox() != null && bulletHit(bullet.getBulletHitbox(), enemyHitbox)) {
+                    enemy.takeDamage(bullet.getDamage());
+                    hitEffects.add(new HitEffect(bullet.getBulletHitbox().x, bullet.getBulletHitbox().y));
+                    playerBullets.remove(j);
+                    j--;
+                }
+            }
+            if (enemy.getCurrentHP() <= 0) {
+                deathEffects.add(new DeathExplosionEffect(enemy.getX(), enemy.getY()));
+                enemies.remove(i);
+                i--;
+            }
+        }
+        //enemy death effect
+        for (int i = 0; i < deathEffects.size(); i++) {
+            DeathExplosionEffect effect = deathEffects.get(i);
+            effect.update(deltaTime);
+            if (effect.isFinished()) {
+                deathEffects.remove(i);
+                i--;
+            }
+        }
     }
 
 
@@ -151,6 +183,9 @@ public class MapBossOne {
         }
         for (HitEffect e : hitEffects) {
             e.render(batch);
+        }
+        for (DeathExplosionEffect effect : deathEffects) {
+            effect.render(batch);
         }
         renderHitbox();
     }
@@ -173,5 +208,6 @@ public class MapBossOne {
     public void dispose(){
         player.dispose();
         BossOne.dispose();
+
     }
 }

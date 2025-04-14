@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 
 public class HitEffect {
-    private static Texture hitTexture = new Texture("Bosses/HitEffect/hiteffect.png");
+    private static Texture hitTexture = new Texture("Player/Effects/Explosion-duplicate frames.png");
     private static Animation<TextureRegion> hitAnimation;
 
     private float stateTime = 0f;
@@ -13,7 +13,7 @@ public class HitEffect {
     private boolean finished = false;
 
     static {
-        TextureRegion[][] frames = TextureRegion.split(hitTexture, 128, 128); // chia thành 32x32 frame
+        TextureRegion[][] frames = TextureRegion.split(hitTexture, 32, 32); // chia thành 32x32 frame
         hitAnimation = new Animation<>(0.02f, frames[0]); // hàng đầu tiên
     }
 
