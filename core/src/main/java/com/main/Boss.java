@@ -3,17 +3,11 @@ package com.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.main.Bullet;
-import jdk.jfr.Frequency;
 import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
@@ -52,7 +46,7 @@ public class Boss {
     private float frequency = 1f;
 
     //dao động X
-
+    private ScreenShake screenShake;
     private float baseX;
     private float amplitudeX = 80f;
     private float frequencyX = 0.5f;
@@ -66,8 +60,14 @@ public class Boss {
 
     //phase 2
     private boolean isPhase2 = false;
+    private float phase2Timer = 0f;
+    private boolean hasFiredWave = false;
+    private boolean waitingForShakeToEnd = false;
+    private float shakeTimer = 0f;
+    private float shakeDuration = 2f;
+    private boolean isInvincible = false;
 
-    public Boss (float x, float y){
+    public Boss (float x, float y, ScreenShake screenShake){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
         bullets = new ArrayList<>();
@@ -76,14 +76,16 @@ public class Boss {
 
         shapeRenderer = new ShapeRenderer();
         hitbox = new Rectangle(position.x, position.y, width, height);
+        this.screenShake = screenShake;
     }
     public ArrayList<FragmentBullet> getFragmentBullets() {
         return fragmentBullets;
     }
     public void takeDamage(float damage) {
+        if (isInvincible) return;
         currentHp -= damage;
         if (currentHp < 0) currentHp = 0;
-        System.out.println("Boss HP: " + currentHp); // debug tạm
+        System.out.println("Boss HP: " + currentHp);
     }
 
     public Rectangle getHitbox() {
@@ -96,14 +98,12 @@ public class Boss {
         trackingShootInterval += 0.5f; // Đạn tracking nhanh hơn
         explosionInterval *= 0.8f;     // Đạn nổ nhiều hơn
         frequencyX *= 2f;            // Di chuyển nhanh hơn
-        frequency *= 1.2f;
-
-        fireWaveBullets();
+        frequency *= 1.5f;
+        screenShake.start(3f, 20f);
     }
     public void fireWaveBullets() {
         float centerX = Gdx.graphics.getWidth();
         float centerY = Gdx.graphics.getHeight() / 2;
-
         int numBullets = 18;
         float baseAngle = 180f; // bắn sang trái
         float spread = 100f;     // tổng góc tỏa ra
@@ -135,7 +135,7 @@ public class Boss {
 //        Hitbox position
         hitbox.setPosition(position.x, position.y + 85);
 
-        if (shootTimer >= shootInterval) {
+        if (!isPhase2 && shootTimer >= shootInterval) {
             shoot(player.getX(), player.getY()); // đạn thường
             shootTimer = 0;
         }
@@ -179,11 +179,35 @@ public class Boss {
 
 
         time += delta;
-        position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
-        position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
+        float targetX = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
+        float targetY = baseY + MathUtils.sin(time * frequency) * amplitude;
 
-        if (!isPhase2 && currentHp <= hp / 2) {
-            enterPhase2();
+        position.lerp(new Vector2(targetX, targetY), 0.1f);
+
+        if (!isPhase2 && !waitingForShakeToEnd && currentHp <= hp / 2) {
+            waitingForShakeToEnd = true;
+            shakeTimer = 0f;
+            isInvincible = true;
+            if (screenShake != null) {
+                screenShake.start(shakeDuration, 20f);
+            }
+        }
+        if (waitingForShakeToEnd) {
+            shakeTimer += delta;
+            if (shakeTimer >= shakeDuration) {
+                waitingForShakeToEnd = false;
+                isInvincible = false;
+                enterPhase2();
+            }
+        }
+
+        if (isPhase2 && !hasFiredWave) {
+            phase2Timer += delta;
+            if (phase2Timer >= 3f) {
+                fireWaveBullets();
+                hasFiredWave = true;
+
+            }
         }
     }
 

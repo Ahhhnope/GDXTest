@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 
 public class MapBossOne {
+    private ScreenShake screenShake = new ScreenShake();
 
     private Player player;
     private Boss BossOne;
@@ -34,7 +35,7 @@ public class MapBossOne {
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
         player = new Player();
-        BossOne = new Boss(1400,middleScreen);
+        BossOne = new Boss(1400,middleScreen, screenShake);
         enemies = new ArrayList<>();
     }
 
@@ -166,6 +167,8 @@ public class MapBossOne {
                 i--;
             }
         }
+        screenShake.update(deltaTime);
+
     }
 
 
@@ -187,6 +190,10 @@ public class MapBossOne {
         for (DeathExplosionEffect effect : deathEffects) {
             effect.render(batch);
         }
+        float shakeX = screenShake.getOffsetX();
+        float shakeY = screenShake.getOffsetY();
+
+        batch.setTransformMatrix(batch.getTransformMatrix().idt().translate(shakeX, shakeY, 0));
         renderHitbox();
     }
 
