@@ -93,6 +93,11 @@ public class Enemy {
         }
     }
 
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+
     public void shoot() {
         Texture enemyBulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
         TextureRegion[][] tmp = TextureRegion.split(enemyBulletSheet, 15, 13);

@@ -46,6 +46,7 @@ public class Bullet {
     //Đạn meteor
 
 
+    private int damage;
     private Circle bulletHitbox;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
@@ -54,6 +55,7 @@ public class Bullet {
 //        EXPLOSION
         this(startX, startY, targetX, targetY, 650f); // gọi constructor bên dưới
         bulletHitbox = new Circle(100, 100, 32);
+        damage = 20;
     }
     //Đạn thường
     public Bullet(float startX, float startY, float targetX, float targetY, float customspeed) {
@@ -65,6 +67,7 @@ public class Bullet {
         this.isTracking = false;
 
         bulletHitbox = new Circle(20, 20, 8);
+        damage = 10;
     }
 
     //Đạn player
@@ -77,7 +80,7 @@ public class Bullet {
         bulletWidth = width;
         bulletHeight = height;
         this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
-
+        damage = 5;
     }
 
 
@@ -101,6 +104,8 @@ public class Bullet {
         if (tmp.length > 0) {
             this.TrackingAnimation = new Animation<>(0.3f, tmp[0]); // 5 frame đầu tiên ở hàng 0
         }
+
+        damage = 15;
     }
     //Đạn enemy
     public Bullet(float startX, float startY, float targetX, float targetY, float speed, Animation<TextureRegion> animation, float width, float height, float radius) {
@@ -112,11 +117,17 @@ public class Bullet {
         this.height = height;
         this.bulletHitbox = new Circle(position.x + width / 2, position.y + height / 2, radius);
         this.isTracking = false;
+
+        damage = 15;
     }
 
 
     public Circle getBulletHitbox() {
         return bulletHitbox;
+    }
+
+    public int getDamage() {
+        return  damage;
     }
 
 
@@ -148,6 +159,10 @@ public class Bullet {
         TrackingBulletAnimTime += delta;
     }
 
+    public Circle getHitbox() {
+        return bulletHitbox;
+    }
+
     //custom size
     public void setSize(float width, float height) {
         this.width = width;
@@ -166,6 +181,7 @@ public class Bullet {
         }
         shapeRenderer.end();
     }
+
 
     public void render(SpriteBatch batch) {
         TextureRegion TrackingBulletCurrentFrame = null;

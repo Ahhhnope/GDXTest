@@ -164,9 +164,14 @@ public class Boss {
         }
 
         bullets.add(new Bullet(startX, startY, player));
-
-
     }
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+
+
 
     public void render(SpriteBatch batch){
         batch.begin();
