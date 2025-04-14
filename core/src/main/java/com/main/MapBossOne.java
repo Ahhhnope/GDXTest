@@ -194,7 +194,7 @@ public class MapBossOne {
         float shakeY = screenShake.getOffsetY();
 
         batch.setTransformMatrix(batch.getTransformMatrix().idt().translate(shakeX, shakeY, 0));
-        renderHitbox();
+//        renderHitbox();
     }
 
 

@@ -205,7 +205,7 @@ public class Bullet {
 
         batch.end();
 
-        renderHitbox();
+//        renderHitbox();
     }
 
     public void setBulletTexture(Texture texture) {

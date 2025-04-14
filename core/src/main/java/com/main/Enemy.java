@@ -217,7 +217,7 @@ public class Enemy {
         }
 
         renderHP();
-        renderHitbox();
+//        renderHitbox();
     }
 
     public void dispose() {

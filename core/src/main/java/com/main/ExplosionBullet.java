@@ -57,7 +57,7 @@ public class ExplosionBullet extends Bullet {
         }
 
         if (!exploded) {
-            renderHitbox();
+//            renderHitbox();
         }
     }
 

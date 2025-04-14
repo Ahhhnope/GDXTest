@@ -35,7 +35,7 @@ public class ShootEffect {
             TextureRegion frame = animation.getKeyFrame(stateTime, false);
             batch.begin();
             batch.draw(frame,
-                position.x - 15, position.y - 10,    // vị trí
+                position.x, position.y,    // vị trí
                 8, 8,                              // origin center (xoay quanh giữa)
                 16, 16,                            // width, height
                 1f, 1f,                            // scale

@@ -72,7 +72,7 @@ public class Player {
         //smoothhp
         displayedHP = currentHP;
         //hitbox
-        hitboxSize = 40f;
+        hitboxSize = 25f;
         offset = (width - hitboxSize) / 2f;
         hitbox = new Rectangle(position.x - width / 2 + offset, position.y - height / 2 + offset, hitboxSize, hitboxSize);
     }
@@ -201,13 +201,17 @@ public class Player {
         float angle = direction.angleDeg();
 
         bullets.add(new Bullet(centerX, centerY, targetX, targetY,2500,playerBulletTexture, 8, 8, 5));
+
+
+
         //shooteffect
         float angleRad = (float)Math.toRadians(rotation + 90); // vì bạn trừ 90 ở chỗ tính rotation
-        float muzzleOffset = 40f; // khoảng cách từ tâm đến đầu súng
+        float muzzleOffset = 20f; // khoảng cách từ tâm đến đầu súng
         float muzzleX = position.x + MathUtils.cos(angleRad) * muzzleOffset;
         float muzzleY = position.y + MathUtils.sin(angleRad) * muzzleOffset;
 
         shootEffects.add(new ShootEffect(muzzleX, muzzleY, rotation));
+//        shootEffects.add(new ShootEffect(position.x + 20 * 10f, position.y + 20 * 10f, rotation));
 
 
     }
@@ -312,9 +316,9 @@ public class Player {
             bullet.render(batch);
         }
 
-        for (Bullet b : bullets) {
-            b.renderHitbox();
-        }
+//        for (Bullet b : bullets) {
+//            b.renderHitbox();
+//        }
 
         for (ShootEffect e : shootEffects) {
             e.render(batch);

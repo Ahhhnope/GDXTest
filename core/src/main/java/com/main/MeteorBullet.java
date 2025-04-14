@@ -50,7 +50,7 @@ public class MeteorBullet extends Bullet {
         batch.draw(currentFrame, position.x, position.y, width / 2f, height / 2f, width, height, 1f, 1f, 270f);
         batch.end();
 
-        renderHitbox();
+//        renderHitbox();
     }
 
     @Override
