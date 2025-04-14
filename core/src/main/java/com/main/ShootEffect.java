@@ -12,10 +12,9 @@ public class ShootEffect {
     private float stateTime = 0f;
     private boolean finished = false;
     private float rotation;
-    private float angle; // Góc quay
 
     public ShootEffect(float x, float y, float rotation) {
-        this.position = new Vector2(x, y);
+        this.position = new Vector2(x - 8, y  - 8);
         this.rotation = rotation;
 
         Texture sheet = new Texture("Player/Effects/Explosion-duplicate frames.png"); // Sprite sheet
@@ -35,13 +34,14 @@ public class ShootEffect {
             TextureRegion frame = animation.getKeyFrame(stateTime, false);
             batch.begin();
             batch.draw(frame,
-                position.x - 15, position.y - 10,    // vị trí
+                position.x, position.y,    // vị trí
                 8, 8,                              // origin center (xoay quanh giữa)
                 16, 16,                            // width, height
                 1f, 1f,                            // scale
                 rotation                          // góc quay
             );
             batch.end();
+
         }
     }
 

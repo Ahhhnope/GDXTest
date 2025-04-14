@@ -40,20 +40,21 @@ public class MapBossOne {
     }
 
     public void update(float deltaTime) {
-        player.update();
-        BossOne.update(deltaTime, player);
+        if (BossOne.getCurrentHp() > 0) {
+            player.update();
+            BossOne.update(deltaTime, player);
 
 
 //        spawn mobs
-        spawnEnemyTimer += deltaTime;
-        if (spawnEnemyTimer >= spawnEnemyInterval) {
-            enemies.add(new Enemy(BossOne.getPositionX(), BossOne.getPositionY())); // spawn gần boss
-            spawnEnemyTimer = 0f;
-        }
+            spawnEnemyTimer += deltaTime;
+            if (spawnEnemyTimer >= spawnEnemyInterval) {
+                enemies.add(new Enemy(BossOne.getPositionX(), BossOne.getPositionY())); // spawn gần boss
+                spawnEnemyTimer = 0f;
+            }
 
-        for (Enemy enemy : enemies){
-            enemy.update(deltaTime);
-        }
+            for (Enemy enemy : enemies){
+                enemy.update(deltaTime);
+            }
 
 
 //        Heal the plyer to max HP (for testing purposes)
@@ -62,112 +63,117 @@ public class MapBossOne {
         }
 
 
+
 //        Check if player get hit by the boss's bullet
-        bossBullets = BossOne.getBullets();
+            bossBullets = BossOne.getBullets();
 
 
-        for (int i = 0 ; i < bossBullets.size(); i++) {
-            Bullet b = BossOne.getBullets().get(i);
+            for (int i = 0 ; i < bossBullets.size(); i++) {
+                Bullet b = BossOne.getBullets().get(i);
 
 
 //            Normal bullet hit detection
-            if (bulletHit(b.getBulletHitbox(), player.getHitbox())) {
-                if (!player.isInvincible()){
-                    player.takeDamage(b.getDamage());
-                    bossBullets.remove(i);
-                    i--;
-                }
+                if (bulletHit(b.getBulletHitbox(), player.getHitbox())) {
+                    if (!player.isInvincible()){
+                        player.takeDamage(b.getDamage());
+                        bossBullets.remove(i);
+                        i--;
+                    }
 
-            }
+                }
 
 //            Check if the bullet being checked is a Explosion bullet (Cuz the fragment they explode is a different bullet class)
-            fragmentBullets = BossOne.getFragmentBullets();
-            for (int j = 0; j < fragmentBullets.size(); j++) {
-                FragmentBullet fb = fragmentBullets.get(j);
-                if (!player.isInvincible()){
-                    if (bulletHit(fb.getBulletHitbox(), player.getHitbox())) {
-                        player.takeDamage(fb.getDamage());
-                        fragmentBullets.remove(j);
-                        j--;
+                fragmentBullets = BossOne.getFragmentBullets();
+                for (int j = 0; j < fragmentBullets.size(); j++) {
+                    FragmentBullet fb = fragmentBullets.get(j);
+                    if (!player.isInvincible()){
+                        if (bulletHit(fb.getBulletHitbox(), player.getHitbox())) {
+                            player.takeDamage(fb.getDamage());
+                            fragmentBullets.remove(j);
+                            j--;
+                        }
                     }
+
                 }
 
             }
 
-        }
+            for (int j = 0; j < enemies.size(); j++) {
+                enemyBullets = enemies.get(j).getBullets();
 
-        for (int j = 0; j < enemies.size(); j++) {
-            enemyBullets = enemies.get(j).getBullets();
-
-            for (int i = 0; i < enemyBullets.size(); i++) {
-                Bullet bullet = enemyBullets.get(i);
-                if(bulletHit(bullet.getHitbox(), player.getHitbox())) {
+                for (int i = 0; i < enemyBullets.size(); i++) {
+                    Bullet bullet = enemyBullets.get(i);
+                    if(bulletHit(bullet.getHitbox(), player.getHitbox())) {
                         if (!player.isInvincible()){
                             player.takeDamage(bullet.getDamage());
                             enemyBullets.remove(i);
                             i--;
                         }
 
+                    }
                 }
             }
-        }
 
 
-        ArrayList<Bullet> playerBullets = player.getBullets();
-        Rectangle bossHitbox = BossOne.getHitbox();
+            ArrayList<Bullet> playerBullets = player.getBullets();
+            Rectangle bossHitbox = BossOne.getHitbox();
 
-        for (int i = 0; i < playerBullets.size(); i++) {
-            Bullet bullet = playerBullets.get(i);
-            if (bullet.getBulletHitbox() != null && bulletHit(bullet.getBulletHitbox(), bossHitbox)) {
-                BossOne.takeDamage(bullet.getDamage());
+            for (int i = 0; i < playerBullets.size(); i++) {
+                Bullet bullet = playerBullets.get(i);
+                if (bullet.getBulletHitbox() != null && bulletHit(bullet.getBulletHitbox(), bossHitbox)) {
+                    BossOne.takeDamage(bullet.getDamage());
 
-                hitEffects.add(new HitEffect(
-                    bullet.getBulletHitbox().x,
-                    bullet.getBulletHitbox().y
-                ));
+                    hitEffects.add(new HitEffect(
+                        bullet.getBulletHitbox().x,
+                        bullet.getBulletHitbox().y
+                    ));
 
-                playerBullets.remove(i);
-                i--;
-            }
-        }
-        for (int i = 0; i < hitEffects.size(); i++) {
-            HitEffect e = hitEffects.get(i);
-            e.update(deltaTime);
-            if (e.isFinished()) {
-                hitEffects.remove(i);
-                i--;
-            }
-        }
-
-        for (int i = 0; i < enemies.size(); i++) {
-            Enemy enemy = enemies.get(i);
-            Rectangle enemyHitbox = enemy.getHitbox();
-
-            for (int j = 0; j < playerBullets.size(); j++) {
-                Bullet bullet = playerBullets.get(j);
-                if (bullet.getBulletHitbox() != null && bulletHit(bullet.getBulletHitbox(), enemyHitbox)) {
-                    enemy.takeDamage(bullet.getDamage());
-                    hitEffects.add(new HitEffect(bullet.getBulletHitbox().x, bullet.getBulletHitbox().y));
-                    playerBullets.remove(j);
-                    j--;
+                    playerBullets.remove(i);
+                    i--;
                 }
             }
-            if (enemy.getCurrentHP() <= 0) {
-                deathEffects.add(new DeathExplosionEffect(enemy.getX(), enemy.getY()));
-                enemies.remove(i);
-                i--;
+            for (int i = 0; i < hitEffects.size(); i++) {
+                HitEffect e = hitEffects.get(i);
+                e.update(deltaTime);
+                if (e.isFinished()) {
+                    hitEffects.remove(i);
+                    i--;
+                }
             }
-        }
-        //enemy death effect
-        for (int i = 0; i < deathEffects.size(); i++) {
-            DeathExplosionEffect effect = deathEffects.get(i);
-            effect.update(deltaTime);
-            if (effect.isFinished()) {
-                deathEffects.remove(i);
-                i--;
+
+            for (int i = 0; i < enemies.size(); i++) {
+                Enemy enemy = enemies.get(i);
+                Rectangle enemyHitbox = enemy.getHitbox();
+
+                for (int j = 0; j < playerBullets.size(); j++) {
+                    Bullet bullet = playerBullets.get(j);
+                    if (bullet.getBulletHitbox() != null && bulletHit(bullet.getBulletHitbox(), enemyHitbox)) {
+                        enemy.takeDamage(bullet.getDamage());
+                        hitEffects.add(new HitEffect(bullet.getBulletHitbox().x, bullet.getBulletHitbox().y));
+                        playerBullets.remove(j);
+                        j--;
+                    }
+                }
+                if (enemy.getCurrentHP() <= 0) {
+                    deathEffects.add(new DeathExplosionEffect(enemy.getX(), enemy.getY()));
+                    enemies.remove(i);
+                    i--;
+                }
             }
+            //enemy death effect
+            for (int i = 0; i < deathEffects.size(); i++) {
+                DeathExplosionEffect effect = deathEffects.get(i);
+                effect.update(deltaTime);
+                if (effect.isFinished()) {
+                    deathEffects.remove(i);
+                    i--;
+                }
+            }
+            screenShake.update(deltaTime);
         }
-        screenShake.update(deltaTime);
+        else {
+
+        }
 
     }
 
@@ -194,7 +200,7 @@ public class MapBossOne {
         float shakeY = screenShake.getOffsetY();
 
         batch.setTransformMatrix(batch.getTransformMatrix().idt().translate(shakeX, shakeY, 0));
-        renderHitbox();
+//        renderHitbox();
     }
 
 

@@ -84,7 +84,7 @@ public class Bullet {
         this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
         this.bulletHitbox = playerBulletHitbox; // ✅ Thêm dòng này!
 
-        damage = 50;
+        damage = 2000;
     }
 
 
@@ -205,7 +205,7 @@ public class Bullet {
 
         batch.end();
 
-        renderHitbox();
+//        renderHitbox();
     }
 
     public void setBulletTexture(Texture texture) {

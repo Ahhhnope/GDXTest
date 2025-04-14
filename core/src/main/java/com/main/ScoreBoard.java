@@ -67,7 +67,7 @@ public class ScoreBoard {
         batch.draw(btnbackicon, btnBackHitbox.x , btnBackHitbox.y, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
         batch.end();
 
-        renderHitbox();
+//        renderHitbox();
     }
 
     public void dispose(){

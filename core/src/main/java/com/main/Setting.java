@@ -201,7 +201,7 @@ public class Setting {
         batch.end();
 
 
-        renderHitbox();
+//        renderHitbox();
     }
 
     public void Dispose(){

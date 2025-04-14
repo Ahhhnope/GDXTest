@@ -116,7 +116,7 @@ public class Menu {
         batch.end();
 
 
-        renderHitbox();
+//        renderHitbox();
     }
 
     public void dispose() {
