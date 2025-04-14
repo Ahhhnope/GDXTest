@@ -64,9 +64,13 @@ public class Boss {
     private boolean hasFiredWave = false;
     private boolean waitingForShakeToEnd = false;
     private float shakeTimer = 0f;
-    private float shakeDuration = 2f;
+    private float shakeDuration = 3f;
     private boolean isInvincible = false;
 
+    private ArrayList<AfterImage> afterimages = new ArrayList<>();
+    private float afterimageTimer = 0f;
+    private float afterimageInterval = 0.05f;
+    private boolean DuAnh = false;
     public Boss (float x, float y, ScreenShake screenShake){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
@@ -97,8 +101,8 @@ public class Boss {
         shootInterval += 0.7f;         // Bắn nhanh hơn
         trackingShootInterval += 0.5f; // Đạn tracking nhanh hơn
         explosionInterval *= 0.8f;     // Đạn nổ nhiều hơn
-        frequencyX *= 2f;            // Di chuyển nhanh hơn
-        frequency *= 1.5f;
+        frequencyX *= 2.2f;            // Di chuyển nhanh hơn
+        frequency *= 1.75f;
         screenShake.start(3f, 20f);
     }
     public void fireWaveBullets() {
@@ -181,7 +185,6 @@ public class Boss {
         time += delta;
         float targetX = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
         float targetY = baseY + MathUtils.sin(time * frequency) * amplitude;
-
         position.lerp(new Vector2(targetX, targetY), 0.1f);
 
         if (!isPhase2 && !waitingForShakeToEnd && currentHp <= hp / 2) {
@@ -198,18 +201,33 @@ public class Boss {
                 waitingForShakeToEnd = false;
                 isInvincible = false;
                 enterPhase2();
+                DuAnh = true;
             }
         }
 
         if (isPhase2 && !hasFiredWave) {
             phase2Timer += delta;
-            if (phase2Timer >= 3f) {
+            if (phase2Timer >= 4f) {
                 fireWaveBullets();
                 hasFiredWave = true;
+            }
+        }
+        afterimageTimer += delta;
+        if (afterimageTimer >= afterimageInterval) {
+            afterimageTimer = 0f;
+            afterimages.add(new AfterImage(position, 0.5f, 0.5f)); // alpha 0.5, tồn tại 0.3s
+        }
 
+
+        for (int i = 0; i < afterimages.size(); i++) {
+            afterimages.get(i).update(delta);
+            if (afterimages.get(i).isDead()) {
+                afterimages.remove(i);
+                i--;
             }
         }
     }
+
 
     public void spawnMeteor() {
         float startX = MathUtils.random(0, Gdx.graphics.getWidth() - 256);
@@ -251,6 +269,8 @@ public class Boss {
         }
 
         bullets.add(new Bullet(startX, startY, player));
+
+
     }
 
     public ArrayList<Bullet> getBullets() {
@@ -281,6 +301,13 @@ public class Boss {
 
     public void render(SpriteBatch batch){
         batch.begin();
+        if (DuAnh){
+            for (AfterImage a : afterimages) {
+                batch.setColor(1f, 0.5f, 1f, a.alpha);
+                batch.draw(BossOne, a.position.x, a.position.y, 256, 256);
+            }
+        }
+        batch.setColor(1f, 1f, 1f, 1f);
         batch.draw(BossOne, position.x, position.y, 256, 256);
         batch.end();
 
