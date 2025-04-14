@@ -58,8 +58,8 @@ public class Boss {
     private float frequencyX = 0.5f;
 
     private Rectangle hitbox;
-    private int width = 128;
-    private int height = 128;
+    private int width = 250;
+    private int height = 120;
 
     private int hp = 2000;
     private int currentHp = 2000;
@@ -80,7 +80,7 @@ public class Boss {
         shootTimer += delta;
         trackingShootTimer += delta;
 
-        hitbox.setPosition(position.x, position.y);
+        hitbox.setPosition(position.x, position.y + 68);
 
         if (shootTimer >= shootInterval) {
             shoot(player.getX(), player.getY()); // đạn thường
