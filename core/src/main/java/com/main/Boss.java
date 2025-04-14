@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -57,10 +58,15 @@ public class Boss {
     private float amplitudeX = 80f;
     private float frequencyX = 0.5f;
 
-    private Rectangle bossHitbox;
-    private int width = 128;
-    private int height = 128;
+    private Circle bossHitbox;
+    private int width = 256;
+    private int height = 256;
 
+    //Bosshealth
+    private float bossHealth = 50000;
+    private boolean isDead = false;
+
+    private Texture background;
     public Boss (float x, float y){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
@@ -133,8 +139,10 @@ public class Boss {
 
     public void shoot(float targetX, float targetY){
         float centerX = position.x;
-        float centerY = position.y + 110;
-        bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f));
+        float centerY = position.y + height + 20;
+
+        bullets.add(new Bullet(centerX, centerY - 120, targetX, targetY, 650f));
+        bullets.add(new Bullet(centerX, centerY - 200, targetX, targetY, 650f));
     }
 
     public void shootExplosion() {
@@ -168,9 +176,31 @@ public class Boss {
 
     }
 
+    public void takeDamage(float damage){
+        if (isDead) return;
+
+        bossHealth -= damage;
+        if (bossHealth <= 0) {
+            bossHealth = 0;
+            isDead = true;
+
+        }
+        System.out.println("Damage: " + damage + "HP: " + bossHealth);
+    }
+    public float getHealth(){
+        return bossHealth;
+    }
+    public Circle getHitbox() {
+        if (bossHitbox == null) {
+            bossHitbox = new Circle(position.x + width / 2f, position.y + height / 2f, width / 2f - 30);
+        } else {
+            bossHitbox.setPosition(position.x + width / 2f, position.y + height / 2f);
+        }
+        return bossHitbox;
+    }
     public void render(SpriteBatch batch){
         batch.begin();
-        batch.draw(BossOne, position.x, position.y, 256, 256);
+        batch.draw(BossOne, position.x, position.y,width, height);
         batch.end();
 
         for (Bullet bullet : bullets){
@@ -186,5 +216,6 @@ public class Boss {
             bullet.dispose();
         }
     }
+
 }
 

@@ -76,7 +76,7 @@ public class ExplosionBullet extends Bullet {
         TextureRegion[][] tmp = TextureRegion.split(fragmentSheet, 15, 15);
         Animation<TextureRegion> fragAnim = new Animation<>(0.3f, tmp[0]);
 
-        int numBullets = 16;
+        int numBullets = 12;
         float speed = 80f;
         float angleStep = 360f / numBullets;
 

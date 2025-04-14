@@ -249,4 +249,8 @@ public class Player {
             bullet.dispose();
         }
     }
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
 }

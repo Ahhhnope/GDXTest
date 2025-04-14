@@ -33,7 +33,6 @@ public class HUD {
     public void update(float delta) {
         if (running) {
             timer += delta;
-            System.out.println("Timer: " + timer);
         }
     }
 

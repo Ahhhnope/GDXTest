@@ -76,7 +76,8 @@ public class Bullet {
         this.isTracking = false;
         bulletWidth = width;
         bulletHeight = height;
-        this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
+        this.bulletHitbox = new Circle(position.x + bulletWidth / 2f, position.y + bulletHeight / 2f, radius);
+
 
     }
 
@@ -114,9 +115,12 @@ public class Bullet {
         this.isTracking = false;
     }
 
+    private boolean isPlayerBullet() {
+        return PlayerBulletTexture != null;
+    }
 
     public Circle getBulletHitbox() {
-        return bulletHitbox; //lmao
+        return playerBulletHitbox != null ? playerBulletHitbox : bulletHitbox;
     }
 
 
@@ -136,10 +140,9 @@ public class Bullet {
 
         // Update hitboxes
         if (bulletHitbox != null) {
-            bulletHitbox.setPosition(position.x + width / 2, position.y + height / 2);
-        }
-        if (playerBulletHitbox != null) {
-            playerBulletHitbox.setPosition(position.x + bulletWidth / 2, position.y + bulletHeight / 2);
+            float cx = isPlayerBullet() ? bulletWidth / 2f : width / 2f;
+            float cy = isPlayerBullet() ? bulletHeight / 2f : height / 2f;
+            bulletHitbox.setPosition(position.x + cx, position.y + cy);
         }
         if (enemyAnimation != null) {
             enemyAnimTime += delta;
@@ -157,13 +160,10 @@ public class Bullet {
     public void renderHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         if (bulletHitbox != null) {
-            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.setColor(Color.RED); // hoặc RED nếu là enemy
             shapeRenderer.circle(bulletHitbox.x, bulletHitbox.y, bulletHitbox.radius);
         }
-        if (playerBulletHitbox != null) {
-            shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.circle(playerBulletHitbox.x, playerBulletHitbox.y, playerBulletHitbox.radius);
-        }
+
         shapeRenderer.end();
     }
 
