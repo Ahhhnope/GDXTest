@@ -253,7 +253,6 @@ public class Boss {
 // Inner red (actual HP)
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(barX + innerPadding, barY + innerPadding, filledWidth, barHeight - innerPadding * 2);
-
         shapeRenderer.end();
     }
 

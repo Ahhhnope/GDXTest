@@ -44,7 +44,6 @@ public class FragmentBullet {
     public void update(float delta) {
         animTime += delta;
         position.add(velocity.x * delta, velocity.y * delta);
-
         bulletHitbox.setPosition(position.x + width / 2, position.y + height / 2);
     }
 

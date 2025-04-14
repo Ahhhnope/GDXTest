@@ -26,6 +26,7 @@ public class MapBossOne {
     private float spawnEnemyTimer = 0f;
     private float spawnEnemyInterval = 10f;
 
+    private ArrayList<HitEffect> hitEffects = new ArrayList<>();
 
 
     public MapBossOne(){
@@ -92,24 +93,40 @@ public class MapBossOne {
             for (int i = 0; i < enemyBullets.size(); i++) {
                 Bullet bullet = enemyBullets.get(i);
                 if(bulletHit(bullet.getHitbox(), player.getHitbox())) {
-                    player.takeDamage(bullet.getDamage());
-                    enemyBullets.remove(i);
-                    i--;
+                    if (player.isInvincible()){
+                        player.takeDamage(bullet.getDamage());
+                        enemyBullets.remove(i);
+                        i--;
+                    }
                 }
             }
         }
+
         ArrayList<Bullet> playerBullets = player.getBullets();
         Rectangle bossHitbox = BossOne.getHitbox();
 
         for (int i = 0; i < playerBullets.size(); i++) {
             Bullet bullet = playerBullets.get(i);
-            if (bulletHit(bullet.getBulletHitbox(), bossHitbox)) {
+            if (bullet.getBulletHitbox() != null && bulletHit(bullet.getBulletHitbox(), bossHitbox)) {
                 BossOne.takeDamage(bullet.getDamage());
+
+                hitEffects.add(new HitEffect(
+                    bullet.getBulletHitbox().x,
+                    bullet.getBulletHitbox().y
+                ));
+
                 playerBullets.remove(i);
                 i--;
             }
         }
-
+        for (int i = 0; i < hitEffects.size(); i++) {
+            HitEffect e = hitEffects.get(i);
+            e.update(deltaTime);
+            if (e.isFinished()) {
+                hitEffects.remove(i);
+                i--;
+            }
+        }
     }
 
 
@@ -125,7 +142,9 @@ public class MapBossOne {
         for (Enemy enemy : enemies){
             enemy.render(batch);
         }
-
+        for (HitEffect e : hitEffects) {
+            e.render(batch);
+        }
         renderHitbox();
     }
 

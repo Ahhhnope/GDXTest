@@ -49,6 +49,10 @@ public class Player {
     float offset;
     public int bulletDamage = 5;
 
+    private boolean isInvincible = false;
+    private float invincibleTime = 0f;
+    private float invincibleDuration = 1.5f;
+
     private ShapeRenderer shapeRenderer;
 
     public Player() {
@@ -84,6 +88,12 @@ public class Player {
         // Di chuyển trơn mượt bằng velocity và friction
         Vector2 input = new Vector2(0, 0);
 
+        if (isInvincible) {
+            invincibleTime += delta;
+            if (invincibleTime >= invincibleDuration) {
+                isInvincible = false;
+            }
+        }
 // Lấy input từ bàn phím
         if (Gdx.input.isKeyPressed(Input.Keys.W)) input.y += 1;
         if (Gdx.input.isKeyPressed(Input.Keys.S)) input.y -= 1;
@@ -174,8 +184,16 @@ public class Player {
     }
 
     public void takeDamage(int damage) {
+        if (isInvincible) return;
         currentHP -= damage;
         if (currentHP < 0) currentHP = 0;
+
+        isInvincible = true;
+        invincibleTime = 0f;
+    }
+
+    public boolean isInvincible() {
+        return isInvincible;
     }
 
     public void heal(int healing) {
@@ -226,7 +244,12 @@ public class Player {
 
         batch.begin();
         // Vẽ player
-        batch.setColor(1f, 1f, 1f, 1f);
+        if (isInvincible) {
+            float blinkAlpha = (MathUtils.sin(invincibleTime * 25f) > 0) ? 0.3f : 1f; // nhấp nháy
+            batch.setColor(1f, 1f, 1f, blinkAlpha); // mờ hoặc sáng
+        } else {
+            batch.setColor(1f, 1f, 1f, 1f);
+        }
         batch.draw(
             texture,
             position.x - width / 2f,
@@ -245,6 +268,7 @@ public class Player {
             false,
             false
         );
+        batch.setColor(1f, 1f, 1f, 1f);
         batch.end();
 
         for (Bullet bullet : bullets){
