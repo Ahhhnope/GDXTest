@@ -29,11 +29,10 @@ public class Boss {
     private Player player;
     private ArrayList<FragmentBullet> fragmentBullets = new ArrayList<>();
 
-
     //MeteorTime
 
     float meteorTimer = 0f;
-    float meteorInterval = 2f;
+    float meteorInterval = 2.5f;
 
     //Đạn nổ timer
     private float explosionTimer = 0f;
@@ -65,6 +64,9 @@ public class Boss {
     private int hp = 2000;
     private int currentHp = 2000;
 
+    //phase 2
+    private boolean isPhase2 = false;
+
     public Boss (float x, float y){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
@@ -87,10 +89,48 @@ public class Boss {
     public Rectangle getHitbox() {
         return hitbox;
     }
+
+    public void enterPhase2() {
+        isPhase2 = true;
+        shootInterval += 0.7f;         // Bắn nhanh hơn
+        trackingShootInterval += 0.5f; // Đạn tracking nhanh hơn
+        explosionInterval *= 0.8f;     // Đạn nổ nhiều hơn
+        frequencyX *= 2f;            // Di chuyển nhanh hơn
+        frequency *= 1.2f;
+
+        fireWaveBullets();
+    }
+    public void fireWaveBullets() {
+        float centerX = Gdx.graphics.getWidth();
+        float centerY = Gdx.graphics.getHeight() / 2;
+
+        int numBullets = 18;
+        float baseAngle = 180f; // bắn sang trái
+        float spread = 100f;     // tổng góc tỏa ra
+        float angleStep = spread / (numBullets - 1);
+
+        for (int i = 0; i < numBullets; i++) {
+            float angle = baseAngle - spread / 2f + i * angleStep;
+            float radians = MathUtils.degreesToRadians * angle;
+
+            Vector2 dir = new Vector2(MathUtils.cos(radians), MathUtils.sin(radians)).nor().scl(500f);
+
+            bullets.add(new Bullet(centerX + 200,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+            bullets.add(new Bullet(centerX + 400,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+            bullets.add(new Bullet(centerX + 600,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+            bullets.add(new Bullet(centerX + 800,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+            bullets.add(new Bullet(centerX + 1000,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+            bullets.add(new Bullet(centerX + 1200,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+
+
+        }
+    }
+
     public void update(float delta, Player player){
         this.player = player;
         shootTimer += delta;
         trackingShootTimer += delta;
+
 
 //        Hitbox position
         hitbox.setPosition(position.x, position.y + 85);
@@ -104,12 +144,14 @@ public class Boss {
             spawnTrackingBullet(player);
             trackingShootTimer = 0;
         }
-
-        meteorTimer += delta;
-        if (meteorTimer >= meteorInterval) {
-            spawnMeteor();
-            meteorTimer = 0f;
+        if (!isPhase2){
+            meteorTimer += delta;
+            if (meteorTimer >= meteorInterval) {
+                spawnMeteor();
+                meteorTimer = 0f;
+            }
         }
+
 
         for (int i = 0; i < bullets.size();i++){
             Bullet b = bullets.get(i);
@@ -140,10 +182,13 @@ public class Boss {
         position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
         position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
 
+        if (!isPhase2 && currentHp <= hp / 2) {
+            enterPhase2();
+        }
     }
 
     public void spawnMeteor() {
-        float startX = MathUtils.random(64, Gdx.graphics.getWidth() - 64);
+        float startX = MathUtils.random(0, Gdx.graphics.getWidth() - 256);
         float startY = Gdx.graphics.getHeight() + 50; // spawn trên màn hình
 
         bullets.add(new MeteorBullet(startX, startY));

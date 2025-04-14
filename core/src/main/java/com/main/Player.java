@@ -37,10 +37,8 @@ public class Player {
     private float x = 100;
     private float y = 100;
 
-
-
-    private int maxHP = 100;
-    private int currentHP = 100;
+    private int maxHP = 500;
+    private int currentHP = 500;
 
     private float shootTimer = 0f;
 
@@ -54,8 +52,13 @@ public class Player {
     private float invincibleDuration = 1.5f;
 
     private ShapeRenderer shapeRenderer;
+    //smooth hpppp
+    private float displayedHP;
+    private float hpLerpSpeed = 5f;
+    private ArrayList<ShootEffect> shootEffects = new ArrayList<>();
 
     public Player() {
+
         texture = new Texture("Stuffs/Player/lvl2.png");
         position = new Vector2(100, 100);
         velocity = new Vector2(0, 0);
@@ -66,8 +69,8 @@ public class Player {
 
         position = new Vector2(x, y);
         bullets = new ArrayList<>();
-
-
+        //smoothhp
+        displayedHP = currentHP;
         //hitbox
         hitboxSize = 40f;
         offset = (width - hitboxSize) / 2f;
@@ -162,6 +165,25 @@ public class Player {
 
 //        Update hitbox
         hitbox = new Rectangle(position.x - width / 2 + offset, position.y - height / 2 + offset, hitboxSize, hitboxSize);
+
+        displayedHP = MathUtils.lerp(displayedHP, currentHP, Gdx.graphics.getDeltaTime() * hpLerpSpeed);
+
+        for (int i = 0; i < shootEffects.size(); i++) {
+            shootEffects.get(i).update(Gdx.graphics.getDeltaTime());
+            if (shootEffects.get(i).isFinished()) {
+                shootEffects.remove(i);
+                i--;
+            }
+        }
+
+        for (int i = 0; i < shootEffects.size(); i++) {
+            ShootEffect effect = shootEffects.get(i);
+            effect.update(Gdx.graphics.getDeltaTime());
+            if (effect.isFinished()) {
+                shootEffects.remove(i);
+                i--;
+            }
+        }
     }
 
 
@@ -170,7 +192,23 @@ public class Player {
 
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
+
+
+        Vector2 direction = new Vector2(targetX - centerX, targetY - centerY).nor();
+        float fx = centerX + direction.x * 10;
+        float fy = centerY + direction.y * 10;
+
+        float angle = direction.angleDeg();
+
         bullets.add(new Bullet(centerX, centerY, targetX, targetY,2500,playerBulletTexture, 8, 8, 5));
+        //shooteffect
+        float angleRad = (float)Math.toRadians(rotation + 90); // vì bạn trừ 90 ở chỗ tính rotation
+        float muzzleOffset = 40f; // khoảng cách từ tâm đến đầu súng
+        float muzzleX = position.x + MathUtils.cos(angleRad) * muzzleOffset;
+        float muzzleY = position.y + MathUtils.sin(angleRad) * muzzleOffset;
+
+        shootEffects.add(new ShootEffect(muzzleX, muzzleY, rotation));
+
 
     }
 
@@ -220,7 +258,7 @@ public class Player {
         float healthbarHeight = 20f;
         float radius = healthbarHeight / 2;
 
-        float percent = (float) currentHP / maxHP;
+        float percent = displayedHP / maxHP;
         float filledWidth = healthbarWidth * percent;
         float fillRight = barX + filledWidth;
 
@@ -267,6 +305,7 @@ public class Player {
             false
         );
         batch.setColor(1f, 1f, 1f, 1f);
+
         batch.end();
 
         for (Bullet bullet : bullets){
@@ -275,6 +314,13 @@ public class Player {
 
         for (Bullet b : bullets) {
             b.renderHitbox();
+        }
+
+        for (ShootEffect e : shootEffects) {
+            e.render(batch);
+        }
+        for (ShootEffect effect : shootEffects) {
+            effect.render(batch);
         }
     }
 
