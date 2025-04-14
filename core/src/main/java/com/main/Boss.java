@@ -61,7 +61,7 @@ public class Boss {
 
     private Rectangle hitbox;
     private int width = 250;
-    private int height = 120;
+    private int height = 85;
 
     private int hp = 2000;
     private int currentHp = 2000;
@@ -93,7 +93,8 @@ public class Boss {
         shootTimer += delta;
         trackingShootTimer += delta;
 
-        hitbox.setPosition(position.x, position.y + 68);
+//        Hitbox position
+        hitbox.setPosition(position.x, position.y + 85);
 
         if (shootTimer >= shootInterval) {
             shoot(player.getX(), player.getY()); // đạn thường
@@ -151,8 +152,9 @@ public class Boss {
 
     public void shoot(float targetX, float targetY){
         float centerX = position.x;
-        float centerY = position.y + 110;
+        float centerY = position.y + 150;
         bullets.add(new Bullet(centerX, centerY, targetX, targetY, 650f, 8));
+        bullets.add(new Bullet(centerX, centerY - 80, targetX, targetY, 650f, 8));
     }
 
     public void shootExplosion() {
