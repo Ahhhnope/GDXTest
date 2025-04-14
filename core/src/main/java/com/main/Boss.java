@@ -67,6 +67,18 @@ public class Boss {
     private float shakeDuration = 3f;
     private boolean isInvincible = false;
 
+    private float patternCooldown = 3f;
+    private float patternTimer = 0f;
+    private int patternIndex = 0;
+    //touhou ahh bullet
+    float spiralAngle = 0f;
+    private boolean isFiringSpiral = false;
+    private float spiralDuration = 3f;
+    private float spiralTimer = 0f;
+    private boolean spiralStarted = false;
+    private float spiralStartDelay = 5f; // Delay 5 giây sau khi fireWave
+    private float spiralDelayTimer = 0f;
+
     private ArrayList<AfterImage> afterimages = new ArrayList<>();
     private float afterimageTimer = 0f;
     private float afterimageInterval = 0.05f;
@@ -125,7 +137,6 @@ public class Boss {
             bullets.add(new Bullet(centerX + 800,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
             bullets.add(new Bullet(centerX + 1000,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
             bullets.add(new Bullet(centerX + 1200,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
-
 
         }
     }
@@ -212,6 +223,47 @@ public class Boss {
                 hasFiredWave = true;
             }
         }
+        if (isPhase2 && hasFiredWave && !spiralStarted) {
+            spiralDelayTimer += delta;
+            if (spiralDelayTimer >= spiralStartDelay) {
+                isFiringSpiral = true;  // Bắt đầu spiral trong 3s
+                spiralStarted = true;
+            }
+        }
+        if (isPhase2 && hasFiredWave && !isFiringSpiral) {
+            phase2Timer += delta;
+            patternTimer += delta;
+            if (patternTimer >= patternCooldown) {
+                patternTimer = 0f;
+                patternIndex = MathUtils.random(3);
+
+                switch (patternIndex) {
+                    case 0:
+                        fireRotatingSpiral();
+                        break;
+                    case 1:
+                        fireRainBullets();
+                        break;
+                    case 2:
+                        fireDoubleSpiral();
+                        break;
+                    case 3:
+                        isFiringSpiral = true;
+                        spiralTimer = 0f;
+                        break;
+                }
+            }
+            if (isFiringSpiral) {
+                fireTouhouSpiral(); // vẫn gọi mỗi frame
+                spiralTimer += delta;
+
+                if (spiralTimer >= spiralDuration) {
+                    isFiringSpiral = false;  // ngừng bắn sau 3s
+                    spiralTimer = 0f;
+                }
+            }
+
+        }
         afterimageTimer += delta;
         if (afterimageTimer >= afterimageInterval) {
             afterimageTimer = 0f;
@@ -227,7 +279,63 @@ public class Boss {
             }
         }
     }
+    public void fireRotatingSpiral() {
+        float centerX = position.x + 128;
+        float centerY = position.y + 128;
+        int bulletCount = 50;
+        float speed = 200f;
+        float angleOffset = (time * 60f) % 360;
 
+        for (int i = 0; i < bulletCount; i++) {
+            float angle = i * (360f / bulletCount) + angleOffset;
+            float rad = MathUtils.degreesToRadians * angle;
+            Vector2 dir = new Vector2(MathUtils.cos(rad), MathUtils.sin(rad)).nor().scl(speed);
+            bullets.add(new Bullet(centerX, centerY, centerX + dir.x, centerY + dir.y, speed, 8));
+        }
+    }
+    public void fireTouhouSpiral() {
+        float centerX = position.x + 128;
+        float centerY = position.y + 128;
+        int bulletsPerFrame = 2; // bắn liên tục từng chút
+
+        for (int i = 0; i < bulletsPerFrame; i++) {
+            float angle = spiralAngle + i * 180; // hai viên đối xứng
+            float rad = MathUtils.degreesToRadians * angle;
+            Vector2 dir = new Vector2(MathUtils.cos(rad), MathUtils.sin(rad)).nor().scl(220f);
+            bullets.add(new Bullet(centerX, centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+        }
+
+        spiralAngle += 8f; // tăng theo thời gian → xoay đều
+        if (spiralAngle > 360f) spiralAngle -= 360f;
+    }
+    public void fireDoubleSpiral() {
+        float centerX = position.x + 128;
+        float centerY = position.y + 128;
+
+        int numBullets = 36;
+        float speed = 250f;
+
+        for (int i = 0; i < numBullets; i++) {
+            float angle1 = i * 10 + time * 100; // xoắn thuận
+            float angle2 = i * 10 - time * 100; // xoắn ngược
+
+            float rad1 = MathUtils.degreesToRadians * angle1;
+            float rad2 = MathUtils.degreesToRadians * angle2;
+
+            Vector2 dir1 = new Vector2(MathUtils.cos(rad1), MathUtils.sin(rad1)).nor().scl(speed);
+            Vector2 dir2 = new Vector2(MathUtils.cos(rad2), MathUtils.sin(rad2)).nor().scl(speed);
+
+            bullets.add(new Bullet(centerX, centerY, centerX + dir1.x, centerY + dir1.y, speed, 8));
+            bullets.add(new Bullet(centerX, centerY, centerX + dir2.x, centerY + dir2.y, speed, 8));
+        }
+    }
+    public void fireRainBullets() {
+        for (int i = 0; i < 20; i++) {
+            float x = MathUtils.random(0, Gdx.graphics.getWidth());
+            float y = Gdx.graphics.getHeight() + 50;
+            bullets.add(new Bullet(x, y, x, y - 100, 400f, 8));
+        }
+    }
 
     public void spawnMeteor() {
         float startX = MathUtils.random(0, Gdx.graphics.getWidth() - 256);
