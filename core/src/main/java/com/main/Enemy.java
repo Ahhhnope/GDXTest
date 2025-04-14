@@ -47,7 +47,6 @@ public class Enemy {
         this.baseY = bossY;
         velocity = new Vector2(-1, 0).scl(speed);
         bullets = new ArrayList<>();
-        bulletTexture = new Texture("Stuffs/Player/playerbullet.png");
 
 
         Texture bulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
