@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.main.Bullet;
 import jdk.jfr.Frequency;
+import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class Boss {
     private float shootInterval = 0.3f;
     private ShapeRenderer shapeRenderer;
     private Player player;
+    private ArrayList<FragmentBullet> fragmentBullets = new ArrayList<>();
 
 
     //MeteorTime
@@ -74,7 +76,18 @@ public class Boss {
         shapeRenderer = new ShapeRenderer();
         hitbox = new Rectangle(position.x, position.y, width, height);
     }
+    public ArrayList<FragmentBullet> getFragmentBullets() {
+        return fragmentBullets;
+    }
+    public void takeDamage(float damage) {
+        currentHp -= damage;
+        if (currentHp < 0) currentHp = 0;
+        System.out.println("Boss HP: " + currentHp); // debug tạm
+    }
 
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
     public void update(float delta, Player player){
         this.player = player;
         shootTimer += delta;
@@ -106,7 +119,13 @@ public class Boss {
                 bullets.remove(i);
                 i--;
             }
-
+        }
+        for (int i = fragmentBullets.size() - 1; i >= 0; i--) {
+            FragmentBullet frag = fragmentBullets.get(i);
+            frag.update(delta);
+            if (frag.isOutOfScreen(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())) {
+                fragmentBullets.remove(i);
+            }
         }
 
         explosionTimer += delta;
@@ -145,7 +164,7 @@ public class Boss {
         float targetX = player.getX() + offsetX;
         float targetY = player.getY() + offsetY;
 
-        bullets.add(new ExplosionBullet(startX, startY, targetX, targetY, 18));
+        bullets.add(new ExplosionBullet(startX, startY, targetX, targetY, 18, fragmentBullets));
     }
 
     public void spawnTrackingBullet(Player player) {
@@ -176,6 +195,7 @@ public class Boss {
         return position.y;
     }
 
+
     public void renderHitbox() {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -190,9 +210,49 @@ public class Boss {
         batch.draw(BossOne, position.x, position.y, 256, 256);
         batch.end();
 
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        float PlayerbarX = 100;
+        float PlayerbarY = Gdx.graphics.getHeight() - 30;
+        float BarWidthNew = 300;
+        float BarHeightNew = 20;
+
+        float percent = (float) currentHp / hp;
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(PlayerbarX, PlayerbarY, BarWidthNew, BarHeightNew);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(PlayerbarX, PlayerbarY, BarWidthNew * percent, BarHeightNew);
+        shapeRenderer.end();
+
         for (Bullet bullet : bullets){
             bullet.render(batch);
         }
+        for (FragmentBullet frag : fragmentBullets) {
+            frag.render(batch);
+        }
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        float screenWidth = Gdx.graphics.getWidth();
+        float barHeight = 24f;
+
+        float barX = 0f;
+        float barY = Gdx.graphics.getHeight() - barHeight - 10f;
+
+        float hpPercent = (float) currentHp / hp;
+        float innerPadding = 4f;
+
+        float outerWidth = screenWidth;
+        float innerWidth = screenWidth - innerPadding * 2;
+        float filledWidth = innerWidth * hpPercent;
+
+// Outer border (dark gray)
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(barX, barY, outerWidth, barHeight);
+
+// Inner red (actual HP)
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(barX + innerPadding, barY + innerPadding, filledWidth, barHeight - innerPadding * 2);
+
+        shapeRenderer.end();
     }
 
     public void dispose(){
