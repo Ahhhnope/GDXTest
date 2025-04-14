@@ -67,22 +67,20 @@ public class MapBossOne {
 
 
 //            Normal bullet hit detection
-            if (bulletHit(b.getHitbox(), player.getHitbox())) {
+            if (bulletHit(b.getBulletHitbox(), player.getHitbox())) {
                 player.takeDamage(b.getDamage());
                 bossBullets.remove(i);
                 i--;
             }
 
 //            Check if the bullet being checked is a Explosion bullet (Cuz the fragment they explode is a different bullet class)
-            if (b.getClass() == ExplosionBullet.class) {
-                fragmentBullets = ((ExplosionBullet) b).getfragments();
-                for (int j = 0; j < fragmentBullets.size(); j++) {
-                    FragmentBullet fb = fragmentBullets.get(j);
-                    if (bulletHit(fb.getBulletHitbox(), player.getHitbox())) {
-                        player.takeDamage(fb.getDamage());
-                        fragmentBullets.remove(j);
-                        j--;
-                    }
+            fragmentBullets = BossOne.getFragmentBullets();
+            for (int j = 0; j < fragmentBullets.size(); j++) {
+                FragmentBullet fb = fragmentBullets.get(j);
+                if (bulletHit(fb.getBulletHitbox(), player.getHitbox())) {
+                    player.takeDamage(fb.getDamage());
+                    fragmentBullets.remove(j);
+                    j--;
                 }
             }
 
@@ -100,9 +98,20 @@ public class MapBossOne {
                 }
             }
         }
+        ArrayList<Bullet> playerBullets = player.getBullets();
+        Rectangle bossHitbox = BossOne.getHitbox();
 
+        for (int i = 0; i < playerBullets.size(); i++) {
+            Bullet bullet = playerBullets.get(i);
+            if (bulletHit(bullet.getBulletHitbox(), bossHitbox)) {
+                BossOne.takeDamage(bullet.getDamage());
+                playerBullets.remove(i);
+                i--;
+            }
+        }
 
     }
+
 
     public void renderHitbox() {
         player.renderHitbox();

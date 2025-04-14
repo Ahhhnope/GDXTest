@@ -3,40 +3,33 @@ package com.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ExplosionBullet extends Bullet {
-    private Texture explosionTexture;
     private boolean exploded = false;
-    private float explodeDelay = 1f;
+    private float explodeDelay;
     private float timer = 0f;
 
-
-
-    private float width = 16f;
-    private float height = 16f;
     private Animation<TextureRegion> meteorAnimation;
     private float animTime = 0f;
     private TextureRegion currentFrame;
 
-    private ArrayList<FragmentBullet> fragments = new ArrayList<>();
+    private ArrayList<FragmentBullet> externalFragments;
 
-    public ExplosionBullet(float startX, float startY, float targetX, float targetY, float radius) {
-        super(startX, startY, targetX, targetY, radius); // bay về hướng bất kỳ
-        explosionTexture = new Texture("Bosses/ExplosiveBullet/Explosive1/0.png");
-        this.setBulletTexture(explosionTexture);
+    public ExplosionBullet(float startX, float startY, float targetX, float targetY, float radius,
+                           ArrayList<FragmentBullet> externalFragments) {
+        super(startX, startY, targetX, targetY, radius);
+        this.externalFragments = externalFragments;
+
         this.explodeDelay = MathUtils.random(0.5f, 1.5f);
 
         Texture bulletSheet = new Texture("Bosses/ExplosiveBullet/Explosive1/ExplosiveAnimation/2.png");
-        TextureRegion[][] tmp = TextureRegion.split(bulletSheet, 16, 15); // mỗi frame 32x32 chẳng hạn
+        TextureRegion[][] tmp = TextureRegion.split(bulletSheet, 16, 15);
         meteorAnimation = new Animation<>(0.3f, tmp[0]);
     }
 
@@ -49,23 +42,10 @@ public class ExplosionBullet extends Bullet {
                 explode();
                 exploded = true;
             }
-        } else {
-            for (FragmentBullet frag : fragments) {
-                frag.update(delta);
-            }
         }
 
-        for (int i = 0; i < fragments.size();i++){
-            FragmentBullet b = fragments.get(i);
-            b.update(delta);
-            if (b.isOutOfScreen(Gdx.graphics.getWidth() + 100, Gdx.graphics.getHeight() + 100)){
-                fragments.remove(i);
-                i--;
-            }
-        }
         animTime += delta;
         currentFrame = meteorAnimation.getKeyFrame(animTime, true);
-
     }
 
     @Override
@@ -74,19 +54,11 @@ public class ExplosionBullet extends Bullet {
             batch.begin();
             batch.draw(currentFrame, position.x - 4, position.y - 3, 39, 39);
             batch.end();
-        } else {
-            for (FragmentBullet frag : fragments) {
-                frag.render(batch);
-            }
         }
 
         if (!exploded) {
             renderHitbox();
         }
-    }
-
-    public ArrayList<FragmentBullet> getfragments() {
-        return fragments;
     }
 
     public void explode() {
@@ -101,26 +73,9 @@ public class ExplosionBullet extends Bullet {
         for (int i = 0; i < numBullets; i++) {
             float angle = (float) Math.toRadians(i * angleStep);
             Vector2 dir = new Vector2((float) Math.cos(angle), (float) Math.sin(angle)).nor().scl(speed);
-            Vector2 pos = new Vector2(getX(), getY());
+            Vector2 pos = new Vector2(position.x, position.y);
 
-            fragments.add(new FragmentBullet(pos, dir, fragAnim, 16, 16, 5));
-        }
-
-    }
-
-    private float getX() {
-        return super.position.x;
-    }
-
-    private float getY() {
-        return super.position.y;
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        for (FragmentBullet frag : fragments) {
-            frag.dispose();
+            externalFragments.add(new FragmentBullet(pos, dir, fragAnim, 16, 16, 5));
         }
     }
 

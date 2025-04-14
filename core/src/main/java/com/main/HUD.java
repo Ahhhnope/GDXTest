@@ -40,7 +40,7 @@ public class HUD {
     public void render(SpriteBatch batch) {
         if (!HudVisible) return;
         batch.begin();
-        font.draw(batch, String.format("Time: %.1f s", timer), 20, Gdx.graphics.getHeight() - 20);
+        font.draw(batch, String.format("Time: %.1f s", timer), 20, Gdx.graphics.getHeight() - 50);
         batch.end();
     }
 
