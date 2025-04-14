@@ -241,6 +241,10 @@ public class Boss {
         return position.y;
     }
 
+    public int getCurrentHp() {
+        return currentHp;
+    }
+
 
     public void renderHitbox() {
         Gdx.gl.glEnable(GL20.GL_BLEND);

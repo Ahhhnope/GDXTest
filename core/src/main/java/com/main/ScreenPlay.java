@@ -2,8 +2,10 @@ package com.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.awt.*;
 
@@ -20,6 +22,8 @@ public class ScreenPlay {
     private Texture btnbackicon;
     private Rectangle btnBackHitbox;
 
+    private ShapeRenderer shapeRenderer;
+
 
     public ScreenPlay(){
 
@@ -31,11 +35,16 @@ public class ScreenPlay {
         title = new Texture("Stuffs/Buttons/TenDanhBoss.png");
         //Load ảnh các nút
         btnPlay = new Texture("Stuffs/Buttons/Play.png");
-        btnPlay1Hitbox = new Rectangle(440, 225, btnPlay.getWidth() / 3, btnPlay.getHeight() / 3);
-        btnPlay2Hitbox = new Rectangle(775, 225, btnPlay.getWidth() / 3, btnPlay.getHeight() / 3);
+        System.out.println(btnPlay.getWidth() / 3 + " | " + btnPlay.getHeight() / 3);
+        System.out.println((btnPlay.getWidth() / 2 + 12) + " | " + btnPlay.getHeight() / 2);
+        btnPlay1Hitbox = new Rectangle(530, 328, btnPlay.getWidth() / 2 + 11, btnPlay.getHeight() / 2);
+        btnPlay2Hitbox = new Rectangle(879, 328, btnPlay.getWidth() / 2 + 11, btnPlay.getHeight() / 2);
 
         btnbackicon = new Texture("Stuffs/Buttons/backicon.png");
-        btnBackHitbox = new Rectangle(10, 292, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
+        btnBackHitbox = new Rectangle(10, 420, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
+
+        shapeRenderer = new ShapeRenderer();
+
     }
 
     public void update() {
@@ -58,6 +67,17 @@ public class ScreenPlay {
         }
     }
 
+    public void renderHitbox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+
+        shapeRenderer.rect(btnBackHitbox.x, btnBackHitbox.y, btnBackHitbox.width, btnBackHitbox.height);
+        shapeRenderer.rect(btnPlay1Hitbox.x, btnPlay1Hitbox.y, btnPlay1Hitbox.width, btnPlay1Hitbox.height);
+        shapeRenderer.rect(btnPlay2Hitbox.x, btnPlay2Hitbox.y, btnPlay2Hitbox.width, btnPlay2Hitbox.height);
+
+        shapeRenderer.end();
+    }
+
     public void render(SpriteBatch batch){
         batch.begin();
         //nền Background
@@ -70,18 +90,19 @@ public class ScreenPlay {
             nenMapLevel.getHeight() * 1.5f);
 
         // vẽ chữ hiện trên nền background
-        batch.draw(title, 500, Gdx.graphics.getHeight() - 200, title.getWidth() * 0.5f, title.getHeight() * 0.5f);
+        batch.draw(title, 600, Gdx.graphics.getHeight() - 300, title.getWidth() * 0.5f, title.getHeight() * 0.5f);
 
         // Vẽ nút PLAY bên phải
-        batch.draw(btnPlay, 440, 220, (float) btnPlay1Hitbox.getWidth(), (float) btnPlay1Hitbox.getHeight());
+        batch.draw(btnPlay, btnPlay1Hitbox.x + 35, btnPlay1Hitbox.y + 10, (float) btnPlay1Hitbox.getWidth() - 70, (float) btnPlay1Hitbox.getHeight() - 17);
 
         // Vẽ nút PLAY bên trái
-        batch.draw(btnPlay, 780, 220, (float) btnPlay2Hitbox.getWidth(), (float) btnPlay2Hitbox.getHeight());
+        batch.draw(btnPlay, btnPlay2Hitbox.x + 36, btnPlay2Hitbox.y + 10, (float) btnPlay2Hitbox.getWidth() - 70, (float) btnPlay2Hitbox.getHeight() - 17);
 
         //vẽ nút backicon
-        batch.draw(btnbackicon, 10, 292, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
+        batch.draw(btnbackicon, btnBackHitbox.x, btnBackHitbox.y, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
         batch.end();
 
+        renderHitbox();
     }
 
     public void dispose(){

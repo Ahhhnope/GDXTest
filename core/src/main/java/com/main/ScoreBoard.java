@@ -2,8 +2,10 @@ package com.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.awt.*;
 
@@ -16,6 +18,7 @@ public class ScoreBoard {
     private Texture btnbackicon;
     private Rectangle btnBackHitbox;
 
+    private ShapeRenderer shapeRenderer;
 
     public ScoreBoard(){
 //        Load ảnh & hitbox
@@ -23,7 +26,9 @@ public class ScoreBoard {
         backgroudDiem = new Texture("Stuffs/ScoreBoard.png");
 
         btnbackicon = new Texture("Stuffs/Buttons/backicon.png");
-        btnBackHitbox = new Rectangle(10, 322, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
+        btnBackHitbox = new Rectangle(10, 395, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
+
+        shapeRenderer = new ShapeRenderer();
     }
 
     public void update() {
@@ -38,6 +43,15 @@ public class ScoreBoard {
         }
     }
 
+    public void renderHitbox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+
+        shapeRenderer.rect(btnBackHitbox.x, btnBackHitbox.y, btnBackHitbox.width, btnBackHitbox.height);
+
+        shapeRenderer.end();
+    }
+
     public void render(SpriteBatch batch){
         batch.begin();
         //nền Background
@@ -50,9 +64,10 @@ public class ScoreBoard {
             backgroudDiem.getHeight() * 1.5f);
 
         //vẽ nút backicon
-        batch.draw(btnbackicon, 10 , 322, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
-
+        batch.draw(btnbackicon, btnBackHitbox.x , btnBackHitbox.y, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
         batch.end();
+
+        renderHitbox();
     }
 
     public void dispose(){

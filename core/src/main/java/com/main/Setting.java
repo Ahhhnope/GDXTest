@@ -2,8 +2,10 @@ package com.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.awt.*;
 
@@ -26,8 +28,6 @@ public class Setting {
     private Rectangle btnAmluong2;
 
     private Texture iconAmLuongTat;
-    private Rectangle btnAmluongTat1;
-    private Rectangle btnAmluongTat2;
 
     private Texture AnhMauDen;
 
@@ -40,6 +40,8 @@ public class Setting {
     private boolean isMusicMuted = false;
     private boolean isSfxMuted = false;
 
+    private ShapeRenderer shapeRenderer;
+
     public Setting(){
         //load ảnh background
         BackgroundScreen = new Texture("Stuffs/backgroundScreen.jpeg");
@@ -49,27 +51,28 @@ public class Setting {
 
         //Load ảnh âm lượng
         iconAmLuong = new Texture("Stuffs/Buttons/BatAmThanh.png");
-        btnAmluong1 = new Rectangle(328, 360, iconAmLuong.getWidth() / 4, iconAmLuong.getHeight() / 4);
-        btnAmluong2 = new Rectangle(330, 238, iconAmLuong.getWidth() / 4, iconAmLuong.getHeight() / 4);
+        btnAmluong1 = new Rectangle(456, 476, iconAmLuong.getWidth() / 4, iconAmLuong.getHeight() / 4);
+        btnAmluong2 = new Rectangle(458, 352, iconAmLuong.getWidth() / 4, iconAmLuong.getHeight() / 4);
 
         iconAmLuongTat = new Texture("Stuffs/Buttons/TatAmThanh.png");
-        btnAmluongTat1 = new Rectangle(440, 225, iconAmLuongTat.getWidth() / 4, iconAmLuongTat.getHeight() / 4);
-        btnAmluongTat2 = new Rectangle(775, 225, iconAmLuongTat.getWidth() / 4, iconAmLuongTat.getHeight() / 4);
 
         //Load ảnh các nút
         btnTang = new Texture("Stuffs/Buttons/thanhTang.png");
-        btnTang1Hitbox = new Rectangle(956, 365, btnTang.getWidth() / 9, btnTang.getHeight() / 9);
-        btnTang2Hitbox = new Rectangle(956, 243, btnTang.getWidth() / 9, btnTang.getHeight() / 9);
+        btnTang1Hitbox = new Rectangle(1084, 480, btnTang.getWidth() / 9, btnTang.getHeight() / 9);
+        btnTang2Hitbox = new Rectangle(1084, 356, btnTang.getWidth() / 9, btnTang.getHeight() / 9);
 
         btnGiam = new Texture("Stuffs/Buttons/thanhGiam.png");
-        btnGiam1Hitbox = new Rectangle(428, 385, btnGiam.getWidth() / 9, btnGiam.getHeight() / 9);
-        btnGiam2Hitbox = new Rectangle(428, 260, btnGiam.getWidth() / 9, btnGiam.getHeight() / 9);
+        btnGiam1Hitbox = new Rectangle(555, 496, btnGiam.getWidth() / 9, btnGiam.getHeight() / 9);
+        btnGiam2Hitbox = new Rectangle(555, 372, btnGiam.getWidth() / 9, btnGiam.getHeight() / 9);
 
         //Load ảnh đen âm lượng
         AnhMauDen = new Texture("Stuffs/Buttons/pixelMauden.png");
 
         btnbackicon = new Texture("Stuffs/Buttons/backicon.png");
-        btnBackHitbox = new Rectangle(10, 292, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
+        btnBackHitbox = new Rectangle(10, 392, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
+
+
+        shapeRenderer = new ShapeRenderer();
     }
 
     public void update() {
@@ -126,6 +129,21 @@ public class Setting {
         }
     }
 
+    public void renderHitbox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+
+        shapeRenderer.rect(btnBackHitbox.x, btnBackHitbox.y, btnBackHitbox.width, btnBackHitbox.height);
+        shapeRenderer.rect(btnAmluong1.x, btnAmluong1.y, btnAmluong1.width, btnAmluong1.height);
+        shapeRenderer.rect(btnAmluong2.x, btnAmluong2.y, btnAmluong2.width, btnAmluong2.height);
+        shapeRenderer.rect(btnGiam1Hitbox.x, btnGiam1Hitbox.y, btnGiam1Hitbox.width, btnGiam1Hitbox.height);
+        shapeRenderer.rect(btnGiam2Hitbox.x, btnGiam2Hitbox.y, btnGiam2Hitbox.width, btnGiam2Hitbox.height);
+        shapeRenderer.rect(btnTang1Hitbox.x, btnTang1Hitbox.y, btnTang1Hitbox.width, btnTang1Hitbox.height);
+        shapeRenderer.rect(btnTang2Hitbox.x, btnTang2Hitbox.y, btnTang2Hitbox.width, btnTang2Hitbox.height);
+
+        shapeRenderer.end();
+    }
+
     public void render(SpriteBatch batch){
         batch.begin();
 
@@ -137,38 +155,38 @@ public class Setting {
             NenManHinh.getWidth() * 1.5f,
             NenManHinh.getHeight() * 1.5f);
         // Vẽ nút Giảm trên bên phải trên
-        batch.draw(btnGiam, 428, 385, (float) btnGiam1Hitbox.getWidth(), (float) btnGiam1Hitbox.getHeight());
+        batch.draw(btnGiam, btnGiam1Hitbox.x, btnGiam1Hitbox.y, (float) btnGiam1Hitbox.getWidth(), (float) btnGiam1Hitbox.getHeight());
 
         // Vẽ nút Tăng trên bên trái trên
-        batch.draw(btnTang, 956, 365, (float) btnTang1Hitbox.getWidth(), (float) btnTang1Hitbox.getHeight());
+        batch.draw(btnTang, btnTang1Hitbox.x, btnTang1Hitbox.y, (float) btnTang1Hitbox.getWidth(), (float) btnTang1Hitbox.getHeight());
 
         // Vẽ nút Giảm trên bên bên phải dưới
-        batch.draw(btnGiam, 428, 260, (float) btnGiam2Hitbox.getWidth(), (float) btnGiam2Hitbox.getHeight());
+        batch.draw(btnGiam, btnGiam2Hitbox.x, btnGiam2Hitbox.y, (float) btnGiam2Hitbox.getWidth(), (float) btnGiam2Hitbox.getHeight());
 
         // Vẽ nút Tăng trên bên trái dưới
-        batch.draw(btnTang, 956, 243, (float) btnTang2Hitbox.getWidth(), (float) btnTang2Hitbox.getHeight());
+        batch.draw(btnTang, btnTang2Hitbox.x, btnTang2Hitbox.y, (float) btnTang2Hitbox.getWidth(), (float) btnTang2Hitbox.getHeight());
 
         //vẽ nút backicon
-        batch.draw(btnbackicon, 10, 292, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
+        batch.draw(btnbackicon, btnBackHitbox.x, btnBackHitbox.y, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
 
         // Vẽ icon âm thanh phù hợp với trạng thái
         if (isMusicMuted) {
-            batch.draw(iconAmLuongTat, 328, 360, (float) btnAmluong1.getWidth(), (float) btnAmluong1.getHeight());
+            batch.draw(iconAmLuongTat, btnAmluong1.x, btnAmluong1.y, (float) btnAmluong1.getWidth(), (float) btnAmluong1.getHeight());
         } else {
-            batch.draw(iconAmLuong, 328, 360, (float) btnAmluong1.getWidth(), (float) btnAmluong1.getHeight());
+            batch.draw(iconAmLuong, btnAmluong1.x, btnAmluong1.y, (float) btnAmluong1.getWidth(), (float) btnAmluong1.getHeight());
         }
 
         if (isSfxMuted) {
-            batch.draw(iconAmLuongTat, 330, 238, (float) btnAmluong2.getWidth(), (float) btnAmluong2.getHeight());
+            batch.draw(iconAmLuongTat, btnAmluong2.x, btnAmluong2.y, (float) btnAmluong2.getWidth(), (float) btnAmluong2.getHeight());
         } else {
-            batch.draw(iconAmLuong, 330, 238, (float) btnAmluong2.getWidth(), (float) btnAmluong2.getHeight());
+            batch.draw(iconAmLuong, btnAmluong2.x, btnAmluong2.y, (float) btnAmluong2.getWidth(), (float) btnAmluong2.getHeight());
         }
 
         // Vẽ các ô màu đen cho thanh Music - chỉ vẽ khi không bị tắt tiếng
         if (!isMusicMuted) {
             for (int i = 0; i < musicVolume; i++) {
                 // Điều chỉnh vị trí để phù hợp với các ô trắng trong hình
-                batch.draw(AnhMauDen, 485 + i * 50, 360, 48, 49);
+                batch.draw(AnhMauDen, 614 + i * 50, 475, 48, 49);
             }
         }
 
@@ -176,11 +194,14 @@ public class Setting {
         if (!isSfxMuted) {
             for (int i = 0; i < sfxVolume; i++) {
                 // Điều chỉnh vị trí để phù hợp với các ô trắng trong hình
-                batch.draw(AnhMauDen, 485 + i * 50, 240, 48, 49);
+                batch.draw(AnhMauDen, 614 + i * 50, 351, 48, 49);
             }
         }
 
         batch.end();
+
+
+        renderHitbox();
     }
 
     public void Dispose(){
