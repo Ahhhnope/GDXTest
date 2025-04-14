@@ -14,12 +14,13 @@ public class FragmentBullet {
     public Vector2 velocity;
     public Animation<TextureRegion> animation;
     public float animTime = 0f;
-    private int damage = 100;
     private static boolean textureDisposed = false;
     private ShapeRenderer shapeRenderer;
     private Circle bulletHitbox;
     private float width;
     private float height;
+
+    private int damage = 10;
 
     public FragmentBullet(Vector2 position, Vector2 velocity, Animation<TextureRegion> animation, float width, float height, float radius) {
         this.position = position;
@@ -46,6 +47,7 @@ public class FragmentBullet {
 
         bulletHitbox.setPosition(position.x + width / 2, position.y + height / 2);
     }
+
 
     public void renderHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

@@ -74,13 +74,13 @@ public class MapBossOne {
             if (b.getClass() == ExplosionBullet.class) {
                 fragmentBullets = ((ExplosionBullet) b).getfragments();
                 for (int j = 0; j < fragmentBullets.size(); j++) {
-                    if (bulletHit(b.getHitbox(), player.getHitbox())) {
-                        player.takeDamage(b.getDamage());
-                        bossBullets.remove(j);
+                    FragmentBullet fb = fragmentBullets.get(j);
+                    if (bulletHit(fb.getBulletHitbox(), player.getHitbox())) {
+                        player.takeDamage(fb.getDamage());
+                        fragmentBullets.remove(j);
                         j--;
                     }
                 }
-
             }
 
         }
