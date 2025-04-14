@@ -15,39 +15,41 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 
 public class Enemy {
-    private Texture texture;
-    private Texture enemyBullet;
+    private final Texture texture;
+    private final Texture enemyBullet;
 
-    private Vector2 position;
-    private Vector2 velocity;
-    private float speed = 200f;
+    private final Vector2 position;
+    private final Vector2 velocity;
+    private final float speed = 200f;
 
-    private ArrayList<Bullet> bullets;
+    private final ArrayList<Bullet> bullets;
 
-    private Animation<TextureRegion> meteorAnimation;
+    private final Animation<TextureRegion> meteorAnimation;
     private float animTime = 0f;
 
     private float shootTimer = 0f;
-    private float shootInterval = 2f;
+    private final float shootInterval = 2f;
 
     private boolean stopped = false;
-    private float stopX; // vị trí X sẽ dừng lại (gần boss)
+    private final float stopX; // vị trí X sẽ dừng lại (gần boss)
     private Texture bulletTexture;
     private int damage;
 
     //dao động
-    private float baseY;
+    private final float baseY;
     private float floatTime = 0f;
-    private float floatAmplitude = 20f; // Độ cao dao động
-    private float floatFrequency = 2f;  // Tốc độ dao động
+    private final float floatAmplitude = 20f; // Độ cao dao động
+    private final float floatFrequency = 2f;  // Tốc độ dao động
 
-//    HP bar stuff
-    private Rectangle hitbox;
-    private int maxHP = 200;
+    //    HP bar stuff
+    private final Rectangle hitbox;
+    private final int maxHP = 200;
     private int currentHP = 200;
 
+    private final Player player;
+    private final ShapeRenderer shapeRenderer;
 
-    private ShapeRenderer shapeRenderer;
+
     public Enemy(float bossX, float bossY) {
         texture = new Texture("Bosses/Ship3/Ship3.png");
         enemyBullet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/0.png");
@@ -68,7 +70,7 @@ public class Enemy {
         shapeRenderer = new ShapeRenderer();
         hitbox = new Rectangle(0, 0, 80, 35);
 
-
+        player = new Player();
     }
 
     public void update(float delta) {
@@ -120,7 +122,9 @@ public class Enemy {
     public ArrayList<Bullet> getBullets() {
         return bullets;
     }
-
+    public Rectangle getHitbox(){
+        return hitbox;
+    }
 
     public void shoot() {
         Texture enemyBulletSheet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/GreenAnimationBullet/0.png");
@@ -190,7 +194,6 @@ public class Enemy {
             b.renderHitbox();
         }
     }
-
 
 
     public void render(SpriteBatch batch) {

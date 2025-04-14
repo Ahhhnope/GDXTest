@@ -26,7 +26,7 @@ public class ExplosionBullet extends Bullet {
         super(startX, startY, targetX, targetY, radius);
         this.externalFragments = externalFragments;
 
-        this.explodeDelay = MathUtils.random(0.5f, 1.5f);
+        this.explodeDelay = MathUtils.random(0.5f, 2.25f);
 
         Texture bulletSheet = new Texture("Bosses/ExplosiveBullet/Explosive1/ExplosiveAnimation/2.png");
         TextureRegion[][] tmp = TextureRegion.split(bulletSheet, 16, 15);
