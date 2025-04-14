@@ -58,7 +58,7 @@ public class MapBossOne {
 
 //        Heal the plyer to max HP (for testing purposes)
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-            player.heal(100);
+            player.heal(2000);
         }
 
 
