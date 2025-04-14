@@ -20,14 +20,13 @@ public class ExplosionBullet extends Bullet {
     private float timer = 0f;
 
 
-
     private float width = 16f;
     private float height = 16f;
     private Animation<TextureRegion> meteorAnimation;
     private float animTime = 0f;
     private TextureRegion currentFrame;
 
-    private List<FragmentBullet> fragments = new ArrayList<>();
+    private ArrayList<FragmentBullet> fragments = new ArrayList<>();
     ;
 
     public ExplosionBullet(float startX, float startY, float targetX, float targetY) {
@@ -55,8 +54,18 @@ public class ExplosionBullet extends Bullet {
                 frag.update(delta);
             }
         }
+
+        for (int i = 0; i < fragments.size();i++){
+            FragmentBullet b = fragments.get(i);
+            b.update(delta);
+            if (b.isOutOfScreen(Gdx.graphics.getWidth() + 100, Gdx.graphics.getHeight() + 100)){
+                fragments.remove(i);
+                i--;
+            }
+        }
         animTime += delta;
         currentFrame = meteorAnimation.getKeyFrame(animTime, true);
+
     }
 
     @Override
@@ -71,6 +80,12 @@ public class ExplosionBullet extends Bullet {
             }
         }
     }
+
+    public ArrayList<FragmentBullet> getfragments() {
+        return fragments;
+    }
+
+
     public void explode() {
         Texture fragmentSheet = new Texture("Bosses/ExplosiveBullet/SmallBulletOfExplosives/SmallBulletOfExplosivesAnimation/0.png");
         TextureRegion[][] tmp = TextureRegion.split(fragmentSheet, 15, 15);
@@ -85,11 +100,8 @@ public class ExplosionBullet extends Bullet {
             Vector2 dir = new Vector2((float) Math.cos(angle), (float) Math.sin(angle)).nor().scl(speed);
             Vector2 pos = new Vector2(getX(), getY());
 
-            fragments.add(new FragmentBullet(pos, dir, fragAnim));
+            fragments.add(new FragmentBullet(pos, dir, fragAnim, 16, 16, 5));
         }
-
-    }
-    public void fragmentBullet(){
 
     }
 

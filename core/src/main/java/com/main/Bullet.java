@@ -201,10 +201,7 @@ public class Bullet {
         }
 
         batch.end();
-        renderHitbox();
 
-
-        renderHitbox();
 
     }
 

@@ -183,7 +183,18 @@ public class Player {
     }
 
 
+
+    public void renderHitbox() {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 0, 0, 1f);
+        shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        shapeRenderer.end();
+    }
+
+
     public void render(SpriteBatch batch) {
+
         // Thanh máu
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         float barX = (Gdx.graphics.getWidth() / 2) - 600f;
@@ -210,14 +221,6 @@ public class Player {
             shapeRenderer.circle(barX + radius, barY + radius, filledWidth / 2f);
         }
 
-        shapeRenderer.end();
-
-        // Hitbox
-
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1, 0, 0, 1f);
-        shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         shapeRenderer.end();
 
         batch.begin();

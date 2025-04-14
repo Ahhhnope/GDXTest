@@ -24,9 +24,7 @@ public class Boss {
     private float shootInterval = 0.3f;
     private Player player;
 
-    private ArrayList<Enemy> enemies = new ArrayList<>();
-    private float spawnEnemyTimer = 0f;
-    private float spawnEnemyInterval = 10f;
+
 
     //MeteorTime
 
@@ -40,7 +38,7 @@ public class Boss {
     private float trackingShootTimer = 0f;
     private float trackingShootInterval = 1f;
 
-    // di chuyển random
+    // di chuyển random (What the fuck is random!?)
     private float randomizeTimer = 0f;
     private float randomizeInterval = 5f;
 
@@ -103,24 +101,18 @@ public class Boss {
                 i--;
             }
         }
+
         explosionTimer += delta;
         if (explosionTimer >= explosionInterval) {
             shootExplosion();
             explosionTimer = 0;
         }
+
+
+
         time += delta;
         position.x = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
         position.y = baseY + MathUtils.sin(time * frequency) * amplitude;
-
-        spawnEnemyTimer += delta;
-        if (spawnEnemyTimer >= spawnEnemyInterval) {
-            enemies.add(new Enemy(position.x, position.y)); // spawn gần boss
-            spawnEnemyTimer = 0f;
-        }
-
-        for (Enemy enemy : enemies){
-            enemy.update(delta);
-        }
 
     }
 
@@ -150,7 +142,6 @@ public class Boss {
     }
 
     public void spawnTrackingBullet(Player player) {
-        float delta = Gdx.graphics.getDeltaTime();
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
 
@@ -170,8 +161,19 @@ public class Boss {
         return bullets;
     }
 
+    public float getPositionX() {
+        return position.x;
+    }
 
+    public float getPositionY() {
+        return position.y;
+    }
 
+    public void renderHitbox() {
+        for (Bullet b : bullets) {
+//            b.renderHitbox();
+        }
+    }
 
     public void render(SpriteBatch batch){
         batch.begin();
@@ -181,11 +183,8 @@ public class Boss {
         for (Bullet bullet : bullets){
             bullet.render(batch);
         }
-        for (Enemy enemy : enemies){
-            enemy.render(batch);
-        }
-
     }
+
     public void dispose(){
         for (Bullet bullet : bullets){
             bullet.dispose();

@@ -30,6 +30,7 @@ public class Enemy {
     private boolean stopped = false;
     private float stopX; // vị trí X sẽ dừng lại (gần boss)
     private Texture bulletTexture;
+    private int damage;
 
     //dao động
     private float baseY;
@@ -122,6 +123,14 @@ public class Enemy {
             );
 
             bullets.add(bullet);
+        }
+    }
+
+
+
+    public void renderHitbox() {
+        for (Bullet b : bullets) {
+            b.renderHitbox();
         }
     }
 
