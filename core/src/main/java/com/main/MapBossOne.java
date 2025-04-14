@@ -24,7 +24,7 @@ public class MapBossOne {
 
 
     private float spawnEnemyTimer = 0f;
-    private float spawnEnemyInterval = 10f;
+    private float spawnEnemyInterval = 1f;
 
 
 

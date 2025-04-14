@@ -1,12 +1,15 @@
 package com.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -38,10 +41,13 @@ public class Enemy {
     private float floatAmplitude = 20f; // Độ cao dao động
     private float floatFrequency = 2f;  // Tốc độ dao động
 
-    public int hp = 200;
-    public int currHp = 200;
+    private Rectangle hitbox;
+    private int hp = 200;
+    private int currentHP = 200;
+    private float hpX;
+    private float hpY;
 
-
+    private ShapeRenderer shapeRenderer;
     public Enemy(float bossX, float bossY) {
         texture = new Texture("Bosses/Ship3/Ship3.png");
         enemyBullet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/0.png");
@@ -58,6 +64,9 @@ public class Enemy {
         TextureRegion[][] tmp = TextureRegion.split(bulletSheet, 15, 13);
         meteorAnimation = new Animation<>(0.3f, tmp[0]);
 
+
+        shapeRenderer = new ShapeRenderer();
+        hitbox = new Rectangle(0, 0, 80, 35);
     }
 
     public void update(float delta) {
@@ -71,7 +80,6 @@ public class Enemy {
                 velocity.setZero(); // dừng lại
             }
             animTime += delta;
-
         }
 
         // Bắn nếu đã dừng
@@ -95,11 +103,21 @@ public class Enemy {
                 i--;
             }
         }
+
+//        Cập nhật vị trí hitbox
+        hitbox.setPosition(position.x + 25, position.y + hitbox.height + 12);
+    }
+
+    public void takeDamage(int damage) {
+        currentHP -= damage;
+        if (currentHP < 0) currentHP = 0;
     }
 
     public ArrayList<Bullet> getBullets() {
         return bullets;
     }
+
+
 
 
     public void shoot() {
@@ -132,6 +150,12 @@ public class Enemy {
 
 
     public void renderHitbox() {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 0, 0, 1f);
+        shapeRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        shapeRenderer.end();
+
         for (Bullet b : bullets) {
             b.renderHitbox();
         }

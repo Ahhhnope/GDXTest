@@ -183,8 +183,6 @@ public class Player {
         if (currentHP > 100) currentHP = 100;
     }
 
-
-
     public void renderHitbox() {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

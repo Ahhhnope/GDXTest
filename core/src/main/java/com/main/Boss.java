@@ -47,7 +47,6 @@ public class Boss {
     private float randomizeInterval = 5f;
 
     //dao động Y
-
     private float time = 0f;
     private float baseY;
     private float amplitude = 200f;
@@ -212,6 +211,8 @@ public class Boss {
         batch.draw(BossOne, position.x, position.y, 256, 256);
         batch.end();
 
+
+//        Boss Health Bar
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         float PlayerbarX = 100;
         float PlayerbarY = Gdx.graphics.getHeight() - 30;
