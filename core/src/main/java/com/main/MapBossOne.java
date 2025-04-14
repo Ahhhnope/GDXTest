@@ -24,15 +24,15 @@ public class MapBossOne {
 
 
     private float spawnEnemyTimer = 0f;
-    private float spawnEnemyInterval = 1f;
+    private float spawnEnemyInterval = 5f;
 
     private ArrayList<HitEffect> hitEffects = new ArrayList<>();
 
 
     public MapBossOne(){
-        middleScreen = (Gdx.graphics.getHeight() / 2f) - 60;
+        middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
         player = new Player();
-        BossOne = new Boss(1150,middleScreen);
+        BossOne = new Boss(1400,middleScreen);
         enemies = new ArrayList<>();
     }
 
@@ -69,20 +69,26 @@ public class MapBossOne {
 
 //            Normal bullet hit detection
             if (bulletHit(b.getBulletHitbox(), player.getHitbox())) {
-                player.takeDamage(b.getDamage());
-                bossBullets.remove(i);
-                i--;
+                if (!player.isInvincible()){
+                    player.takeDamage(b.getDamage());
+                    bossBullets.remove(i);
+                    i--;
+                }
+
             }
 
 //            Check if the bullet being checked is a Explosion bullet (Cuz the fragment they explode is a different bullet class)
             fragmentBullets = BossOne.getFragmentBullets();
             for (int j = 0; j < fragmentBullets.size(); j++) {
                 FragmentBullet fb = fragmentBullets.get(j);
-                if (bulletHit(fb.getBulletHitbox(), player.getHitbox())) {
-                    player.takeDamage(fb.getDamage());
-                    fragmentBullets.remove(j);
-                    j--;
+                if (!player.isInvincible()){
+                    if (bulletHit(fb.getBulletHitbox(), player.getHitbox())) {
+                        player.takeDamage(fb.getDamage());
+                        fragmentBullets.remove(j);
+                        j--;
+                    }
                 }
+
             }
 
         }
@@ -93,11 +99,12 @@ public class MapBossOne {
             for (int i = 0; i < enemyBullets.size(); i++) {
                 Bullet bullet = enemyBullets.get(i);
                 if(bulletHit(bullet.getHitbox(), player.getHitbox())) {
-                    if (player.isInvincible()){
-                        player.takeDamage(bullet.getDamage());
-                        enemyBullets.remove(i);
-                        i--;
-                    }
+                        if (!player.isInvincible()){
+                            player.takeDamage(bullet.getDamage());
+                            enemyBullets.remove(i);
+                            i--;
+                        }
+
                 }
             }
         }

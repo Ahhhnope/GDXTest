@@ -49,7 +49,7 @@ public class Boss {
     //dao động Y
     private float time = 0f;
     private float baseY;
-    private float amplitude = 200f;
+    private float amplitude = 300f;
     private float frequency = 1f;
 
     //dao động X
