@@ -59,6 +59,10 @@ public class Boss {
     private int width = 128;
     private int height = 128;
 
+    private int hp = 2000;
+    private int currentHp = 2000;
+
+
     public Boss (float x, float y){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);

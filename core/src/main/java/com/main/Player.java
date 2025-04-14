@@ -47,6 +47,7 @@ public class Player {
     private float shootInterval = 0.1f;
     float hitboxSize;
     float offset;
+    public int bulletDamage = 5;
 
     private ShapeRenderer shapeRenderer;
 

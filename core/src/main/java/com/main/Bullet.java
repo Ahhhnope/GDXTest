@@ -202,7 +202,7 @@ public class Bullet {
 
         batch.end();
 
-
+        renderHitbox();
     }
 
     public void setBulletTexture(Texture texture) {

@@ -60,6 +60,7 @@ public class FragmentBullet {
         batch.draw(frame, position.x, position.y, width, height);
         batch.end();
 
+        renderHitbox();
     }
 
     public void dispose() {

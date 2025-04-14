@@ -38,6 +38,10 @@ public class Enemy {
     private float floatAmplitude = 20f; // Độ cao dao động
     private float floatFrequency = 2f;  // Tốc độ dao động
 
+    public int hp = 200;
+    public int currHp = 200;
+
+
     public Enemy(float bossX, float bossY) {
         texture = new Texture("Bosses/Ship3/Ship3.png");
         enemyBullet = new Texture("Bosses/ExplosiveBullet/SmallEnemiesBullets/Green/0.png");
@@ -143,6 +147,8 @@ public class Enemy {
         for (Bullet bullet : bullets) {
             bullet.render(batch);
         }
+
+        renderHitbox();
     }
 
     public void dispose() {

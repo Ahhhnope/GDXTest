@@ -104,19 +104,6 @@ public class MapBossOne {
     public void renderHitbox() {
         player.renderHitbox();
         BossOne.renderHitbox();
-
-
-        if (enemyBullets != null) {
-            for(Bullet b : enemyBullets) {
-                b.renderHitbox();
-            }
-        }
-
-        if (fragmentBullets != null) {
-            for(FragmentBullet b : fragmentBullets) {
-                b.renderHitbox();
-            }
-        }
     }
 
     public void render(SpriteBatch batch){
