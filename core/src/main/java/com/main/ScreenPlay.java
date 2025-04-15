@@ -50,7 +50,7 @@ public class ScreenPlay {
     public void update() {
         // Xử lý click
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-
+            //s/das
             int touchX = Gdx.input.getX();
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
             if (btnBackHitbox.contains(touchX, touchY)) {
