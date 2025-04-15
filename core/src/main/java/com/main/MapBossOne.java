@@ -42,6 +42,12 @@ public class MapBossOne {
     private ArrayList<HitEffect> hitEffects = new ArrayList<>();
     private boolean scoreSubmitted;
 
+    //Health
+    private ArrayList<HealEffect> healEffects = new ArrayList<>();
+
+    private ArrayList<HealthPickup> healthPickups = new ArrayList<>();
+    private float healthSpawnTimer = 0f;
+    private float healthSpawnInterval = 15f;
     //Enemy Death Effect
     ArrayList<DeathExplosionEffect> deathEffects = new ArrayList<>();
 
@@ -56,6 +62,7 @@ public class MapBossOne {
 
     private boolean win;
 
+    private BossSoundManager BossSound;
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
         player = new Player();
@@ -67,7 +74,11 @@ public class MapBossOne {
         win = false;
 
         scoreSubmitted = false;
+
+        BossSound = new BossSoundManager();
+
         winScreen = new WinScreen();
+
         background = new Texture("Background3.png");
     }
 
@@ -237,6 +248,25 @@ public class MapBossOne {
                     }
                 }
                 screenShake.update(deltaTime);
+              
+                healthSpawnTimer += deltaTime;
+                if (healthSpawnTimer >= healthSpawnInterval) {
+                    float spawnX = MathUtils.random(100, Gdx.graphics.getWidth() - 100);
+                    float spawnY = MathUtils.random(100, Gdx.graphics.getHeight() - 100);
+                    healthPickups.add(new HealthPickup(spawnX, spawnY));
+                    healthSpawnTimer = 0f;
+                }
+                //HEALL
+                for (int i = 0; i < healthPickups.size(); i++) {
+                    HealthPickup hp = healthPickups.get(i);
+                    if (!hp.isCollected() && bulletHit(hp.getHitbox(), player.getHitbox())) {
+                        hp.collect();
+                        player.heal(50);
+                        healEffects.add(new HealEffect(player.getX(), player.getY()));
+                        BossSound.playHeal();
+
+                    }
+                }
 
 //                Calculate score multiplier base on timer
                 float timer = hud.getTimer();
@@ -251,6 +281,7 @@ public class MapBossOne {
                 }
 
                 score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
+
 
             } else {
 //                Win
@@ -268,6 +299,14 @@ public class MapBossOne {
                         System.out.println("Score: "+score);
                     }
                     scoreSubmitted = true;
+                }
+            }
+            for (int i = 0; i < healEffects.size(); i++) {
+                HealEffect e = healEffects.get(i);
+                e.update(deltaTime);
+                if (e.isFinished()) {
+                    healEffects.remove(i);
+                    i--;
                 }
             }
         }
@@ -317,6 +356,12 @@ public class MapBossOne {
         for (DeathExplosionEffect effect : deathEffects) {
             effect.render(batch);
         }
+        for (HealthPickup hp : healthPickups) {
+            hp.render(batch);
+        }
+        for (HealEffect e : healEffects) {
+            e.render(batch);
+        }
         float shakeX = screenShake.getOffsetX();
         float shakeY = screenShake.getOffsetY();
 
@@ -355,6 +400,12 @@ public class MapBossOne {
 
         if (bossInitialized) {
             BossOne.dispose();
+        }
+        for (HealthPickup hp : healthPickups) {
+            hp.dispose();
+        }
+        for (HealEffect e : healEffects) {
+            e.dispose();
         }
     }
 }
