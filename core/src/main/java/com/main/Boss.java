@@ -299,7 +299,7 @@ public class Boss {
 
         if (spiralDone && !isFiringSpiral) {
             patternDelayTimer += delta;
-            if (patternDelayTimer >= 4f) {
+            if (patternDelayTimer >= 3f) {
                 patternTimer += delta;
                 if (patternTimer >= patternCooldown) {
                     patternTimer = 0f;

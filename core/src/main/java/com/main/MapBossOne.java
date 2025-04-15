@@ -27,6 +27,11 @@ public class MapBossOne {
     private ArrayList<FragmentBullet> fragmentBullets;
     private ArrayList<Enemy> enemies;
 
+    //background
+
+    private Texture background;
+    private float scrollX = 0;
+    private float scrollSpeed = 100;
 
     private boolean bossInitialized = false;
 
@@ -60,15 +65,18 @@ public class MapBossOne {
         paused = false;
 
         scoreSubmitted = false;
+
+        background = new Texture("Background.png");
     }
 
     public void update(float deltaTime) {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (BossOne.getCurrentHp() > 0) {
+                SoundManager.play("click");
                 paused = !paused;
             } else {
-//                Nothing happen (So you can't pause during the win screen) =w=
+            // Nothing happen (So you can't pause during the win screen) =w=
             }
         }
 
@@ -97,8 +105,8 @@ public class MapBossOne {
                 BossOne.update(deltaTime, player);
 
 
-                //        spawn mobs
-                if (!BossOne.isPhase2()) {  // <-- Thêm điều kiện check phase
+                //spawn mobs
+                if (!BossOne.isPhase2()) {
                     spawnEnemyTimer += deltaTime;
                     if (spawnEnemyTimer >= spawnEnemyInterval) {
                         enemies.add(new Enemy(BossOne.getPositionX(), BossOne.getPositionY()));
@@ -263,25 +271,37 @@ public class MapBossOne {
     }
 
     public void render(SpriteBatch batch){
+        float delta = Gdx.graphics.getDeltaTime();
+        scrollX -= scrollSpeed * delta;
 
-            hud.render(batch);
-            player.render(batch);
-            if (bossInitialized) {
-                BossOne.render(batch);
-            }
-            for (Enemy enemy : enemies){
-                enemy.render(batch);
-            }
-            for (HitEffect e : hitEffects) {
-                e.render(batch);
-            }
-            for (DeathExplosionEffect effect : deathEffects) {
-                effect.render(batch);
-            }
-            float shakeX = screenShake.getOffsetX();
-            float shakeY = screenShake.getOffsetY();
+// reset lại vị trí scroll
+        if (scrollX <= -background.getWidth()) {
+            scrollX = 0;
+        }
 
-            batch.setTransformMatrix(batch.getTransformMatrix().idt().translate(shakeX, shakeY, 0));
+// Vẽ 2 background để tạo hiệu ứng liền mạch
+        batch.begin();
+        batch.draw(background, scrollX, 0);
+        batch.draw(background, scrollX + background.getWidth(), 0);
+        batch.end();
+        hud.render(batch);
+        player.render(batch);
+        if (bossInitialized) {
+            BossOne.render(batch);
+        }
+        for (Enemy enemy : enemies){
+            enemy.render(batch);
+        }
+        for (HitEffect e : hitEffects) {
+            e.render(batch);
+        }
+        for (DeathExplosionEffect effect : deathEffects) {
+            effect.render(batch);
+        }
+        float shakeX = screenShake.getOffsetX();
+        float shakeY = screenShake.getOffsetY();
+
+        batch.setTransformMatrix(batch.getTransformMatrix().idt().translate(shakeX, shakeY, 0));
 //            Draw paused shit
         if (paused) {
             pauseScreen.render(batch);
