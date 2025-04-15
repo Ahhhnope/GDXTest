@@ -33,6 +33,10 @@ public class HUD {
         running = true;
     }
 
+    public float getTimer() {
+        return timer;
+    }
+
     public void stop() {
         running = false;
     }
@@ -40,7 +44,7 @@ public class HUD {
     public void update(float delta) {
         if (running) {
             timer += delta;
-//            System.out.println("Timer: " + timer);
+            System.out.println("Timer: " + timer);
         }
     }
 

@@ -52,6 +52,7 @@ public class MapBossOne {
     private int hitOnBoss = 0;
     private int mobKilled = 0;
     private int score;
+    private int scoreMultiplier;
 
     private boolean win;
 
@@ -236,14 +237,30 @@ public class MapBossOne {
                     }
                 }
                 screenShake.update(deltaTime);
+
+//                Calculate score multiplier base on timer
+                float timer = hud.getTimer();
+                if (timer < 60) {
+                    scoreMultiplier = 5;
+                }
+                else if (timer > 60 && timer < 180) {
+                    scoreMultiplier = 3;
+                }
+                else if (timer > 180 && timer < 300) {
+                    scoreMultiplier = 2;
+                }
+
                 score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
+
             } else {
 //                Win
                 win = true;
                 BossOne.stopAllMusic();
+                winScreen.update();
 
                 if (!scoreSubmitted) {
                     //                SUBMIT DAT SCORE
+                    score *= scoreMultiplier;
                     float time = hud.getTime();
                     LocalDate date = LocalDate.now();
                     String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
