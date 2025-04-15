@@ -18,7 +18,7 @@ public class BossSoundManager {
     private Sound explode;
     private Sound bomberthrow;
     private Sound sonicboomsound;
-
+    private Sound heal;
     public BossSoundManager() {
         phase1Music = Gdx.audio.newMusic(Gdx.files.internal("BossMusic/phase1.mp3"));
         phase2Music = Gdx.audio.newMusic(Gdx.files.internal("BossMusic/phase2.mp3"));
@@ -29,7 +29,7 @@ public class BossSoundManager {
         explode = Gdx.audio.newSound(Gdx.files.internal("SoundEffectsSkills/dd2_explosive_trap_explode_0.wav"));
         bomberthrow = Gdx.audio.newSound(Gdx.files.internal("SoundEffectsSkills/dd2_goblin_bomber_throw_2.wav"));
         sonicboomsound = Gdx.audio.newSound(Gdx.files.internal("SoundEffectsSkills/dd2_sonic_boom_blade_slash_0.wav"));
-
+        heal = Gdx.audio.newSound(Gdx.files.internal("Heal/heal.wav"));
         phase1Music.setLooping(true);
         phase2Music.setLooping(true);
     }
@@ -57,6 +57,9 @@ public class BossSoundManager {
             shakeSound.play();
             hasShaken = true;
         }
+    }
+    public void playHeal(){
+        heal.play(1f);
     }
     public void playFireballShot() {
         fireballshot.play(0.8f); // hoặc chỉnh âm lượng nhỏ hơn nếu quá to
@@ -97,5 +100,7 @@ public class BossSoundManager {
         phase1Music.dispose();
         phase2Music.dispose();
         shakeSound.dispose();
+        heal.dispose();
+
     }
 }
