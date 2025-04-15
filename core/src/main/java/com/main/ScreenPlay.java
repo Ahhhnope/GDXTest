@@ -59,8 +59,8 @@ public class ScreenPlay {
             }
 
             if (btnPlay1Hitbox.contains(touchX, touchY)) {
-                SoundManager.play("click");
-                Main.gm.changeScreenWithFade("MapBossOne", 0.5f);
+                SoundManager.play("click2");
+                Main.gm.changeScreenWithFade("MapBossOne", 2f);
             }
 
             if (btnPlay2Hitbox.contains(touchX, touchY)) {

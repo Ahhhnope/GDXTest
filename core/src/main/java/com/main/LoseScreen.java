@@ -43,6 +43,7 @@ public class LoseScreen {
             if (btnBackHitbox.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY())) {
                 SoundManager.play("click");
                 GameManager.currScreen = "menu";
+                MusicManager.playMenuMusic();
             }
             if (btnReplayHitbox.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY())) {
                 SoundManager.play("click");
