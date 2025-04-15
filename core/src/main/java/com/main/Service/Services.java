@@ -2,6 +2,7 @@ package com.main.Service;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.TimeZone;
 
 public class Services {
     static String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=GameKYS;user=sa;password=123;trustServerCertificate=true";
@@ -33,7 +34,8 @@ public class Services {
     public boolean addMatch(int level, int score, float time, String date) {
         try (Connection con = DriverManager.getConnection(connectionUrl); PreparedStatement stmt = con.prepareStatement(addMatch)) {
 
-            Time timeBeLike = new Time((long) (time * 1000));
+            Time timeBeLike = new Time(((long) (time * 1000)) - TimeZone.getDefault().getRawOffset());
+
             Date dateBeLike = Date.valueOf(date);
 
             stmt.setInt(1, level);
