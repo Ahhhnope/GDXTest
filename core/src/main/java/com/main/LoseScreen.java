@@ -28,6 +28,8 @@ public class LoseScreen {
     private float score;
     private BitmapFont font;
 
+    public static boolean reset;
+
     public LoseScreen() {
         panel = new Texture("Stuffs/LoseScreenBeLike.png");
 //        panel = new Texture("Stuffs/paused.png");
@@ -37,6 +39,8 @@ public class LoseScreen {
 
         btnReplay = new Texture("Stuffs/Buttons/ReplayButton.png");
         btnReplayHitbox = new Rectangle(830, 276, 368, 146);
+
+        reset = false;
 
         shapeRenderer = new ShapeRenderer();
 
@@ -54,7 +58,7 @@ public class LoseScreen {
             }
             if (btnReplayHitbox.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY())) {
                 SoundManager.play("click");
-                GameManager.currScreen = "MapBossOne";
+                reset = true;
             }
         }
     }

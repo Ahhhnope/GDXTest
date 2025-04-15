@@ -33,6 +33,9 @@ public class HUD {
         running = true;
     }
 
+    public void resetTimer() {
+        timer = 0f;
+    }
 
     public void stop() {
         running = false;

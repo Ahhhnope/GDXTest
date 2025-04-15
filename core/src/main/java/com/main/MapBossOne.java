@@ -102,6 +102,7 @@ public class MapBossOne {
 
 
         if (pauseScreen.paused) {
+//            screenShake.stopShaking();
             pauseScreen.update();
         } else {
             if (!bossInitialized) {
@@ -125,6 +126,8 @@ public class MapBossOne {
 
 //                CALCULATE THE SCORE
                 score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
+
+
 
                 //spawn mobs
                 if (!BossOne.isPhase2()) {
@@ -332,6 +335,11 @@ public class MapBossOne {
 
                     loseScreen.update();
                     loseScreen.insertTimeAndStuff(time, scoreBeLike);
+
+                    if (LoseScreen.reset) {
+                        LoseScreen.reset = false;
+                        reset();
+                    }
                 }
             }
         }
@@ -402,7 +410,6 @@ public class MapBossOne {
 
     }
 
-
 //    Check if bullet is inside a hitbox
     // oh my god you have to use pythagorean theorem, lmao
     public boolean bulletHit(Circle bulletHitbox, Rectangle playerHitbox) {
@@ -416,6 +423,42 @@ public class MapBossOne {
 
         return distanceSquared <= (bulletHitbox.radius * bulletHitbox.radius);
     }
+
+
+    public void reset() {
+        hasStartedTimer = false;
+        bossInitialized = false;
+        scoreSubmitted = false;
+        roundDone = false;
+        win = false;
+        lose = false;
+
+        screenShake = new ScreenShake();
+
+        player = new Player();
+        BossOne = null; // Will get initialized on next update
+        bossBullets = null;
+        enemyBullets = null;
+        fragmentBullets = null;
+
+        enemies.clear();
+        hitEffects.clear();
+        deathEffects.clear();
+        healthPickups.clear();
+        healEffects.clear();
+
+        hud.resetTimer();
+        pauseScreen.paused = false;
+
+        hitOnBoss = 0;
+        mobKilled = 0;
+        score = 0;
+        scoreMultiplier = 1;
+
+        spawnEnemyTimer = 0f;
+        healthSpawnTimer = 0f;
+    }
+
 
     public void dispose(){
         hud.dispose();
