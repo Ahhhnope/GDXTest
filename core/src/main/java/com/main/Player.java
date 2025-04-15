@@ -226,6 +226,14 @@ public class Player {
         invincibleTime = 0f;
     }
 
+    public int getCurrentHP() {
+        return currentHP;
+    }
+
+    public int getMaxHP() {
+        return maxHP;
+    }
+
     public boolean isInvincible() {
         return isInvincible;
     }

@@ -44,6 +44,9 @@ public class MapBossOne {
     private boolean paused;
     private Texture pausedBackground;
 
+    private int hitOnBoss = 0;
+    private int mobKilled = 0;
+
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
         player = new Player();
@@ -174,6 +177,7 @@ public class MapBossOne {
                             bullet.getBulletHitbox().y
                         ));
 
+                        hitOnBoss++;
                         playerBullets.remove(i);
                         i--;
                     }
@@ -212,13 +216,16 @@ public class MapBossOne {
                     effect.update(deltaTime);
                     if (effect.isFinished()) {
                         deathEffects.remove(i);
+
+                        mobKilled++;
                         i--;
                     }
                 }
                 screenShake.update(deltaTime);
             } else {
+//                SUBMIT DAT SCORE
                 float time = hud.getTime();
-
+                float score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
                 LocalDate date = LocalDate.now();
                 String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
