@@ -2,6 +2,7 @@ package com.main;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,18 +15,34 @@ public class PauseScreen {
     private Rectangle btnContinue;
 
     private ShapeRenderer shapeRenderer;
+    public static boolean paused = false;
 
     public PauseScreen() {
 //        pauseScreen = new Texture("Stuffs/Paused.png");
         pauseScreen = new Texture("Stuffs/RealPauseScreen.png");
-        btnHome = new Rectangle(700, 420, 100, 30);
-        btnContinue = new Rectangle(790, 420, 100, 30);
+        btnHome = new Rectangle(608, 355, 158, 50);
+        btnContinue = new Rectangle(818, 355, 165, 50);
 
         shapeRenderer = new ShapeRenderer();
     }
 
     public void update() {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            int mouseX = Gdx.input.getX();
+            int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
+            if (btnHome.contains(mouseX, mouseY)) {
+                GameManager.currScreen = "menu";
+            }
+
+            if (btnContinue.contains(mouseX, mouseY)) {
+                unpause();
+            }
+        }
+    }
+
+    public void unpause() {
+        paused = false;
     }
 
     public void renderHitbox() {
