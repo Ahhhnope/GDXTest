@@ -15,7 +15,7 @@ public class HealthPickup {
     public HealthPickup(float x, float y) {
         this.x = x;
         this.y = y;
-        this.texture = new Texture("Heal/health.png"); // 🖼️ icon máu
+        this.texture = new Texture("Heal/health.png");
         this.hitbox = new Circle(x, y, radius);
     }
 

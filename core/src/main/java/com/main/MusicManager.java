@@ -12,6 +12,8 @@ public class MusicManager {
             backgroundMusic.setLooping(true);
             backgroundMusic.setVolume(0.5f); // tuỳ chỉnh âm lượng nếu cần
             backgroundMusic.play();
+        } else if (!backgroundMusic.isPlaying()) {
+            backgroundMusic.play();
         }
     }
 

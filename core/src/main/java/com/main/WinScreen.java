@@ -31,8 +31,14 @@ public class WinScreen {
 
     public void update() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            SoundManager.play("click");
-            GameManager.currScreen = "menu";
+            int mouseX = Gdx.input.getX();
+            int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+            if (btnExitHitbox.contains(mouseX, mouseY)) {
+                SoundManager.play("click");
+                MusicManager.playMenuMusic();
+                GameManager.currScreen = "menu";
+            }
         }
     }
 
