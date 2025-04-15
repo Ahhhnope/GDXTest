@@ -11,6 +11,7 @@ public class GameManager {
     MapBossOne MapOne;
     MapBossTwo MapTwo;
     public static String currScreen;
+    public boolean bossFightHasData;
 
 
     public GameManager(String screen){
@@ -22,6 +23,8 @@ public class GameManager {
         currScreen = screen;
         MapOne = new MapBossOne();
         MapTwo = new MapBossTwo();
+
+        bossFightHasData = false;
     }
 
     public void update(float deltaTime) {
@@ -61,6 +64,10 @@ public class GameManager {
         switch (currScreen) {
             case "menu":
 //                vẽ menu
+                if (bossFightHasData) {
+                    MapOne = null;
+                    bossFightHasData = false;
+                }
                 menu.render(batch);
                 break;
             case "game":
@@ -77,6 +84,10 @@ public class GameManager {
                 break;
             case "MapBossOne":
 //               bảng điểm
+                if (!bossFightHasData) {
+                    MapOne = new MapBossOne();
+                    bossFightHasData = true;
+                }
                 MapOne.render(batch);
                 break;
             case "MapBossTwo":

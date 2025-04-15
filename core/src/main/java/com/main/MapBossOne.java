@@ -329,6 +329,5 @@ public class MapBossOne {
         if (bossInitialized) {
             BossOne.dispose();
         }
-
     }
 }
