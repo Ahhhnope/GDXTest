@@ -44,6 +44,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         deltatime = Gdx.graphics.getDeltaTime();
+        MusicManager.update(deltatime);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);  // Đặt màu nền (đen)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
