@@ -30,7 +30,7 @@ public class Menu {
     private ShapeRenderer shapeRenderer;
 
     public Menu(){
-
+        SoundManager.load();
         //load ảnh từ file
         background = new Texture("Stuffs/background.png");
 
@@ -65,19 +65,26 @@ public class Menu {
 //            Đảo ngược y (Vì một lí do nào đó "Gdx.input.getY()" trả về tọa độ y tính từ trên xuống =w=)
 
             if (btnPlayHitbox.contains(x, y)) {
+                SoundManager.play("click");
                 GameManager.currScreen = "game";
             }
 
             if (btnSettingHitbox.contains(x, y)) {
+                SoundManager.play("click");
                 GameManager.currScreen = "setting";
             }
 
             if (btnScoreHitbox.contains(x, y)) {
+                SoundManager.play("click");
                 GameManager.currScreen = "scoreboard";
+
             }
 
             if (btnQuitHitbox.contains(x, y)) {
+                SoundManager.play("click");
                 GameManager.currScreen = "quit";
+
+
             }
         }
     }

@@ -21,6 +21,8 @@ public class ScoreBoard {
     private ShapeRenderer shapeRenderer;
 
     public ScoreBoard(){
+        //uisound
+        SoundManager.load();
 //        Load ảnh & hitbox
         BackgroundScreen = new Texture("Stuffs/backgroundScreen.jpeg");
         backgroudDiem = new Texture("Stuffs/ScoreBoard.png");
@@ -34,6 +36,8 @@ public class ScoreBoard {
     public void update() {
         // Xử lý click
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            SoundManager.play("click");
+
             int touchX = Gdx.input.getX();
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 

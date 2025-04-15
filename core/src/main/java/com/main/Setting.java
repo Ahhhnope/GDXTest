@@ -43,6 +43,8 @@ public class Setting {
     private ShapeRenderer shapeRenderer;
 
     public Setting(){
+        //ui sound
+        SoundManager.load();
         //load ảnh background
         BackgroundScreen = new Texture("Stuffs/backgroundScreen.jpeg");
 
@@ -78,10 +80,12 @@ public class Setting {
     public void update() {
         // Xử lý click
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            SoundManager.play("click");
             int touchX = Gdx.input.getX();
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (btnBackHitbox.contains(touchX, touchY)) {
+                SoundManager.play("click");
                 GameManager.currScreen = "menu";
             }
 
