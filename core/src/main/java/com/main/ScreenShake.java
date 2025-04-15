@@ -33,6 +33,10 @@ public class ScreenShake {
         }
     }
 
+    public void stopShaking() {
+        duration = 0;
+    }
+
     public boolean isShaking() {
         return duration > 0;
     }

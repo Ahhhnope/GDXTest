@@ -120,10 +120,11 @@ public class MapBossOne {
                     hasStartedTimer = true;
                 }
                 hud.update(deltaTime);
-
                 player.update();
                 BossOne.update(deltaTime, player);
 
+//                CALCULATE THE SCORE
+                score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
 
                 //spawn mobs
                 if (!BossOne.isPhase2()) {
@@ -298,39 +299,39 @@ public class MapBossOne {
                     scoreMultiplier = 2;
                 }
 
-                score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
 
             } else {
+                float scoreBeLike = score * scoreMultiplier;
+                float time = hud.getTime();
+                LocalDate date = LocalDate.now();
+                String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
                 if (BossOne.getCurrentHp() == 0) {
                     // Win
+                    screenShake.stopShaking();
                     roundDone = true;
                     win = true;
                     BossOne.stopAllMusic();
                     winScreen.update();
+                    winScreen.insertTimeAndStuff(time, scoreBeLike, formattedDate);
 
                     if (!scoreSubmitted) {
-                        //                SUBMIT DAT SCORE
-                        score *= scoreMultiplier;
-                        float time = hud.getTime();
-                        LocalDate date = LocalDate.now();
-                        String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                        if (submitScore(1, score, time, formattedDate)) {
-                            System.out.println("Score: "+score);
-                        }
+                        //                SUBMIT LE SCORE
+//                        if (submitScore(1, score, time, formattedDate)) {
+//                            System.out.println("Score: "+score);
+//                        }
                         scoreSubmitted = true;
                     }
                 }
                 else if (player.getCurrentHP() == 0) {
                     // Lose
+                    screenShake.stopShaking();
                     roundDone = true;
                     lose = true;
                     BossOne.stopAllMusic();
 
-                    float scoreBeLike = score * scoreMultiplier;
-                    float time = hud.getTime();
-
                     loseScreen.update();
-                    loseScreen.renderTimeAndStuff(time, scoreBeLike);
+                    loseScreen.insertTimeAndStuff(time, scoreBeLike);
                 }
             }
         }
@@ -399,7 +400,6 @@ public class MapBossOne {
             loseScreen.render(batch);
         }
 
-        return;
     }
 
 
