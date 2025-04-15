@@ -87,7 +87,7 @@ public class Bullet {
         this.bulletHitbox = playerBulletHitbox;
 
 
-        damage = 10;
+        damage = 50;
     }
     //Đạn spiral
     public Bullet(float startX, float startY, float targetX, float targetY, float speed, Animation<TextureRegion> bulletAnimation, float width, float height, float radius, int damage) {
