@@ -63,7 +63,7 @@ public class MapBossOne {
 
         scoreSubmitted = false;
 
-        background = new Texture("Background.png");
+        background = new Texture("Background3.png");
     }
 
     public void update(float deltaTime) {

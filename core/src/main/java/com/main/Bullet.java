@@ -26,7 +26,7 @@ public class Bullet {
     private float enemyAnimTime = 0f;
     //khởi tạo bình thường
     private boolean isTracking = true;
-    private boolean hasFinishedTracking = false; // ✅ NEW
+    private boolean hasFinishedTracking = false;
     private float trackingTime = 4.5f;
     private float trackingTimer = 0f;
     private Player player;
