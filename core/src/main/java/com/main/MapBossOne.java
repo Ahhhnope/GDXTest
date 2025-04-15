@@ -300,11 +300,9 @@ public class MapBossOne {
 //            Draw paused shit
         if (pauseScreen.paused) {
             pauseScreen.render(batch);
-
         }
 
-
-//        renderHitbox();
+        return;
     }
 
 

@@ -47,7 +47,6 @@ public class PauseScreen {
         paused = false;
     }
 
-
     public void renderHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.rect(btnHome.x, btnHome.y, btnHome.width, btnHome.height);

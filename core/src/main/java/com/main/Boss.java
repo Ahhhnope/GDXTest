@@ -93,6 +93,9 @@ public class Boss {
     private float afterimageInterval = 0.05f;
     private boolean DuAnh = false;
 
+    private float fireballSfxTimer = 0f;
+    private int fireballSfxCount = 0;
+    private boolean fireballSfxActive = false;
     //sfx music
     private BossSoundManager soundManager;
 
@@ -140,6 +143,10 @@ public class Boss {
         screenShake.start(3f, 20f);
     }
     public void fireWaveBullets() {
+        fireballSfxTimer = 0f;
+        fireballSfxCount = 0;
+        fireballSfxActive = true;
+
         float centerX = Gdx.graphics.getWidth();
         float centerY = Gdx.graphics.getHeight() / 2;
         int numBullets = 18;
@@ -152,6 +159,7 @@ public class Boss {
             float radians = MathUtils.degreesToRadians * angle;
 
             Vector2 dir = new Vector2(MathUtils.cos(radians), MathUtils.sin(radians)).nor().scl(500f);
+
             bullets.add(new Bullet(centerX + 200, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
             bullets.add(new Bullet(centerX + 400, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
             bullets.add(new Bullet(centerX + 600, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
@@ -159,6 +167,7 @@ public class Boss {
             bullets.add(new Bullet(centerX + 1000, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
             bullets.add(new Bullet(centerX + 1200, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
         }
+
     }
 
     private Animation<TextureRegion> fireAnim;
@@ -187,6 +196,11 @@ public class Boss {
         }
 
         return new Animation<>(frameDuration, frames);
+    }
+    public void stopMusic() {
+        if (soundManager != null) {
+            soundManager.stopAll();
+        }
     }
     public void update(float delta, Player player){
         this.player = player;
@@ -219,7 +233,18 @@ public class Boss {
                 meteorTimer = 0f;
             }
         }
+        if (fireballSfxActive) {
+            fireballSfxTimer += delta;
+            if (fireballSfxTimer >= 0.75f && fireballSfxCount < 6) {
+                soundManager.playFireballShot();
+                fireballSfxTimer = 0f;
+                fireballSfxCount++;
+            }
 
+            if (fireballSfxCount >= 6) {
+                fireballSfxActive = false;
+            }
+        }
         for (int i = 0; i < bullets.size();i++){
             Bullet b = bullets.get(i);
             b.update(delta);
@@ -305,7 +330,9 @@ public class Boss {
                     patternTimer = 0f;
                     patternIndex = MathUtils.random(2);
                     switch (patternIndex) {
-                        case 0: fireDoubleSpiral(); break;
+                        case 0:
+                            fireDoubleSpiral();
+                            break;
                         case 1: fireRainBullets(); break;
                         case 2: fireSpiralBurst(); break;
                     }
@@ -343,7 +370,7 @@ public class Boss {
             float rad = MathUtils.degreesToRadians * angle;
             Vector2 dir = new Vector2(MathUtils.cos(rad), MathUtils.sin(rad)).nor().scl(220f);
             bullets.add(new Bullet(centerX, centerY, centerX + dir.x, centerY + dir.y, 250f, touhouAnim, 16, 16, 8));
-
+            soundManager.playWindShot();
         }
 
         spiralAngle += 8f; // tăng theo thời gian → xoay đều
@@ -355,7 +382,7 @@ public class Boss {
 
         int numBullets = 36;
         float speed = 250f;
-
+        soundManager.playBomberThrow();
         for (int i = 0; i < numBullets; i++) {
             float angle1 = i * 10 + time * 100; // xoắn thuận
             float angle2 = i * 10 - time * 100; // xoắn ngược
@@ -370,6 +397,7 @@ public class Boss {
         }
     }
     public void fireRainBullets() {
+        soundManager.playSonicBoom();
         for (int i = 0; i < 20; i++) {
             float x = MathUtils.random(0, Gdx.graphics.getWidth());
             float y = Gdx.graphics.getHeight() + 50;
@@ -382,7 +410,7 @@ public class Boss {
         int arms = 5; // số nhánh spiral
         int bulletsPerArm = 10;
         float angleOffset = (time * 120f) % 360; // xoay đều theo thời gian
-
+        soundManager.playExplosion();
         for (int arm = 0; arm < arms; arm++) {
             float baseAngle = arm * (360f / arms) + angleOffset;
             for (int i = 0; i < bulletsPerArm; i++) {
