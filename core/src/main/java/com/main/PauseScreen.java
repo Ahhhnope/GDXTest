@@ -13,7 +13,6 @@ public class PauseScreen {
     private Texture pauseScreen;
     private Rectangle btnHome;
     private Rectangle btnContinue;
-
     private ShapeRenderer shapeRenderer;
     public static boolean paused = false;
     public static boolean homePressed = false;
@@ -34,7 +33,7 @@ public class PauseScreen {
 
             if (btnHome.contains(mouseX, mouseY)) {
                 homePressed = true;
-                GameManager.currScreen = "menu";
+                Main.gm.fade.start("menu", 0.5f);
             }
 
             if (btnContinue.contains(mouseX, mouseY)) {

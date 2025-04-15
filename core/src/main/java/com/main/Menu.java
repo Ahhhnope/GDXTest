@@ -69,23 +69,25 @@ public class Menu {
 
             if (btnPlayHitbox.contains(x, y)) {
                 SoundManager.play("click");
-                GameManager.currScreen = "game";
+                Main.gm.changeScreenWithFade("game", 0.5f);
             }
 
             if (btnSettingHitbox.contains(x, y)) {
                 SoundManager.play("click");
-                GameManager.currScreen = "setting";
+                Main.gm.changeScreenWithFade("setting", 0.5f);
             }
 
             if (btnScoreHitbox.contains(x, y)) {
                 SoundManager.play("click");
-                GameManager.currScreen = "scoreboard";
+                Main.gm.changeScreenWithFade("scoreboard", 0.5f);
+
 
             }
 
             if (btnQuitHitbox.contains(x, y)) {
                 SoundManager.play("click");
-                GameManager.currScreen = "quit";
+                Main.gm.changeScreenWithFade("quit", 0.5f);
+
 
 
             }

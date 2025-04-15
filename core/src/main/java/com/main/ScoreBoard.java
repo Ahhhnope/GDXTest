@@ -42,7 +42,7 @@ public class ScoreBoard {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (btnBackHitbox.contains(touchX, touchY)) {
-                GameManager.currScreen = "menu";
+                Main.gm.changeScreenWithFade("menu", 0.5f);
             }
         }
     }
