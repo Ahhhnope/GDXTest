@@ -322,14 +322,14 @@ public class MapBossOne {
                     loseScreen.renderTimeAndStuff(time, scoreBeLike);
                 }
             }
-                    for (int i = 0; i < healEffects.size(); i++) {
-                        HealEffect e = healEffects.get(i);
-                        e.update(deltaTime);
-                        if (e.isFinished()) {
-                            healEffects.remove(i);
-                            i--;
-                        }
-                    }
+            for (int i = 0; i < healEffects.size(); i++) {
+                HealEffect e = healEffects.get(i);
+                e.update(deltaTime);
+                if (e.isFinished()) {
+                    healEffects.remove(i);
+                    i--;
+                }
+            }
         }
     }
 
