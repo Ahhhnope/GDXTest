@@ -26,6 +26,7 @@ public class MapBossOne {
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<FragmentBullet> fragmentBullets;
     private ArrayList<Enemy> enemies;
+    private WinScreen winScreen;
 
     //background
 
@@ -50,6 +51,9 @@ public class MapBossOne {
 
     private int hitOnBoss = 0;
     private int mobKilled = 0;
+    private int score;
+
+    private boolean win;
 
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
@@ -59,9 +63,10 @@ public class MapBossOne {
         services = new Services();
         pauseScreen = new PauseScreen();
         pauseScreen.paused = false;
+        win = false;
 
         scoreSubmitted = false;
-
+        winScreen = new WinScreen();
         background = new Texture("Background3.png");
     }
 
@@ -81,6 +86,7 @@ public class MapBossOne {
             pauseScreen.update();
         } else {
             if (!bossInitialized) {
+//                LE MUSIC
                 MusicManager.stopMenuMusic();
                 BossOne = new Boss(1400, middleScreen, screenShake);
                 bossInitialized = true;
@@ -230,20 +236,21 @@ public class MapBossOne {
                     }
                 }
                 screenShake.update(deltaTime);
+                score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
             } else {
+//                Win
+                win = true;
+                BossOne.stopAllMusic();
+
                 if (!scoreSubmitted) {
                     //                SUBMIT DAT SCORE
                     float time = hud.getTime();
-                    int score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
                     LocalDate date = LocalDate.now();
                     String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    System.out.println(score);
-
-                    if (!scoreSubmitted) {
-                        if (submitScore(1, score, time, formattedDate)) {
-                        }
-                        scoreSubmitted = true;
+                    if (submitScore(1, score, time, formattedDate)) {
+                        System.out.println("Score: "+score);
                     }
+                    scoreSubmitted = true;
                 }
             }
         }
@@ -302,6 +309,10 @@ public class MapBossOne {
             pauseScreen.render(batch);
         }
 
+        if (win) {
+            winScreen.render(batch);
+        }
+
         return;
     }
 
@@ -324,6 +335,7 @@ public class MapBossOne {
         hud.dispose();
         player.dispose();
         pauseScreen.dispose();
+
         if (bossInitialized) {
             BossOne.dispose();
         }
