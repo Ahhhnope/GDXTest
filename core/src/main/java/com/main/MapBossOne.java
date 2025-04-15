@@ -48,9 +48,6 @@ public class MapBossOne {
     private Services services;
     private PauseScreen pauseScreen;
 
-    private boolean paused;
-
-
     private int hitOnBoss = 0;
     private int mobKilled = 0;
 
@@ -62,7 +59,7 @@ public class MapBossOne {
         services = new Services();
 
         pauseScreen = new PauseScreen();
-        paused = false;
+        pauseScreen.paused = false;
 
         scoreSubmitted = false;
 
@@ -74,16 +71,15 @@ public class MapBossOne {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (BossOne.getCurrentHp() > 0) {
                 SoundManager.play("click");
-                paused = !paused;
+                pauseScreen.paused = !pauseScreen.paused;
             } else {
             // Nothing happen (So you can't pause during the win screen) =w=
             }
         }
 
 
-        if (paused) {
+        if (pauseScreen.paused) {
             pauseScreen.update();
-
         } else {
             if (!bossInitialized) {
                 MusicManager.stopMenuMusic();
@@ -303,7 +299,7 @@ public class MapBossOne {
 
         batch.setTransformMatrix(batch.getTransformMatrix().idt().translate(shakeX, shakeY, 0));
 //            Draw paused shit
-        if (paused) {
+        if (pauseScreen.paused) {
             pauseScreen.render(batch);
 
         }
