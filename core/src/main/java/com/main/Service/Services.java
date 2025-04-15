@@ -30,16 +30,16 @@ public class Services {
         return true;
     }
 
-    public boolean addMatch(int level, float time, int playerID, String date) {
+    public boolean addMatch(int level, int score, float time, String date) {
         try (Connection con = DriverManager.getConnection(connectionUrl); PreparedStatement stmt = con.prepareStatement(addMatch)) {
 
             Time timeBeLike = new Time((long) (time * 1000));
             Date dateBeLike = Date.valueOf(date);
 
             stmt.setInt(1, level);
-            stmt.setTime(2, timeBeLike);
-            stmt.setDate(3, dateBeLike);
-            stmt.setInt(4, playerID);
+            stmt.setInt(2, score);
+            stmt.setTime(3, timeBeLike);
+            stmt.setDate(4, dateBeLike);
 
             int rs = stmt.executeUpdate();
 
@@ -57,11 +57,10 @@ public class Services {
     public int runStuff() {
         try (Connection con = DriverManager.getConnection(connectionUrl); PreparedStatement stmt = con.prepareStatement("Select * from Matches where MatchID = 1")) {
 
-
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                int rss = rs.getInt("PlayerID");
+                int rss = rs.getInt("Score");
                 return rss;
             }
 

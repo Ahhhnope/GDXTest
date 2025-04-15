@@ -41,8 +41,10 @@ public class MapBossOne {
 
     private HUD hud;
     private Services services;
+    private PauseScreen pauseScreen;
+
     private boolean paused;
-    private Texture pausedBackground;
+
 
     private int hitOnBoss = 0;
     private int mobKilled = 0;
@@ -53,10 +55,11 @@ public class MapBossOne {
         enemies = new ArrayList<>();
         hud = new HUD();
         services = new Services();
+
+        pauseScreen = new PauseScreen();
         paused = false;
 
-        pausedBackground = new Texture("Stuffs/Paused.png");
-
+        scoreSubmitted = false;
     }
 
     public void update(float deltaTime) {
@@ -70,8 +73,10 @@ public class MapBossOne {
         }
 
 
-        if (!paused) {
+        if (paused) {
+            pauseScreen.update();
 
+        } else {
             if (!bossInitialized) {
                 MusicManager.stopMenuMusic();
                 BossOne = new Boss(1400, middleScreen, screenShake);
@@ -163,8 +168,8 @@ public class MapBossOne {
                 }
 
 
-            ArrayList<Bullet> playerBullets = player.getBullets();
-            Rectangle bossHitbox = BossOne.getHitbox();
+                ArrayList<Bullet> playerBullets = player.getBullets();
+                Rectangle bossHitbox = BossOne.getHitbox();
 
 
                 for (int i = 0; i < playerBullets.size(); i++) {
@@ -223,38 +228,29 @@ public class MapBossOne {
                 }
                 screenShake.update(deltaTime);
             } else {
-//                SUBMIT DAT SCORE
-                float time = hud.getTime();
-                float score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
-                LocalDate date = LocalDate.now();
-                String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
                 if (!scoreSubmitted) {
-                    if (submitScore(1, time, formattedDate)) {
-                        System.out.println(services.runStuff());
-                    }
-                    scoreSubmitted = true;
-                }
+                    //                SUBMIT DAT SCORE
+                    float time = hud.getTime();
+                    int score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
+                    LocalDate date = LocalDate.now();
+                    String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    System.out.println(score);
 
-                System.out.println(services.runStuff());
+                    if (!scoreSubmitted) {
+                        if (submitScore(1, score, time, formattedDate)) {
+                        }
+                        scoreSubmitted = true;
+                    }
+                }
             }
         }
 
-        else {
-//            update Paused
-
-        }
 
 
     }
 
-    public void addPlayer() {
-        String name = "Tester";
-
-    }
-
-    public boolean submitScore(int level, float time, String date) {
-        return services.addMatch(level, time, 1, date);
+    public boolean submitScore(int level, int score, float time, String date) {
+        return services.addMatch(level, score, time, date);
     }
 
 
@@ -268,13 +264,11 @@ public class MapBossOne {
 
     public void render(SpriteBatch batch){
 
-        if (!paused) {
             hud.render(batch);
             player.render(batch);
             if (bossInitialized) {
                 BossOne.render(batch);
             }
-
             for (Enemy enemy : enemies){
                 enemy.render(batch);
             }
@@ -288,12 +282,9 @@ public class MapBossOne {
             float shakeY = screenShake.getOffsetY();
 
             batch.setTransformMatrix(batch.getTransformMatrix().idt().translate(shakeX, shakeY, 0));
-        } else {
 //            Draw paused shit
-            batch.begin();
-            batch.draw(pausedBackground, 0, 0, pausedBackground.getWidth(), pausedBackground.getHeight());
-
-            batch.end();
+        if (paused) {
+            pauseScreen.render(batch);
 
         }
 
@@ -319,6 +310,7 @@ public class MapBossOne {
     public void dispose(){
         hud.dispose();
         player.dispose();
+        pauseScreen.dispose();
         if (bossInitialized) {
             BossOne.dispose();
         }
