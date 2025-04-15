@@ -128,7 +128,7 @@ public class Boss {
         trackingShootInterval += 0.5f; // Đạn tracking nhanh hơn
         explosionInterval *= 0.8f;     // Đạn nổ nhiều hơn
         frequencyX *= 2.2f;            // Di chuyển nhanh hơn
-        frequency *= 1.75f;
+        frequency *= 3.75f;
         screenShake.start(3f, 20f);
     }
     public void fireWaveBullets() {

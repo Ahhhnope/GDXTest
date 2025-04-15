@@ -70,6 +70,7 @@ public class MapBossOne {
         if (!paused) {
 
             if (!bossInitialized) {
+                MusicManager.stopMenuMusic();
                 BossOne = new Boss(1400, middleScreen, screenShake);
                 bossInitialized = true;
                 System.out.println("Boss actually spawned — NOW music should start!");
@@ -234,7 +235,7 @@ public class MapBossOne {
 
         else {
 //            update Paused
-            
+
         }
 
 
