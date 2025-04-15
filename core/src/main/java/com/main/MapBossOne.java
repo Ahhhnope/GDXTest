@@ -144,9 +144,9 @@ public class MapBossOne {
 
 
                 //        Heal the plyer to max HP (for testing purposes)
-                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-                    player.heal(2000);
-                }
+//                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+//                    player.heal(2000);
+//                }
 
 
                 //        Check if player get hit by the boss's bullet
