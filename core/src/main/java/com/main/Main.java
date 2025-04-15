@@ -26,9 +26,6 @@ public class Main extends ApplicationAdapter {
 
     GameManager gm;
     InputHandler ih;
-
-    private Music backgroundMusic;
-
     @Override
     public void create() {
         background = new Texture("Stuffs/background.png");
@@ -42,8 +39,7 @@ public class Main extends ApplicationAdapter {
         ih = new InputHandler();
         Gdx.input.setInputProcessor(ih);
 
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Stuffs/Musics/Hokma battle.mp3"));
-        backgroundMusic.setVolume(0.5f);
+        MusicManager.playMenuMusic();
     }
 
     @Override
