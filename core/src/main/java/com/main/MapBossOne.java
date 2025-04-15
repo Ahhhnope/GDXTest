@@ -26,7 +26,6 @@ public class MapBossOne {
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<FragmentBullet> fragmentBullets;
     private ArrayList<Enemy> enemies;
-    private WinScreen winScreen;
 
     //background
 
@@ -276,6 +275,15 @@ public class MapBossOne {
                     }
                 }
 
+                for (int i = 0; i < healEffects.size(); i++) {
+                    HealEffect e = healEffects.get(i);
+                    e.update(deltaTime);
+                    if (e.isFinished()) {
+                        healEffects.remove(i);
+                        i--;
+                    }
+                }
+
 //                Calculate score multiplier base on timer
                 float timer = hud.getTime();
                 if (timer < 60) {
@@ -320,14 +328,6 @@ public class MapBossOne {
 
                     loseScreen.update();
                     loseScreen.renderTimeAndStuff(time, scoreBeLike);
-                }
-            }
-            for (int i = 0; i < healEffects.size(); i++) {
-                HealEffect e = healEffects.get(i);
-                e.update(deltaTime);
-                if (e.isFinished()) {
-                    healEffects.remove(i);
-                    i--;
                 }
             }
         }
