@@ -32,11 +32,13 @@ public class PauseScreen {
             int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (btnHome.contains(mouseX, mouseY)) {
+                SoundManager.play("click");
                 homePressed = true;
                 Main.gm.fade.start("menu", 0.5f);
             }
 
             if (btnContinue.contains(mouseX, mouseY)) {
+                SoundManager.play("click");
                 unpause();
             }
         }

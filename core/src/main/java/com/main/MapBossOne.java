@@ -102,7 +102,7 @@ public class MapBossOne {
 
 
         if (pauseScreen.paused) {
-//            screenShake.stopShaking();
+            screenShake.stopShaking();
             pauseScreen.update();
         } else {
             if (!bossInitialized) {
@@ -123,10 +123,6 @@ public class MapBossOne {
                 hud.update(deltaTime);
                 player.update();
                 BossOne.update(deltaTime, player);
-
-//                CALCULATE THE SCORE
-                score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
-
 
 
                 //spawn mobs
@@ -302,8 +298,10 @@ public class MapBossOne {
                     scoreMultiplier = 2;
                 }
 
-
+                //                CALCULATE THE SCORE
+                score = ((hitOnBoss + 50) + (mobKilled + 100));
             } else {
+                score = ((hitOnBoss + 50) + (mobKilled + 100));
                 float scoreBeLike = score * scoreMultiplier;
                 float time = hud.getTime();
                 LocalDate date = LocalDate.now();
@@ -320,9 +318,9 @@ public class MapBossOne {
 
                     if (!scoreSubmitted) {
                         //                SUBMIT LE SCORE
-//                        if (submitScore(1, score, time, formattedDate)) {
-//                            System.out.println("Score: "+score);
-//                        }
+                        if (submitScore(1, score, time, formattedDate)) {
+                            System.out.println("Score: "+score);
+                        }
                         scoreSubmitted = true;
                     }
                 }
