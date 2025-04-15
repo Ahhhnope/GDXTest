@@ -85,7 +85,7 @@ public class Setting {
 
             if (btnBackHitbox.contains(touchX, touchY)) {
                 SoundManager.play("click");
-                GameManager.currScreen = "menu";
+                Main.gm.changeScreenWithFade("menu", 0.5f);
             }
 
             //Tăng âm Lượng

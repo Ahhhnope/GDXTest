@@ -55,12 +55,12 @@ public class ScreenPlay {
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
             if (btnBackHitbox.contains(touchX, touchY)) {
                 SoundManager.play("click");
-                GameManager.currScreen = "menu";
+                Main.gm.changeScreenWithFade("menu", 0.5f);
             }
 
             if (btnPlay1Hitbox.contains(touchX, touchY)) {
                 SoundManager.play("click");
-                GameManager.currScreen = "MapBossOne";
+                Main.gm.changeScreenWithFade("MapBossOne", 0.5f);
             }
 
             if (btnPlay2Hitbox.contains(touchX, touchY)) {

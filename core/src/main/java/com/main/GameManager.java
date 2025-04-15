@@ -12,10 +12,11 @@ public class GameManager {
     MapBossTwo MapTwo;
     public static String currScreen;
     public boolean bossFightHasData;
-
+    public FadeTransitionManager fade;
+    public boolean isActive;
 
     public GameManager(String screen){
-
+        fade = new FadeTransitionManager(this);
         menu = new Menu();
         manhinh = new ScreenPlay();
         BangDiem = new ScoreBoard();
@@ -23,11 +24,21 @@ public class GameManager {
         currScreen = screen;
         MapOne = new MapBossOne();
         MapTwo = new MapBossTwo();
-
+        isActive = false;
         bossFightHasData = false;
-    }
 
+
+    }
+    public void changeScreenWithFade(String targetScreen, float duration) {
+        if (!fade.isActive) {
+            fade.start(targetScreen, duration);
+        }
+    }
     public void update(float deltaTime) {
+        if (fade.isActive) {
+            fade.update(deltaTime);
+            return;
+        }
         switch (currScreen) {
             case "menu":
                 menu.update();
@@ -63,37 +74,28 @@ public class GameManager {
     public void render(SpriteBatch batch) {
         switch (currScreen) {
             case "menu":
-//                vẽ menu
                 if (bossFightHasData) {
                     MapOne = null;
                     bossFightHasData = false;
                 }
                 menu.render(batch);
                 break;
-            case "game":
-//                vẽ game
-                manhinh.render(batch);
-                break;
-            case "scoreboard":
-//               bảng điểm
-                BangDiem.render(batch);
-                break;
-            case "setting":
-//               Cài đặt
-                caidat.render(batch);
-                break;
+            case "game": manhinh.render(batch); break;
+            case "scoreboard": BangDiem.render(batch); break;
+            case "setting": caidat.render(batch); break;
             case "MapBossOne":
-//               bảng điểm
                 if (!bossFightHasData) {
                     MapOne = new MapBossOne();
                     bossFightHasData = true;
                 }
                 MapOne.render(batch);
                 break;
-            case "MapBossTwo":
-//               Cài đặt
-                MapTwo.render(batch);
-                break;
+            case "MapBossTwo": MapTwo.render(batch); break;
+        }
+
+
+        if (fade.isActive) {
+            fade.render(batch);
         }
     }
 

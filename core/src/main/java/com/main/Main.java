@@ -22,7 +22,8 @@ public class Main extends ApplicationAdapter {
     int screenHeight;
     float deltatime;
 
-    GameManager gm;
+    public static GameManager gm;
+
     InputHandler ih;
     @Override
     public void create() {
