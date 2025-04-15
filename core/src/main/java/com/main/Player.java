@@ -189,7 +189,7 @@ public class Player {
 
     public void shoot(float targetX, float targetY) {
         playerBulletTexture = new Texture("Stuffs/Player/playerbullet.png");
-
+        SoundManager.play("shoot",0.3f);
         float centerX = hitbox.x + hitbox.width / 2f;
         float centerY = hitbox.y + hitbox.height / 2f;
 

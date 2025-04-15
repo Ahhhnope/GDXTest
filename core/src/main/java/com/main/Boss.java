@@ -37,7 +37,7 @@ public class Boss {
     private float trackingShootTimer = 0f;
     private float trackingShootInterval = 1f;
 
-    // di chuyển random (What the fuck is random!?)
+    // di chuyển random (What the fuck is random!?) - idk
     private float randomizeTimer = 0f;
     private float randomizeInterval = 5f;
 
@@ -52,13 +52,17 @@ public class Boss {
     private float baseX;
     private float amplitudeX = 80f;
     private float frequencyX = 0.5f;
+    //Get shot
+    private boolean isFlashing = false;
+    private float flashTimer = 0f;
+    private float flashDuration = 0.04f;
 
     private Rectangle hitbox;
     private int width = 250;
     private int height = 85;
 
-    private int hp = 15000;
-    private int currentHp = 15000;
+    private int hp = 10000;
+    private int currentHp = 10000;
 
     //phase 2
     private boolean isPhase2 = false;
@@ -115,6 +119,10 @@ public class Boss {
         if (isInvincible) return;
         currentHp -= damage;
         if (currentHp < 0) currentHp = 0;
+
+        isFlashing = true;
+        flashTimer = 0f;
+
         System.out.println("Boss HP: " + currentHp);
     }
 
@@ -127,8 +135,8 @@ public class Boss {
         shootInterval += 0.7f;         // Bắn nhanh hơn
         trackingShootInterval += 0.5f; // Đạn tracking nhanh hơn
         explosionInterval *= 0.8f;     // Đạn nổ nhiều hơn
-        frequencyX *= 2.2f;            // Di chuyển nhanh hơn
-        frequency *= 3.75f;
+        frequencyX *= 3f;            // Di chuyển nhanh hơn
+        frequency *= 3f;
         screenShake.start(3f, 20f);
     }
     public void fireWaveBullets() {
@@ -193,7 +201,13 @@ public class Boss {
             shoot(player.getX(), player.getY()); // đạn thường
             shootTimer = 0;
         }
-
+        if (isFlashing) {
+            flashTimer += delta;
+            if (flashTimer >= flashDuration) {
+                isFlashing = false;
+                flashTimer = 0f;
+            }
+        }
         if (trackingShootTimer >= trackingShootInterval) {
             spawnTrackingBullet(player);
             trackingShootTimer = 0;
@@ -236,7 +250,7 @@ public class Boss {
         float targetY = baseY + MathUtils.sin(time * frequency) * amplitude;
         position.lerp(new Vector2(targetX, targetY), 0.1f);
 
-        if (!isPhase2 && !waitingForShakeToEnd && currentHp <= hp / 2) {
+        if (!isPhase2 && !waitingForShakeToEnd && currentHp <= hp / 3) {
             waitingForShakeToEnd = true;
             shakeTimer = 0f;
             isInvincible = true;
@@ -461,8 +475,13 @@ public class Boss {
                 batch.draw(BossOne, a.position.x, a.position.y, 256, 256);
             }
         }
-        batch.setColor(1f, 1f, 1f, 1f);
+        if (isFlashing) {
+            batch.setColor(1f, 1f, 1f, 0.875f); // alpha thấp -> mờ
+        } else {
+            batch.setColor(1f, 1f, 1f, 1f);   // bình thường
+        }
         batch.draw(BossOne, position.x, position.y, 256, 256);
+        batch.setColor(1f, 1f, 1f, 1f);
         batch.end();
 
 
