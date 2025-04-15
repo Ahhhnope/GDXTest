@@ -44,7 +44,8 @@ public class Bullet {
     private float bulletWidth;
     private float bulletHeight;
     //Đạn meteor
-
+    private Animation<TextureRegion> animation;
+    private float animTime = 0f;
 
     private int damage;
     private Circle bulletHitbox;
@@ -56,6 +57,7 @@ public class Bullet {
         this(startX, startY, targetX, targetY, 650f, radius); // gọi constructor bên dưới
         bulletHitbox = new Circle(100, 100, radius);
         damage = 20;
+
     }
 
 
@@ -84,7 +86,26 @@ public class Bullet {
         this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
         this.bulletHitbox = playerBulletHitbox;
 
+
+        damage = 10;
+    }
+    //Đạn spiral
+    public Bullet(float startX, float startY, float targetX, float targetY, float speed, Animation<TextureRegion> bulletAnimation, float width, float height, float radius, int damage) {
+        this.position = new Vector2(startX, startY);
+        Vector2 direction = new Vector2(targetX - startX, targetY - startY).nor();
+        this.velocity = direction.scl(speed);
+
+        this.enemyAnimation = bulletAnimation;
+        this.width = width;
+        this.height = height;
+        this.animTime = 0f;
+
+        this.bulletHitbox = new Circle(position.x + width / 2, position.y + height / 2, radius);
+        this.damage = damage;
+
+        this.isTracking = false;
         damage = 5;
+
     }
 
 
@@ -201,6 +222,9 @@ public class Bullet {
             batch.draw(bulletTexture, position.x, position.y, width, height);
         } else if (PlayerBulletTexture != null) {
             batch.draw(PlayerBulletTexture, position.x, position.y, bulletWidth, bulletHeight);
+        }else if (enemyAnimation != null) {
+            TextureRegion frame = enemyAnimation.getKeyFrame(enemyAnimTime, true);
+            batch.draw(frame, position.x, position.y, width, height);
         }
 
         batch.end();
