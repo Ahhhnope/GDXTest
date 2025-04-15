@@ -38,7 +38,7 @@ public class Player {
     private float y = 100;
 
     private int maxHP = 500;
-    private int currentHP = 0;
+    private int currentHP = 500;
 
     private float shootTimer = 0f;
 

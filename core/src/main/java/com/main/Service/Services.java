@@ -1,29 +1,39 @@
 package com.main.Service;
 
+import com.main.MatchModel;
+
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.TimeZone;
 
 public class Services {
     static String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=GameKYS;user=sa;password=123;trustServerCertificate=true";
-    static String getAllquery = "select * from matches";
+    static String getAllquery = "Select * from Matches order by Score desc";
     static String addMatch = "insert into Matches values (?, ?, ?, ?)";
     static String addPlayer = "insert into Player values (?, ?)";
 
     static String[] matches;
-    public boolean getAll() {
+    public ArrayList<MatchModel> getAllHighScore() {
+        ArrayList<MatchModel> list = new ArrayList<>();
         try (Connection con = DriverManager.getConnection(connectionUrl); PreparedStatement stmt = con.prepareStatement(getAllquery)) {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-//                god no
+
+                list.add(new MatchModel(
+                    rs.getTime("TimePlayed").toString(),
+                    rs.getDate("DateAchieved").toString(),
+                    rs.getFloat("Score")
+                ));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return true;
+        return list;
     }
 
     public boolean addPlayer(String name) {
