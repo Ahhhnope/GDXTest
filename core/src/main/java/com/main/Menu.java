@@ -15,6 +15,9 @@ public class Menu {
     private Texture background;
     private Texture title;
 
+    private Texture btnContinue;
+    private Rectangle btnContinueHitbox;
+
     private Texture btnPlay;
     private Rectangle btnPlayHitbox;
 
@@ -37,9 +40,14 @@ public class Menu {
         //load ảnh chữ ( tên game )
         title = new Texture("Stuffs/Title.png");
 
+
+
         //Load ảnh các nút và hitbox của nút
         btnPlay = new Texture("Stuffs/Buttons/Play.png");
-        btnPlayHitbox = new Rectangle(10, 570, btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
+        btnPlayHitbox = new Rectangle(10, 670, btnPlay.getWidth() / 2, btnPlay.getHeight() / 2);
+
+        btnContinue = new Texture("Stuffs/Buttons/ContinueButton.png");
+        btnContinueHitbox = new Rectangle(10, 570, btnContinue.getWidth() / 2, btnContinue.getHeight() / 2);
 
         btnSetting = new Texture("Stuffs/Buttons/Setting.png");
         btnSettingHitbox = new Rectangle(10, 470, btnSetting.getWidth() / 2, btnSetting.getHeight() / 2);
@@ -111,6 +119,9 @@ public class Menu {
 
         // Vẽ nút PLAY
         batch.draw(btnPlay, btnPlayHitbox.x, btnPlayHitbox.y, (float) (btnPlayHitbox.getWidth()), (float) (btnPlayHitbox.getHeight()));
+
+        // Vẽ nút Continue
+        batch.draw(btnContinue, btnContinueHitbox.x, btnContinueHitbox.y, (float) (btnContinueHitbox.getWidth()), (float) (btnContinueHitbox.getHeight()));
 
         // Vẽ nút SETTING
         batch.draw(btnSetting, btnSettingHitbox.x, btnSettingHitbox.y, (float) (btnSettingHitbox.getWidth()), (float) (btnSettingHitbox.getHeight()));

@@ -16,8 +16,6 @@ import com.badlogic.gdx.audio.Music;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     //Timer
-
-
     Texture background;
     SpriteBatch batch;
     int screenWidth;

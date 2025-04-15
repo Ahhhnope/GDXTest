@@ -57,7 +57,6 @@ public class MapBossOne {
         enemies = new ArrayList<>();
         hud = new HUD();
         services = new Services();
-
         pauseScreen = new PauseScreen();
         pauseScreen.paused = false;
 

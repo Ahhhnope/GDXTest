@@ -16,6 +16,7 @@ public class PauseScreen {
 
     private ShapeRenderer shapeRenderer;
     public static boolean paused = false;
+    public static boolean homePressed = false;
 
     public PauseScreen() {
 //        pauseScreen = new Texture("Stuffs/Paused.png");
@@ -32,6 +33,7 @@ public class PauseScreen {
             int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (btnHome.contains(mouseX, mouseY)) {
+                homePressed = true;
                 GameManager.currScreen = "menu";
             }
 
@@ -44,6 +46,7 @@ public class PauseScreen {
     public void unpause() {
         paused = false;
     }
+
 
     public void renderHitbox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
