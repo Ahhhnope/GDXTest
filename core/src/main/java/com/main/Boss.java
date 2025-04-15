@@ -468,6 +468,9 @@ public class Boss {
 
 
     }
+    public void stopAllMusic() {
+        soundManager.stopAll();
+    }
 
     public ArrayList<Bullet> getBullets() {
         return bullets;

@@ -25,6 +25,7 @@ public class Main extends ApplicationAdapter {
     public static GameManager gm;
 
     InputHandler ih;
+
     @Override
     public void create() {
         background = new Texture("Stuffs/background.png");
@@ -39,7 +40,6 @@ public class Main extends ApplicationAdapter {
 
         ih = new InputHandler();
         Gdx.input.setInputProcessor(ih);
-
     }
 
     @Override
