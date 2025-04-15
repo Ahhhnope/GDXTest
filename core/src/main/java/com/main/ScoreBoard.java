@@ -58,10 +58,11 @@ public class ScoreBoard {
         batch.draw(BackgroundScreen, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Vẽ trên nền background
         batch.draw(backgroudDiem,
-            (Gdx.graphics.getWidth() - backgroudDiem.getWidth() * 1.5f) / 2,
-            (Gdx.graphics.getHeight() - backgroudDiem.getHeight() * 1.5f) / 2,
-            backgroudDiem.getWidth() * 1.5f,
-            backgroudDiem.getHeight() * 1.5f);
+            (Gdx.graphics.getWidth() - backgroudDiem.getWidth() / 1.5f) / 2,
+            (Gdx.graphics.getHeight() - backgroudDiem.getHeight() / 1.5f) / 2,
+            backgroudDiem.getWidth() / 1.5f,
+            backgroudDiem.getHeight() / 1.5f
+        );
 
         //vẽ nút backicon
         batch.draw(btnbackicon, btnBackHitbox.x , btnBackHitbox.y, (float) btnBackHitbox.getWidth(), (float) btnBackHitbox.getHeight());
