@@ -57,16 +57,7 @@ public class MapBossOne {
     }
 
     public void update(float deltaTime) {
-      if (!bossInitialized) {
-            BossOne = new Boss(1400, middleScreen, screenShake);
-            bossInitialized = true;
-            System.out.println("Boss actually spawned — NOW music should start!");
-        }
-        if (BossOne.getCurrentHp() > 0) {
-            player.update();
-            BossOne.update(deltaTime, player);
-        }
-      
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (BossOne.getCurrentHp() > 0) {
                 paused = !paused;
@@ -76,8 +67,15 @@ public class MapBossOne {
         }
 
 
-
         if (!paused) {
+
+            if (!bossInitialized) {
+                BossOne = new Boss(1400, middleScreen, screenShake);
+                bossInitialized = true;
+                System.out.println("Boss actually spawned — NOW music should start!");
+            }
+
+
             if (BossOne.getCurrentHp() > 0) {
                 if (!hasStartedTimer) {
                     hud.start();            // bắt đầu timer
