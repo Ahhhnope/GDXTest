@@ -26,7 +26,7 @@ public class ScreenPlay {
 
 
     public ScreenPlay(){
-
+        SoundManager.load();
         //load ảnh background
         BackgroundScreen = new Texture("Stuffs/backgroundScreen.jpeg");
         //Load ảnh nền Chọn Level
@@ -50,18 +50,21 @@ public class ScreenPlay {
     public void update() {
         // Xử lý click
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+
             int touchX = Gdx.input.getX();
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
-
             if (btnBackHitbox.contains(touchX, touchY)) {
+                SoundManager.play("click");
                 GameManager.currScreen = "menu";
             }
 
             if (btnPlay1Hitbox.contains(touchX, touchY)) {
+                SoundManager.play("click");
                 GameManager.currScreen = "MapBossOne";
             }
 
             if (btnPlay2Hitbox.contains(touchX, touchY)) {
+                SoundManager.play("click");
 //                GameManager.currScreen = "MapBossTwo";
             }
         }
