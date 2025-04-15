@@ -3,7 +3,9 @@ package com.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -67,22 +69,26 @@ public class Boss {
     private float shakeDuration = 3f;
     private boolean isInvincible = false;
 
-    private float patternCooldown = 3f;
+    private float patternCooldown = 1.5f;
     private float patternTimer = 0f;
     private int patternIndex = 0;
     //touhou ahh bullet
     float spiralAngle = 0f;
     private boolean isFiringSpiral = false;
-    private float spiralDuration = 3f;
+    private float spiralDuration = 2.25f;
     private float spiralTimer = 0f;
     private boolean spiralStarted = false;
     private float spiralStartDelay = 5f; // Delay 5 giây sau khi fireWave
     private float spiralDelayTimer = 0f;
+    private boolean spiralDone = false;
 
+    private float patternDelayTimer = 0f;
+    private float patternDelay = 0.5f;
     private ArrayList<AfterImage> afterimages = new ArrayList<>();
     private float afterimageTimer = 0f;
     private float afterimageInterval = 0.05f;
     private boolean DuAnh = false;
+
     public Boss (float x, float y, ScreenShake screenShake){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
@@ -93,6 +99,8 @@ public class Boss {
         shapeRenderer = new ShapeRenderer();
         hitbox = new Rectangle(position.x, position.y, width, height);
         this.screenShake = screenShake;
+
+        loadBulletAnimations();
     }
     public ArrayList<FragmentBullet> getFragmentBullets() {
         return fragmentBullets;
@@ -122,7 +130,7 @@ public class Boss {
         float centerY = Gdx.graphics.getHeight() / 2;
         int numBullets = 18;
         float baseAngle = 180f; // bắn sang trái
-        float spread = 100f;     // tổng góc tỏa ra
+        float spread = 120f;     // tổng góc tỏa ra
         float angleStep = spread / (numBullets - 1);
 
         for (int i = 0; i < numBullets; i++) {
@@ -130,17 +138,42 @@ public class Boss {
             float radians = MathUtils.degreesToRadians * angle;
 
             Vector2 dir = new Vector2(MathUtils.cos(radians), MathUtils.sin(radians)).nor().scl(500f);
-
-            bullets.add(new Bullet(centerX + 200,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
-            bullets.add(new Bullet(centerX + 400,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
-            bullets.add(new Bullet(centerX + 600,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
-            bullets.add(new Bullet(centerX + 800,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
-            bullets.add(new Bullet(centerX + 1000,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
-            bullets.add(new Bullet(centerX + 1200,centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
-
+            bullets.add(new Bullet(centerX + 200, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
+            bullets.add(new Bullet(centerX + 400, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
+            bullets.add(new Bullet(centerX + 600, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
+            bullets.add(new Bullet(centerX + 800, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
+            bullets.add(new Bullet(centerX + 1000, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
+            bullets.add(new Bullet(centerX + 1200, centerY, centerX + dir.x, centerY + dir.y, 250f, firewaveAnim, 16, 16, 8));
         }
     }
 
+    private Animation<TextureRegion> fireAnim;
+    private Animation<TextureRegion> touhouAnim;
+    private Animation<TextureRegion> rainAnim;
+    private Animation<TextureRegion> firewaveAnim;
+    private Animation<TextureRegion> doubleSpiral;
+    private Animation<TextureRegion> doubleSpiral2;
+    private Animation<TextureRegion> something;
+    private void loadBulletAnimations() {
+        fireAnim = loadAnimation("SpiralBullets/All_Fire_Bullet_Pixel_16x16_05.png", 4, 0.3f,16,16);      // 4 frame
+        touhouAnim = loadAnimation("SpiralBullets/touhou.png", 4, 0.3f,14,8); // 6 frame
+        rainAnim = loadAnimation("SpiralBullets/rain.png", 4, 0.3f,15,14);
+        firewaveAnim = loadAnimation("SpiralBullets/firewave.png", 4, 0.3f,16,15);
+        doubleSpiral = loadAnimation("SpiralBullets/boomerang.png", 4, 0.3f,13,8);
+        doubleSpiral2 = loadAnimation("Bosses/ExplosiveBullet/Explosive1/ExplosiveAnimation/2.png",4,0.3f,16,15);
+        something = loadAnimation("SpiralBullets/All_Fire_Bullet_Pixel_16x16_05.png",4,0.3f,16,16);
+    }
+    private Animation<TextureRegion> loadAnimation(String path, int frameCount, float frameDuration, int frameWidth, int frameHeight) {
+        Texture sheet = new Texture(path);
+        TextureRegion[][] tmp = TextureRegion.split(sheet, frameWidth, frameHeight);
+
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 0; i < frameCount; i++) {
+            frames[i] = tmp[0][i];
+        }
+
+        return new Animation<>(frameDuration, frames);
+    }
     public void update(float delta, Player player){
         this.player = player;
         shootTimer += delta;
@@ -167,7 +200,6 @@ public class Boss {
             }
         }
 
-
         for (int i = 0; i < bullets.size();i++){
             Bullet b = bullets.get(i);
             b.update(delta);
@@ -185,13 +217,13 @@ public class Boss {
             }
         }
 
-        explosionTimer += delta;
-        if (explosionTimer >= explosionInterval) {
-            shootExplosion();
-            explosionTimer = 0;
+        if (!isPhase2) { // phase 2 rồi thì không bắn nữa
+            explosionTimer += delta;
+            if (explosionTimer >= explosionInterval) {
+                shootExplosion();
+                explosionTimer = 0;
+            }
         }
-
-
 
         time += delta;
         float targetX = baseX + MathUtils.sin(time * frequencyX) * amplitudeX;
@@ -221,49 +253,44 @@ public class Boss {
             if (phase2Timer >= 4f) {
                 fireWaveBullets();
                 hasFiredWave = true;
+                spiralDelayTimer = 0f;
             }
         }
-        if (isPhase2 && hasFiredWave && !spiralStarted) {
+        if (hasFiredWave && !spiralStarted) {
             spiralDelayTimer += delta;
-            if (spiralDelayTimer >= spiralStartDelay) {
-                isFiringSpiral = true;  // Bắt đầu spiral trong 3s
+            if (spiralDelayTimer >= 7f) {
+                isFiringSpiral = true;
                 spiralStarted = true;
+                spiralTimer = 0f;
             }
         }
-        if (isPhase2 && hasFiredWave && !isFiringSpiral) {
-            phase2Timer += delta;
-            patternTimer += delta;
-            if (patternTimer >= patternCooldown) {
-                patternTimer = 0f;
-                patternIndex = MathUtils.random(3);
-
-                switch (patternIndex) {
-                    case 0:
-                        fireRotatingSpiral();
-                        break;
-                    case 1:
-                        fireRainBullets();
-                        break;
-                    case 2:
-                        fireDoubleSpiral();
-                        break;
-                    case 3:
-                        isFiringSpiral = true;
-                        spiralTimer = 0f;
-                        break;
-                }
+        if (isFiringSpiral) {
+            fireTouhouSpiral();
+            spiralTimer += delta;
+            if (spiralTimer >= spiralDuration) {
+                isFiringSpiral = false;
+                spiralDone = true;
+                patternDelayTimer = 0f;
             }
-            if (isFiringSpiral) {
-                fireTouhouSpiral(); // vẫn gọi mỗi frame
-                spiralTimer += delta;
-
-                if (spiralTimer >= spiralDuration) {
-                    isFiringSpiral = false;  // ngừng bắn sau 3s
-                    spiralTimer = 0f;
-                }
-            }
-
         }
+
+        if (spiralDone && !isFiringSpiral) {
+            patternDelayTimer += delta;
+            if (patternDelayTimer >= 4f) {
+                patternTimer += delta;
+                if (patternTimer >= patternCooldown) {
+                    patternTimer = 0f;
+                    patternIndex = MathUtils.random(2);
+                    switch (patternIndex) {
+                        case 0: fireDoubleSpiral(); break;
+                        case 1: fireRainBullets(); break;
+                        case 2: fireSpiralBurst(); break;
+                    }
+                }
+            }
+        }
+
+
         afterimageTimer += delta;
         if (afterimageTimer >= afterimageInterval) {
             afterimageTimer = 0f;
@@ -278,31 +305,22 @@ public class Boss {
                 i--;
             }
         }
-    }
-    public void fireRotatingSpiral() {
-        float centerX = position.x + 128;
-        float centerY = position.y + 128;
-        int bulletCount = 50;
-        float speed = 200f;
-        float angleOffset = (time * 60f) % 360;
 
-        for (int i = 0; i < bulletCount; i++) {
-            float angle = i * (360f / bulletCount) + angleOffset;
-            float rad = MathUtils.degreesToRadians * angle;
-            Vector2 dir = new Vector2(MathUtils.cos(rad), MathUtils.sin(rad)).nor().scl(speed);
-            bullets.add(new Bullet(centerX, centerY, centerX + dir.x, centerY + dir.y, speed, 8));
-        }
+    }
+    public boolean isPhase2() {
+        return isPhase2;
     }
     public void fireTouhouSpiral() {
         float centerX = position.x + 128;
         float centerY = position.y + 128;
-        int bulletsPerFrame = 2; // bắn liên tục từng chút
+        int bulletsPerFrame = 4; // bắn liên tục từng chút
 
         for (int i = 0; i < bulletsPerFrame; i++) {
             float angle = spiralAngle + i * 180; // hai viên đối xứng
             float rad = MathUtils.degreesToRadians * angle;
             Vector2 dir = new Vector2(MathUtils.cos(rad), MathUtils.sin(rad)).nor().scl(220f);
-            bullets.add(new Bullet(centerX, centerY, centerX + dir.x, centerY + dir.y, 250f, 8));
+            bullets.add(new Bullet(centerX, centerY, centerX + dir.x, centerY + dir.y, 250f, touhouAnim, 16, 16, 8));
+
         }
 
         spiralAngle += 8f; // tăng theo thời gian → xoay đều
@@ -324,16 +342,35 @@ public class Boss {
 
             Vector2 dir1 = new Vector2(MathUtils.cos(rad1), MathUtils.sin(rad1)).nor().scl(speed);
             Vector2 dir2 = new Vector2(MathUtils.cos(rad2), MathUtils.sin(rad2)).nor().scl(speed);
-
-            bullets.add(new Bullet(centerX, centerY, centerX + dir1.x, centerY + dir1.y, speed, 8));
-            bullets.add(new Bullet(centerX, centerY, centerX + dir2.x, centerY + dir2.y, speed, 8));
+            bullets.add(new Bullet(centerX, centerY, centerX + dir1.x, centerY + dir1.y, speed, doubleSpiral, 16, 16, 8));
+            bullets.add(new Bullet(centerX + 300, centerY, centerX + dir2.x, centerY + dir2.y, speed, doubleSpiral2, 16, 16, 8));
         }
     }
     public void fireRainBullets() {
         for (int i = 0; i < 20; i++) {
             float x = MathUtils.random(0, Gdx.graphics.getWidth());
             float y = Gdx.graphics.getHeight() + 50;
-            bullets.add(new Bullet(x, y, x, y - 100, 400f, 8));
+            bullets.add(new Bullet(x, y, x, y - 100, 400f, rainAnim, 16, 16, 8));
+        }
+    }
+    public void fireSpiralBurst() {
+        float centerX = position.x + 128;
+        float centerY = position.y + 128;
+        int arms = 5; // số nhánh spiral
+        int bulletsPerArm = 10;
+        float angleOffset = (time * 120f) % 360; // xoay đều theo thời gian
+
+        for (int arm = 0; arm < arms; arm++) {
+            float baseAngle = arm * (360f / arms) + angleOffset;
+            for (int i = 0; i < bulletsPerArm; i++) {
+                float angle = baseAngle + i * 5f;
+                float rad = MathUtils.degreesToRadians * angle;
+                float speed = 150f + i * 15f; // càng xa càng nhanh
+
+                Vector2 dir = new Vector2(MathUtils.cos(rad), MathUtils.sin(rad)).nor().scl(speed);
+                bullets.add(new Bullet(centerX, centerY, centerX + dir.x, centerY + dir.y, speed, something, 16, 16, 8));
+                bullets.add(new Bullet(centerX + 200, centerY, centerX + dir.x, centerY + dir.y, speed, something, 16, 16, 8));
+            }
         }
     }
 

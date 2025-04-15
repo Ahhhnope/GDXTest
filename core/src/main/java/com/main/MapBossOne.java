@@ -17,7 +17,6 @@ public class MapBossOne {
     private Player player;
     private Boss BossOne;
     private float middleScreen;
-
     private ArrayList<Bullet> bossBullets;
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<FragmentBullet> fragmentBullets;
@@ -46,10 +45,12 @@ public class MapBossOne {
 
 
 //        spawn mobs
-            spawnEnemyTimer += deltaTime;
-            if (spawnEnemyTimer >= spawnEnemyInterval) {
-                enemies.add(new Enemy(BossOne.getPositionX(), BossOne.getPositionY())); // spawn gần boss
-                spawnEnemyTimer = 0f;
+            if (!BossOne.isPhase2()) {  // <-- Thêm điều kiện check phase
+                spawnEnemyTimer += deltaTime;
+                if (spawnEnemyTimer >= spawnEnemyInterval) {
+                    enemies.add(new Enemy(BossOne.getPositionX(), BossOne.getPositionY()));
+                    spawnEnemyTimer = 0f;
+                }
             }
 
             for (Enemy enemy : enemies){
