@@ -80,7 +80,6 @@ public class Setting {
     public void update() {
         // Xử lý click
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            SoundManager.play("click");
             int touchX = Gdx.input.getX();
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
@@ -91,6 +90,7 @@ public class Setting {
 
             //Tăng âm Lượng
             if(btnTang1Hitbox.contains(touchX, touchY)){
+                SoundManager.play("click");
                 if(musicVolume < 9) {
                     musicVolume++;
                 }
@@ -98,6 +98,7 @@ public class Setting {
             }
 
             if(btnTang2Hitbox.contains(touchX, touchY)){
+                SoundManager.play("click");
                 if(sfxVolume < 9) {
                     sfxVolume++;
                 }
@@ -106,6 +107,7 @@ public class Setting {
 
             //Giảm âm lượng
             if(btnGiam1Hitbox.contains(touchX, touchY)){
+                SoundManager.play("click");
                 if(musicVolume > 0) {
                     musicVolume--;
                 }
@@ -113,6 +115,7 @@ public class Setting {
             }
 
             if(btnGiam2Hitbox.contains(touchX, touchY)){
+                SoundManager.play("click");
                 if(sfxVolume > 0) {
                     sfxVolume--;
                 }
@@ -121,11 +124,13 @@ public class Setting {
 
             //Thay đổi trạng thái âm thanh
             if(btnAmluong1.contains(touchX, touchY)){
+                SoundManager.play("click");
                 isMusicMuted = !isMusicMuted;
                 System.out.print("Music muted: " + isMusicMuted + "\n");
             }
 
             if(btnAmluong2.contains(touchX, touchY)){
+                SoundManager.play("click");
                 isSfxMuted = !isSfxMuted;
                 System.out.print("SFX muted: " + isSfxMuted + "\n");
             }
