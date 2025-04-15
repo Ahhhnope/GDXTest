@@ -57,8 +57,8 @@ public class Boss {
     private int width = 250;
     private int height = 85;
 
-    private int hp = 2000;
-    private int currentHp = 2000;
+    private int hp = 5000;
+    private int currentHp = 5000;
 
     //phase 2
     private boolean isPhase2 = false;
