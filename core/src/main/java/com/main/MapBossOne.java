@@ -304,6 +304,7 @@ public class MapBossOne {
                 if (BossOne.getCurrentHp() == 0) {
                     // Win
                     roundDone = true;
+                    win = true;
                     BossOne.stopAllMusic();
                     winScreen.update();
 

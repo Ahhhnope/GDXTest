@@ -25,6 +25,7 @@ public class LoseScreen {
 
     public LoseScreen() {
         panel = new Texture("Stuffs/LoseScreenBeLike.png");
+//        panel = new Texture("Stuffs/paused.png");
 
         btnBack = new Texture("Stuffs/Buttons/BackButton.png");
         btnBackHitbox = new Rectangle(540, 280, 362, 142);

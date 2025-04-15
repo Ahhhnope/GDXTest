@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.main.Service.Services;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ScoreBoard {
 
@@ -19,6 +22,10 @@ public class ScoreBoard {
     private Rectangle btnBackHitbox;
 
     private ShapeRenderer shapeRenderer;
+    private BitmapFont font;
+
+    private Services services;
+    private ArrayList<MatchModel> matchList;
 
     public ScoreBoard(){
         //uisound
@@ -31,17 +38,23 @@ public class ScoreBoard {
         btnBackHitbox = new Rectangle(10, 395, btnbackicon.getWidth() / 2, btnbackicon.getHeight() / 2);
 
         shapeRenderer = new ShapeRenderer();
+        font = new BitmapFont();
+        services = new Services();
+        matchList = services.getAllHighScore();
     }
 
     public void update() {
+        matchList = new ArrayList<>();
+        matchList = services.getAllHighScore();
+
         // Xử lý click
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            SoundManager.play("click");
 
             int touchX = Gdx.input.getX();
             int touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             if (btnBackHitbox.contains(touchX, touchY)) {
+                SoundManager.play("click");
                 Main.gm.changeScreenWithFade("menu", 0.5f);
             }
         }
@@ -54,6 +67,22 @@ public class ScoreBoard {
         shapeRenderer.rect(btnBackHitbox.x, btnBackHitbox.y, btnBackHitbox.width, btnBackHitbox.height);
 
         shapeRenderer.end();
+    }
+
+    public void renderList(SpriteBatch batch) {
+        batch.begin();
+
+        int rows = matchList.size();
+        if (rows > 8) {rows = 8;} // Maximum row for the score board (I ain't doing multiple pages ;-;)
+
+        for (int i = 0; i < rows; i++) {
+            MatchModel currMatch = matchList.get(i);
+            font.getData().setScale(2f);
+            font.draw(batch, currMatch.getScore()+"", 440, 550 - (i * 50));
+            font.draw(batch, currMatch.getTime(), 745, 550 - (i * 50));
+            font.draw(batch, currMatch.getDate(), 1024, 550 - (i * 50));
+        }
+        batch.end();
     }
 
     public void render(SpriteBatch batch){
@@ -73,6 +102,7 @@ public class ScoreBoard {
         batch.end();
 
 //        renderHitbox();
+        renderList(batch);
     }
 
     public void dispose(){
