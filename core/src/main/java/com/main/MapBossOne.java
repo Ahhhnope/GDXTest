@@ -26,7 +26,6 @@ public class MapBossOne {
     private ArrayList<Bullet> enemyBullets;
     private ArrayList<FragmentBullet> fragmentBullets;
     private ArrayList<Enemy> enemies;
-    private WinScreen winScreen;
 
     //background
 
@@ -55,12 +54,18 @@ public class MapBossOne {
     private Services services;
     private PauseScreen pauseScreen;
 
+    private WinScreen winScreen;
+    private LoseScreen loseScreen;
+
     private int hitOnBoss = 0;
     private int mobKilled = 0;
     private int score;
     private int scoreMultiplier;
 
+    private boolean roundDone;
     private boolean win;
+    private boolean lose;
+
 
     private BossSoundManager BossSound;
     public MapBossOne(){
@@ -71,21 +76,23 @@ public class MapBossOne {
         services = new Services();
         pauseScreen = new PauseScreen();
         pauseScreen.paused = false;
+        roundDone = false;
         win = false;
+        lose = false;
 
         scoreSubmitted = false;
 
         BossSound = new BossSoundManager();
 
         winScreen = new WinScreen();
-
+        loseScreen = new LoseScreen();
         background = new Texture("Background3.png");
     }
 
     public void update(float deltaTime) {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (BossOne.getCurrentHp() > 0) {
+            if (BossOne.getCurrentHp() > 0 && player.getCurrentHP() > 0) {
                 SoundManager.play("click");
                 pauseScreen.paused = !pauseScreen.paused;
             } else {
@@ -106,7 +113,7 @@ public class MapBossOne {
             }
 
 
-            if (BossOne.getCurrentHp() > 0) {
+            if (BossOne.getCurrentHp() > 0 && player.getCurrentHP() > 0) {
                 if (!hasStartedTimer) {
                     hud.start();            // bắt đầu timer
                     hud.show();
@@ -270,8 +277,17 @@ public class MapBossOne {
                     }
                 }
 
+                for (int i = 0; i < healEffects.size(); i++) {
+                    HealEffect e = healEffects.get(i);
+                    e.update(deltaTime);
+                    if (e.isFinished()) {
+                        healEffects.remove(i);
+                        i--;
+                    }
+                }
+
 //                Calculate score multiplier base on timer
-                float timer = hud.getTimer();
+                float timer = hud.getTime();
                 if (timer < 60) {
                     scoreMultiplier = 5;
                 }
@@ -284,37 +300,39 @@ public class MapBossOne {
 
                 score = ((hitOnBoss + 50) + (mobKilled + 100)) * ((player.getCurrentHP() / player.getMaxHP()) * 100);
 
-
             } else {
-//                Win
-                win = true;
-                BossOne.stopAllMusic();
-                winScreen.update();
+                if (BossOne.getCurrentHp() == 0) {
+                    // Win
+                    roundDone = true;
+                    BossOne.stopAllMusic();
+                    winScreen.update();
 
-                if (!scoreSubmitted) {
-                    //                SUBMIT DAT SCORE
-                    score *= scoreMultiplier;
-                    float time = hud.getTime();
-                    LocalDate date = LocalDate.now();
-                    String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    if (submitScore(1, score, time, formattedDate)) {
-                        System.out.println("Score: "+score);
+                    if (!scoreSubmitted) {
+                        //                SUBMIT DAT SCORE
+                        score *= scoreMultiplier;
+                        float time = hud.getTime();
+                        LocalDate date = LocalDate.now();
+                        String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        if (submitScore(1, score, time, formattedDate)) {
+                            System.out.println("Score: "+score);
+                        }
+                        scoreSubmitted = true;
                     }
-                    scoreSubmitted = true;
                 }
-            }
-            for (int i = 0; i < healEffects.size(); i++) {
-                HealEffect e = healEffects.get(i);
-                e.update(deltaTime);
-                if (e.isFinished()) {
-                    healEffects.remove(i);
-                    i--;
+                else if (player.getCurrentHP() == 0) {
+                    // Lose
+                    roundDone = true;
+                    lose = true;
+                    BossOne.stopAllMusic();
+
+                    float scoreBeLike = score * scoreMultiplier;
+                    float time = hud.getTime();
+
+                    loseScreen.update();
+                    loseScreen.renderTimeAndStuff(time, scoreBeLike);
                 }
             }
         }
-
-
-
     }
 
     public boolean submitScore(int level, int score, float time, String date) {
@@ -375,6 +393,9 @@ public class MapBossOne {
 
         if (win) {
             winScreen.render(batch);
+        }
+        if (lose) {
+            loseScreen.render(batch);
         }
 
         return;

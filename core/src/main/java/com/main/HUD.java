@@ -33,9 +33,6 @@ public class HUD {
         running = true;
     }
 
-    public float getTimer() {
-        return timer;
-    }
 
     public void stop() {
         running = false;

@@ -37,7 +37,6 @@ public class Main extends ApplicationAdapter {
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
-
         ih = new InputHandler();
         Gdx.input.setInputProcessor(ih);
     }
@@ -51,6 +50,7 @@ public class Main extends ApplicationAdapter {
 
         gm.update(deltatime);
         gm.render(batch);
+
     }
 
     @Override
