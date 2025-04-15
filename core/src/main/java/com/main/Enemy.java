@@ -43,8 +43,8 @@ public class Enemy {
 
     //    HP bar stuff
     private final Rectangle hitbox;
-    private final int maxHP = 100;
-    private int currentHP = 100;
+    private final int maxHP = 200;
+    private int currentHP = 200;
 
     private final Player player;
     private final ShapeRenderer shapeRenderer;
@@ -141,7 +141,7 @@ public class Enemy {
 
         // Bắn 3 viên đạn rẽ quạt (góc 160, 180, 200 độ)
         float angleBase = 180f; // bắn sang trái
-        for (int i = -1; i <= 1; i++) {
+        for (int i = -2; i <= 2; i++) {
             float angle = angleBase + i * 20f;
             float radians = MathUtils.degreesToRadians * angle;
             Vector2 dir = new Vector2(MathUtils.cos(radians), MathUtils.sin(radians)).nor().scl(400f);
