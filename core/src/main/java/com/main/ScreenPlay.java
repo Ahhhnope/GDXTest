@@ -62,7 +62,7 @@ public class ScreenPlay {
             }
 
             if (btnPlay2Hitbox.contains(touchX, touchY)) {
-                GameManager.currScreen = "MapBossTwo";
+//                GameManager.currScreen = "MapBossTwo";
             }
         }
     }
