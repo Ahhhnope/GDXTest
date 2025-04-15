@@ -32,7 +32,6 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         SoundManager.load();
-        MusicManager.playMenuMusic();
         gm = new GameManager("menu");
 
         screenWidth = Gdx.graphics.getWidth();

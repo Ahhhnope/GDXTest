@@ -104,6 +104,11 @@ public class MapBossOne {
         if (pauseScreen.paused) {
             screenShake.stopShaking();
             pauseScreen.update();
+
+            if (PauseScreen.homePressed) {
+                PauseScreen.homePressed = false;
+                BossOne.stopAllMusic();
+            }
         } else {
             if (!bossInitialized) {
 //                LE MUSIC

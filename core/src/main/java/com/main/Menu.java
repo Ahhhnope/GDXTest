@@ -57,6 +57,8 @@ public class Menu {
     }
 
     public void update() {
+        MusicManager.playMenuMusic();
+
 //      Test lệnh vào chế dộ chơi game bằng nút Enter
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             GameManager.currScreen = "testing";

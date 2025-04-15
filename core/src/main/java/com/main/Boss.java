@@ -96,6 +96,8 @@ public class Boss {
     private float fireballSfxTimer = 0f;
     private int fireballSfxCount = 0;
     private boolean fireballSfxActive = false;
+
+
     //sfx music
     private BossSoundManager soundManager;
 
@@ -197,11 +199,14 @@ public class Boss {
 
         return new Animation<>(frameDuration, frames);
     }
+
     public void stopMusic() {
         if (soundManager != null) {
             soundManager.stopAll();
         }
     }
+
+
     public void update(float delta, Player player){
         this.player = player;
         shootTimer += delta;
