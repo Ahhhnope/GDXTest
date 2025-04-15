@@ -64,7 +64,7 @@ public class LoseScreen {
 
     public void render(SpriteBatch batch) {
         batch.begin();
-        batch.draw(panel, Gdx.graphics.getWidth() / 2f - panelWidth / 6f, Gdx.graphics.getHeight() / 2f - panelHeight / 6f, panelWidth / 3f, panelHeight / 3f);
+        batch.draw(panel, Gdx.graphics.getWidth() / 2f - panelWidth / 6f, Gdx.graphics.getHeight() / 2f - panelHeight / 6f, panelWidth / 2f, panelHeight / 2f);
         batch.draw(btnBack, btnBackHitbox.x, btnBackHitbox.y, btnBackHitbox.width / 1.5f, btnBackHitbox.height / 1.5f);
         batch.draw(btnReplay, btnReplayHitbox.x, btnReplayHitbox.y, btnReplayHitbox.width / 1.5f, btnReplayHitbox.height / 1.5f);
         batch.end();
