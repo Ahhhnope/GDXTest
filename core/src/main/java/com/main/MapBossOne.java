@@ -46,7 +46,7 @@ public class MapBossOne {
 
     private ArrayList<HealthPickup> healthPickups = new ArrayList<>();
     private float healthSpawnTimer = 0f;
-    private float healthSpawnInterval = 15f;
+    private float healthSpawnInterval = 25f;
     //Enemy Death Effect
     ArrayList<DeathExplosionEffect> deathEffects = new ArrayList<>();
 
@@ -258,8 +258,10 @@ public class MapBossOne {
 
                 healthSpawnTimer += deltaTime;
                 if (healthSpawnTimer >= healthSpawnInterval) {
-                    float spawnX = MathUtils.random(100, Gdx.graphics.getWidth() - 100);
-                    float spawnY = MathUtils.random(100, Gdx.graphics.getHeight() - 100);
+                    float screenWidth = Gdx.graphics.getWidth();
+                    float maxRight = screenWidth - 300f;
+                    float spawnX = MathUtils.random(100f, maxRight);
+                    float spawnY = MathUtils.random(100f, Gdx.graphics.getHeight() - 100f);
                     healthPickups.add(new HealthPickup(spawnX, spawnY));
                     healthSpawnTimer = 0f;
                 }
