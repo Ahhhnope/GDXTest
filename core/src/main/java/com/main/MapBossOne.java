@@ -23,6 +23,8 @@ public class MapBossOne {
     private ArrayList<Enemy> enemies;
 
 
+    private boolean bossInitialized = false;
+
     private float spawnEnemyTimer = 0f;
     private float spawnEnemyInterval = 10f;
 
@@ -34,11 +36,16 @@ public class MapBossOne {
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
         player = new Player();
-        BossOne = new Boss(1400,middleScreen, screenShake);
         enemies = new ArrayList<>();
+        System.out.println("Boss spawned, should start phase 1 music now.");
     }
 
     public void update(float deltaTime) {
+        if (!bossInitialized) {
+            BossOne = new Boss(1400, middleScreen, screenShake);
+            bossInitialized = true;
+            System.out.println("Boss actually spawned — NOW music should start!");
+        }
         if (BossOne.getCurrentHp() > 0) {
             player.update();
             BossOne.update(deltaTime, player);
@@ -116,6 +123,7 @@ public class MapBossOne {
             }
 
 
+
             ArrayList<Bullet> playerBullets = player.getBullets();
             Rectangle bossHitbox = BossOne.getHitbox();
 
@@ -172,21 +180,23 @@ public class MapBossOne {
             }
             screenShake.update(deltaTime);
         }
-        else {
-
-        }
 
     }
 
 
     public void renderHitbox() {
         player.renderHitbox();
-        BossOne.renderHitbox();
+        player.renderHitbox();
+        if (bossInitialized) {
+            BossOne.renderHitbox();
+        }
     }
 
     public void render(SpriteBatch batch){
         player.render(batch);
-        BossOne.render(batch);
+        if (bossInitialized) {
+            BossOne.render(batch);
+        }
 
         for (Enemy enemy : enemies){
             enemy.render(batch);
@@ -221,7 +231,9 @@ public class MapBossOne {
 
     public void dispose(){
         player.dispose();
-        BossOne.dispose();
+        if (bossInitialized) {
+            BossOne.dispose();
+        }
 
     }
 }

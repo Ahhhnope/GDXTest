@@ -89,6 +89,9 @@ public class Boss {
     private float afterimageInterval = 0.05f;
     private boolean DuAnh = false;
 
+    //sfx music
+    private BossSoundManager soundManager;
+
     public Boss (float x, float y, ScreenShake screenShake){
         BossOne = new Texture("Bosses/BossAlternate.png");
         position = new Vector2(x,y);
@@ -101,6 +104,9 @@ public class Boss {
         this.screenShake = screenShake;
 
         loadBulletAnimations();
+
+        this.soundManager = new BossSoundManager();
+        soundManager.startPhase1Music();
     }
     public ArrayList<FragmentBullet> getFragmentBullets() {
         return fragmentBullets;
@@ -240,6 +246,7 @@ public class Boss {
         }
         if (waitingForShakeToEnd) {
             shakeTimer += delta;
+            soundManager.playShakeSoundOnce();
             if (shakeTimer >= shakeDuration) {
                 waitingForShakeToEnd = false;
                 isInvincible = false;
@@ -254,6 +261,7 @@ public class Boss {
                 fireWaveBullets();
                 hasFiredWave = true;
                 spiralDelayTimer = 0f;
+                soundManager.setPhase2Started();
             }
         }
         if (hasFiredWave && !spiralStarted) {
@@ -262,6 +270,7 @@ public class Boss {
                 isFiringSpiral = true;
                 spiralStarted = true;
                 spiralTimer = 0f;
+
             }
         }
         if (isFiringSpiral) {
