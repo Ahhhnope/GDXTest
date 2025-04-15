@@ -31,6 +31,8 @@ public class Main extends ApplicationAdapter {
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
 
+        SoundManager.load();
+        MusicManager.playMenuMusic();
         gm = new GameManager("menu");
 
         screenWidth = Gdx.graphics.getWidth();
@@ -39,7 +41,6 @@ public class Main extends ApplicationAdapter {
         ih = new InputHandler();
         Gdx.input.setInputProcessor(ih);
 
-        MusicManager.playMenuMusic();
     }
 
     @Override
@@ -56,6 +57,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose() {
         background.dispose();
+        SoundManager.dispose();
     }
 
 
