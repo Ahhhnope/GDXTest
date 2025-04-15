@@ -16,7 +16,6 @@ import com.badlogic.gdx.audio.Music;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     //Timer
-    private HUD hud;
 
 
     Texture background;
@@ -35,8 +34,7 @@ public class Main extends ApplicationAdapter {
         background = new Texture("Stuffs/background.png");
         batch = new SpriteBatch();
 
-        hud = new HUD();
-        gm = new GameManager("menu",hud);
+        gm = new GameManager("menu");
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -57,13 +55,10 @@ public class Main extends ApplicationAdapter {
 
         gm.update(deltatime);
         gm.render(batch);
-        hud.update(deltatime);
-        hud.render(batch);
     }
 
     @Override
     public void dispose() {
-        hud.dispose();
         background.dispose();
     }
 

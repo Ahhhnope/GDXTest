@@ -7,11 +7,15 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.main.Service.Services;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
 public class MapBossOne {
+    private boolean hasStartedTimer = false;
     private ScreenShake screenShake = new ScreenShake();
 
     private Player player;
@@ -28,21 +32,36 @@ public class MapBossOne {
     private float spawnEnemyInterval = 10f;
 
     private ArrayList<HitEffect> hitEffects = new ArrayList<>();
+    private boolean scoreSubmitted;
 
     //Enemy Death Effect
     ArrayList<DeathExplosionEffect> deathEffects = new ArrayList<>();
+
+    private HUD hud;
+    private Services services;
 
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
         player = new Player();
         BossOne = new Boss(1400,middleScreen, screenShake);
         enemies = new ArrayList<>();
+        hud = new HUD();
+        services = new Services();
     }
 
     public void update(float deltaTime) {
         if (BossOne.getCurrentHp() > 0) {
+
+            if (!hasStartedTimer) {
+                hud.start();            // bắt đầu timer
+                hud.show();
+                hasStartedTimer = true;
+            }
+            hud.update(deltaTime);
+
             player.update();
             BossOne.update(deltaTime, player);
+
 
 
 //        spawn mobs
@@ -172,9 +191,30 @@ public class MapBossOne {
             screenShake.update(deltaTime);
         }
         else {
+            float time = hud.getTime();
 
+            LocalDate date = LocalDate.now();
+            String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            if (!scoreSubmitted) {
+                if (submitScore(1, time, formattedDate)) {
+                    System.out.println(services.runStuff());
+                }
+                scoreSubmitted = true;
+            }
+
+            System.out.println(services.runStuff());
         }
 
+    }
+
+    public void addPlayer() {
+        String name = "Tester";
+
+    }
+
+    public boolean submitScore(int level, float time, String date) {
+        return services.addMatch(level, time, 1, date);
     }
 
 
@@ -184,6 +224,7 @@ public class MapBossOne {
     }
 
     public void render(SpriteBatch batch){
+        hud.render(batch);
         player.render(batch);
         BossOne.render(batch);
 
@@ -219,6 +260,7 @@ public class MapBossOne {
     }
 
     public void dispose(){
+        hud.dispose();
         player.dispose();
         BossOne.dispose();
 

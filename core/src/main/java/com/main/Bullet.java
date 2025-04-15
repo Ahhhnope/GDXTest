@@ -82,9 +82,9 @@ public class Bullet {
         bulletWidth = width;
         bulletHeight = height;
         this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
-        this.bulletHitbox = playerBulletHitbox; // ✅ Thêm dòng này!
+        this.bulletHitbox = playerBulletHitbox;
 
-        damage = 2000;
+        damage = 5;
     }
 
 
