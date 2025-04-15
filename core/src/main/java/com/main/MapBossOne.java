@@ -28,6 +28,8 @@ public class MapBossOne {
     private ArrayList<Enemy> enemies;
 
 
+    private boolean bossInitialized = false;
+
     private float spawnEnemyTimer = 0f;
     private float spawnEnemyInterval = 10f;
 
@@ -45,16 +47,26 @@ public class MapBossOne {
     public MapBossOne(){
         middleScreen = (Gdx.graphics.getHeight() / 2f) - 120;
         player = new Player();
-        BossOne = new Boss(1400,middleScreen, screenShake);
         enemies = new ArrayList<>();
         hud = new HUD();
         services = new Services();
         paused = false;
 
         pausedBackground = new Texture("Stuffs/Paused.png");
+
     }
 
     public void update(float deltaTime) {
+      if (!bossInitialized) {
+            BossOne = new Boss(1400, middleScreen, screenShake);
+            bossInitialized = true;
+            System.out.println("Boss actually spawned — NOW music should start!");
+        }
+        if (BossOne.getCurrentHp() > 0) {
+            player.update();
+            BossOne.update(deltaTime, player);
+        }
+      
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (BossOne.getCurrentHp() > 0) {
                 paused = !paused;
@@ -62,6 +74,7 @@ public class MapBossOne {
 //                Nothing happen (So you can't pause during the win screen) =w=
             }
         }
+
 
 
         if (!paused) {
@@ -148,8 +161,9 @@ public class MapBossOne {
                 }
 
 
-                ArrayList<Bullet> playerBullets = player.getBullets();
-                Rectangle bossHitbox = BossOne.getHitbox();
+            ArrayList<Bullet> playerBullets = player.getBullets();
+            Rectangle bossHitbox = BossOne.getHitbox();
+
 
                 for (int i = 0; i < playerBullets.size(); i++) {
                     Bullet bullet = playerBullets.get(i);
@@ -219,6 +233,7 @@ public class MapBossOne {
                 System.out.println(services.runStuff());
             }
         }
+
         else {
 //            update Paused
 
@@ -239,14 +254,20 @@ public class MapBossOne {
 
     public void renderHitbox() {
         player.renderHitbox();
-        BossOne.renderHitbox();
+        player.renderHitbox();
+        if (bossInitialized) {
+            BossOne.renderHitbox();
+        }
     }
 
     public void render(SpriteBatch batch){
+
         if (!paused) {
             hud.render(batch);
             player.render(batch);
-            BossOne.render(batch);
+            if (bossInitialized) {
+                BossOne.render(batch);
+            }
 
             for (Enemy enemy : enemies){
                 enemy.render(batch);
@@ -292,7 +313,9 @@ public class MapBossOne {
     public void dispose(){
         hud.dispose();
         player.dispose();
-        BossOne.dispose();
+        if (bossInitialized) {
+            BossOne.dispose();
+        }
 
     }
 }
