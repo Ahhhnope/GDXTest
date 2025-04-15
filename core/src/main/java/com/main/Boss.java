@@ -57,8 +57,8 @@ public class Boss {
     private int width = 250;
     private int height = 85;
 
-    private int hp = 5000;
-    private int currentHp = 5000;
+    private int hp = 15000;
+    private int currentHp = 15000;
 
     //phase 2
     private boolean isPhase2 = false;
@@ -242,6 +242,7 @@ public class Boss {
             isInvincible = true;
             if (screenShake != null) {
                 screenShake.start(shakeDuration, 20f);
+                soundManager.setPhase2Started();
             }
         }
         if (waitingForShakeToEnd) {
@@ -261,7 +262,6 @@ public class Boss {
                 fireWaveBullets();
                 hasFiredWave = true;
                 spiralDelayTimer = 0f;
-                soundManager.setPhase2Started();
             }
         }
         if (hasFiredWave && !spiralStarted) {
