@@ -232,7 +232,7 @@ public class Player {
 
     public void heal(int healing) {
         currentHP += healing;
-        if (currentHP > 100) currentHP = 100;
+        if (currentHP > 500) currentHP = 500;
     }
 
     public void renderHitbox() {

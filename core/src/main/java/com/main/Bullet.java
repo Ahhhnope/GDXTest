@@ -84,9 +84,10 @@ public class Bullet {
         bulletWidth = width;
         bulletHeight = height;
         this.playerBulletHitbox = new Circle(position.x + 4, position.y + 4, radius);
-        this.bulletHitbox = playerBulletHitbox; // ✅ Thêm dòng này!
+        this.bulletHitbox = playerBulletHitbox;
 
-        damage = 50;
+
+        damage = 10;
     }
     //Đạn spiral
     public Bullet(float startX, float startY, float targetX, float targetY, float speed, Animation<TextureRegion> bulletAnimation, float width, float height, float radius, int damage) {
@@ -103,6 +104,8 @@ public class Bullet {
         this.damage = damage;
 
         this.isTracking = false;
+        damage = 5;
+
     }
 
 

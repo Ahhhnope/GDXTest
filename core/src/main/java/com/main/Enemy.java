@@ -43,8 +43,8 @@ public class Enemy {
 
     //    HP bar stuff
     private final Rectangle hitbox;
-    private final int maxHP = 200;
-    private int currentHP = 200;
+    private final int maxHP = 100;
+    private int currentHP = 100;
 
     private final Player player;
     private final ShapeRenderer shapeRenderer;

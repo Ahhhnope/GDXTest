@@ -9,18 +9,25 @@ public class HUD {
     private boolean running = false;
     private BitmapFont font;
     private boolean HudVisible = false;
+
+
+
     public HUD() {
         font = new BitmapFont(); // Load font mặc định, có thể thay bằng font .fnt sau
     }
+
     public void show(){
         HudVisible = true;
     }
+
     public void hide(){
         HudVisible = true;
     }
+
     public boolean isVisible(){
         return HudVisible;
     }
+
     public void start() {
         timer = 0f;
         running = true;
@@ -33,7 +40,7 @@ public class HUD {
     public void update(float delta) {
         if (running) {
             timer += delta;
-            System.out.println("Timer: " + timer);
+//            System.out.println("Timer: " + timer);
         }
     }
 
@@ -43,6 +50,7 @@ public class HUD {
         font.draw(batch, String.format("Time: %.1f s", timer), 20, Gdx.graphics.getHeight() - 50);
         batch.end();
     }
+
 
     public float getTime() {
         return timer;
