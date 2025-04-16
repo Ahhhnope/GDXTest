@@ -21,9 +21,14 @@ public class Services {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
+                int totalSeconds = (int) rs.getFloat("TimePlayed");
+                int hours = totalSeconds / 3600;
+                int minutes = (totalSeconds % 3600) / 60;
+                int seconds = totalSeconds % 60;
+                String timeBeLike = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
                 list.add(new MatchModel(
-                    rs.getTime("TimePlayed").toString(),
+                    timeBeLike,
                     rs.getDate("DateAchieved").toString(),
                     rs.getFloat("Score")
                 ));
@@ -44,13 +49,12 @@ public class Services {
     public boolean addMatch(int level, int score, float time, String date) {
         try (Connection con = DriverManager.getConnection(connectionUrl); PreparedStatement stmt = con.prepareStatement(addMatch)) {
 
-            Time timeBeLike = new Time(((long) (time * 1000)) - TimeZone.getDefault().getRawOffset());
-
             Date dateBeLike = Date.valueOf(date);
+
 
             stmt.setInt(1, level);
             stmt.setInt(2, score);
-            stmt.setTime(3, timeBeLike);
+            stmt.setFloat(3, time);
             stmt.setDate(4, dateBeLike);
 
             int rs = stmt.executeUpdate();
