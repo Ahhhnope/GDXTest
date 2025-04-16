@@ -166,7 +166,7 @@ public class Setting {
 
         batch.end();
 
-        renderHitbox(); // nếu cần debug
+//        renderHitbox(); // nếu cần debug
     }
 
     public void renderHitbox() {
