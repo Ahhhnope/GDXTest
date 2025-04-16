@@ -60,7 +60,7 @@ public class PauseScreen {
         batch.draw(pauseScreen, Gdx.graphics.getWidth() / 2f - pauseScreen.getWidth() / 2f - 150, Gdx.graphics.getHeight() / 2f - pauseScreen.getHeight() / 2f - 150, pauseScreen.getWidth() + 300, pauseScreen.getHeight() + 200);
         batch.end();
 
-        renderHitbox();
+//        renderHitbox();
     }
 
     public void dispose() {
