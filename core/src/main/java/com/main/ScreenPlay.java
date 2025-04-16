@@ -30,7 +30,7 @@ public class ScreenPlay {
         //load ảnh background
         BackgroundScreen = new Texture("Stuffs/backgroundScreen.jpeg");
         //Load ảnh nền Chọn Level
-        nenMapLevel = new Texture("Stuffs/nenGameMap.png");
+        nenMapLevel = new Texture("Stuffs/yep2.png");
         //load ảnh chữ ( tên game )
         title = new Texture("Stuffs/Buttons/TenDanhBoss.png");
         //Load ảnh các nút
