@@ -336,10 +336,10 @@ public class Boss {
                     patternIndex = MathUtils.random(2);
                     switch (patternIndex) {
                         case 0:
-                            fireDoubleSpiral();
+                            fireDoubleSpiral(); // 2 đường đạn xoay
                             break;
-                        case 1: fireRainBullets(); break;
-                        case 2: fireSpiralBurst(); break;
+                        case 1: fireRainBullets(); break; // Đạn từ trên rơi xuống
+                        case 2: fireSpiralBurst(); break; // Ngôi sao
                     }
                 }
             }
